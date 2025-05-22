@@ -410,52 +410,73 @@
     <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
 </div>
 
-               <div class="widget-grid">
+             <div class="widget-grid">
 
-<div class="captain-widget">
-  <h4>🌬️ Wind Forecast (Phuket)</h4>
-  <iframe src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" frameborder="0" width="100%" height="250"></iframe>
+  <div class="captain-widget">
+    <h4>🌬️ Wind Forecast (Phuket)</h4>
+    <iframe src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" frameborder="0" width="100%" height="250"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🌤️ Weather Forecast (Phuket)</h4>
+    <iframe src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" frameborder="0" scrolling="no" width="100%" height="250"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🚨 Weather Alerts (Phuket)</h4>
+    <div id="weather-alerts" style="height:250px; overflow-y:auto; padding:10px; box-sizing:border-box; background:#fff;">
+      Loading alerts...
+    </div>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🌊 Tide Info (Phuket)</h4>
+    <iframe src="https://www.tide-forecast.com/locations/Phuket/tides/latest" frameborder="0" width="100%" height="250" scrolling="no" style="border: none; overflow: hidden;"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🚢 Live Ship Tracker</h4>
+    <iframe src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" frameborder="0" width="100%" height="250"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🌡️ Sea Temperature (Phuket)</h4>
+    <iframe src="https://worldseatemp.com/en/informer/?place=phuket&unit=celsius&size=medium" frameborder="0" width="100%" height="250"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🔆 UV Index (Phuket)</h4>
+    <iframe src="https://www.theweathernetwork.com/en/city/th/phuket/phuket/uv" frameborder="0" width="100%" height="250"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🌕 Moon Phase</h4>
+    <iframe src="https://moonphase.guide/widget" frameborder="0" width="100%" height="250"></iframe>
+  </div>
+
+  <div class="captain-widget">
+    <h4>🌅 Sunrise & Sunset</h4>
+    <iframe src="https://sunsethue.com/widgets/phuket" frameborder="0" width="100%" height="250"></iframe>
+  </div>
+
 </div>
 
-<div class="captain-widget">
-  <h4>🌤️ Weather Forecast (Phuket)</h4>
-  <iframe src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" frameborder="0" scrolling="no" width="100%" height="250"></iframe>
-</div>
+<script>
+  async function loadWeatherAlerts() {
+    try {
+      const response = await fetch('/api/phuket-warning');
+      if (!response.ok) throw new Error('Network response was not ok');
+      const html = await response.text();
+      document.getElementById('weather-alerts').innerHTML = html;
+    } catch (error) {
+      document.getElementById('weather-alerts').innerText = 'Unable to load alerts.';
+      console.error('Fetch error:', error);
+    }
+  }
 
-<div class="captain-widget">
-  <h4>🚨 Weather Alerts (Phuket)</h4>
-  <iframe src="https://www.phuket.net/weather-alerts" frameborder="0" width="100%" height="250"></iframe>
-</div>
-
-<div class="captain-widget">
-  <h4>🌊 Tide Info (Phuket)</h4>
-  <iframe src="https://www.tide-forecast.com/locations/Phuket/tides/latest" frameborder="0" width="100%" height="250" scrolling="no" style="border: none; overflow: hidden;"></iframe>
-</div>
-
-<div class="captain-widget">
-  <h4>🚢 Live Ship Tracker</h4>
-  <iframe src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" frameborder="0" width="100%" height="250"></iframe>
-</div>
-
-<div class="captain-widget">
-  <h4>🌡️ Sea Temperature (Phuket)</h4>
-  <iframe src="https://worldseatemp.com/en/informer/?place=phuket&unit=celsius&size=medium" frameborder="0" width="100%" height="250"></iframe>
-</div>
-
-<div class="captain-widget">
-  <h4>🔆 UV Index (Phuket)</h4>
-  <iframe src="https://www.theweathernetwork.com/en/city/th/phuket/phuket/uv" frameborder="0" width="100%" height="250"></iframe>
-</div>
-
-<div class="captain-widget">
-  <h4>🌕 Moon Phase</h4>
-  <iframe src="https://moonphase.guide/widget" frameborder="0" width="100%" height="250"></iframe>
-</div>
-
-<div class="captain-widget">
-  <h4>🌅 Sunrise & Sunset</h4>
-  <iframe src="https://sunsethue.com/widgets/phuket" frameborder="0" width="100%" height="250"></iframe>
-</div>
+  // Call the function on page load
+  loadWeatherAlerts();
+</script>
 
 
 
