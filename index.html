@@ -412,7 +412,6 @@
 
 <div class="widget-grid">
 
- <!-- 🌬️ Wind Forecast (Phuket) -->
 <div class="captain-widget">
   <h4>🌬️ Wind Forecast (Phuket)</h4>
   <iframe 
@@ -423,7 +422,6 @@
   </iframe>
 </div>
 
-<!-- 🌤️ Weather Forecast (Phuket) -->
 <div class="captain-widget">
   <h4>🌤️ Weather Forecast (Phuket)</h4>
   <iframe 
@@ -435,30 +433,30 @@
   </iframe>
 </div>
 
-<!-- 🚨 Weather Alerts (Phuket) -->
 <div class="captain-widget">
   <h4>🚨 Weather Alerts (Phuket)</h4>
   <iframe 
-    src="https://embed.windy.com/embed2.html?lat=7.693&lon=98.067&zoom=9&level=surface&overlay=warnings&menu=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" 
-    frameborder="0" 
+    src="https://embed.windy.com/embed2.html?lat=7.693&lon=98.067&zoom=9&overlay=warnings" 
     width="100%" 
-    height="250">
+    height="250" 
+    frameborder="0" 
+    scrolling="no" 
+    style="border:none; overflow:hidden;" 
+    allowtransparency="true">
   </iframe>
 </div>
 
-<!-- 🌊 Tide Info (Phuket) -->
 <div class="captain-widget">
   <h4>🌊 Tide Info (Phuket)</h4>
   <iframe 
-    src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark"
-    style="background-color: #232629; border: none;"
+    src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark" 
+    style="background-color: #232629; border: none;" 
     width="100%" 
-    height="300"
+    height="300" 
     allow="geolocation">
   </iframe>
 </div>
 
-<!-- 🚢 Live Ship Tracker -->
 <div class="captain-widget">
   <h4>🚢 Live Ship Tracker</h4>
   <iframe 
@@ -469,54 +467,55 @@
   </iframe>
 </div>
 
-<!-- 🌡️ Sea Surface Temperature (Phuket) -->
 <div class="captain-widget">
   <h4>🌡️ Sea Surface Temperature (Phuket)</h4>
-  <iframe 
-    src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&zoom=9&level=surface&overlay=sst&menu=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" 
-    frameborder="0" 
-    width="100%" 
-    height="250">
-  </iframe>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="250"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
 </div>
 
-<!-- 🔆 UV Index (Phuket) -->
 <div class="captain-widget">
   <h4>🔆 UV Index (Phuket)</h4>
-  <iframe 
-    src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" 
-    frameborder="0" 
-    width="100%" 
-    height="250">
-  </iframe>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="250"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
 </div>
 
-<!-- 🌕 Moon Phase -->
-<div class="captain-widget">
+<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
   <h4>🌕 Moon Phase</h4>
   <a target="_blank" style="text-decoration:none;" href="https://moonphase.guide/">
     <img 
       src="https://moonphase.guide/module/MWE5MNnJyNWRtZlJlTTY1Uk9LQ2h0V1gydEVwbkRkS0QrLzBEaDRCeC9TbEhVUklsWVJlWHNEOG9uOGhINXhvc3Jid2FacjA4alVSL1ZlRWxVTzg4ZGc9PQ.png" 
       alt="Moon Phase" 
-      style="width: 100%; height: 300px; object-fit: contain; display: block; margin: 0 auto;" 
+      style="width: 300px; height: 300px; object-fit: contain; display: block; margin: 0 auto;" 
       border="0" 
     />
   </a>
 </div>
 
-<!-- 🌅 Sunrise & Sunset (Phuket) -->
-<div class="captain-widget">
+<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
   <h4>🌅 Sunrise & Sunset (Phuket)</h4>
-  <iframe 
-    src="https://www.timeanddate.com/scripts/sunrise-sunset.php?n=1151253&mode=location&iframe=1" 
-    width="100%" 
-    height="140" 
-    frameborder="0" 
-    scrolling="no" 
-    style="border:none; overflow:hidden;" 
+  <iframe
+    src="https://www.timeanddate.com/scripts/sunrise-sunset.php?n=1151253&mode=location&iframe=1"
+    width="300"
+    height="140"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
     allowtransparency="true">
   </iframe>
 </div>
+
 
             <section id="about" class="content-section">
                 <div class="content-container">
