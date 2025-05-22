@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- FontAwesome CDN for social icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  integrity="sha512-papbOfL+CvzFjQJ31/Yt7M9yCTf7rhGZ58sNw9T+Qb+kgGZbO3oRGWZ6/j7+1M8Q2hU3Df0xI6cuW6u68bKjvg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Phuket Cruising Yacht Club</title>
@@ -265,6 +273,36 @@
     </style>
 </head>
 <body>
+<div class="nav-container">
+  <nav>
+    <!-- Logo on the left -->
+    <a href="/" class="nav-logo" aria-label="Homepage">
+      <img src="your-logo.png" alt="Site Logo" />
+    </a>
+
+    <!-- Navigation links -->
+    <div class="nav-links">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <!-- Social icons on the right -->
+    <div class="nav-social">
+      <a href="https://twitter.com/yourhandle" class="social-icon" target="_blank" rel="noopener" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://linkedin.com/in/yourhandle" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="https://instagram.com/yourhandle" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </nav>
+</div>
+
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0"></script>
 
@@ -1075,5 +1113,17 @@
         }, 15 * 60 * 1000); // 15 minutes
 
       </script>
+            <script>
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('.nav-container');
+    if(window.scrollY > 50) {
+      nav.classList.add('visible', 'scrolled');
+    } else {
+      nav.classList.remove('visible', 'scrolled');
+    }
+  });
+</script>
+
+            
 </body>
 </html>
