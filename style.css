@@ -100,7 +100,7 @@ body.overlay-active .home-content {
 
 /* Enhanced text shadow for all white text - IMPROVED FOR CLARITY */
 .home-subtitle, .intro-text p, .content-container p, .content-container li, .nav-link {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Sharper black shadow added */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Sharper black shadow added */
 }
 
 /* Premium glass-morphism navigation */
@@ -109,7 +109,7 @@ body.overlay-active .home-content {
     top: 0;
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 2rem;
     z-index: 100;
     opacity: 0; transform: translateY(-20px);
     transition: opacity 1s ease, transform 1s ease;
