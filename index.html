@@ -504,15 +504,21 @@
 
 <div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
   <h4>🌅 Sunrise & Sunset (Phuket)</h4>
-  <iframe
-    src="https://www.timeanddate.com/scripts/sunrise-sunset.php?n=1151253&mode=location&iframe=1"
-    width="300"
-    height="140"
-    frameborder="0"
-    scrolling="no"
-    style="border:none; overflow:hidden;"
-    allowtransparency="true">
-  </iframe>
+  <div id="sunrisehour-widget"></div>
+  <script type="text/javascript" src="http://sunrisehour.com/scripts/widget.js"></script>
+  <script type="text/javascript">
+    new SunriseHourWidget().Create({
+      location: {
+        text: "Phuket Thailand"
+      },
+      format: {
+        title: "Phuket Sunrise Sunset",
+        width: "300px",
+        height: "300px",
+        background: "1"
+      }
+    });
+  </script>
 </div>
 
 
