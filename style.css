@@ -186,7 +186,7 @@ nav {
 
 .social-icon {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 1.2rem; transition: color 0.3s ease, text-shadow 0.3s ease;
+    font-size: 1.4rem; transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .social-icon:hover {
@@ -218,7 +218,7 @@ nav {
 
 
 .home-title {
-    font-size: 5rem;
+    font-size: 3rem;
     color: #f9d976;
     margin-bottom: 1.2rem;
     text-shadow: 0 0 30px rgba(249, 217, 118, 3),
@@ -324,7 +324,7 @@ nav {
 }
 
 .facebook-icon {
-    margin-right: 0.5rem;
+    margin-right: 0.6rem;
 }
 
 .glass-button {
