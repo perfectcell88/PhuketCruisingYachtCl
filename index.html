@@ -410,7 +410,7 @@
     <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
 </div>
 
-             <div class="widget-grid">
+<div class="widget-grid">
 
   <div class="captain-widget">
     <h4>🌬️ Wind Forecast (Phuket)</h4>
@@ -464,10 +464,26 @@
 <script>
   async function loadWeatherAlerts() {
     try {
-      const response = await fetch('/api/phuket-warning');
+      const response = await fetch('/api/phuket-warnings');
       if (!response.ok) throw new Error('Network response was not ok');
-      const html = await response.text();
-      document.getElementById('weather-alerts').innerHTML = html;
+      const data = await response.json();
+
+      const container = document.getElementById('weather-alerts');
+
+      if (!data.alerts || data.alerts.length === 0) {
+        container.innerHTML = '<p>No current weather alerts for Phuket.</p>';
+        return;
+      }
+
+      container.innerHTML = data.alerts.map(alert => `
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; background:#fffbe6;">
+          <strong>${alert.event}</strong><br>
+          <em>From:</em> ${new Date(alert.start * 1000).toLocaleString()}<br>
+          <em>To:</em> ${new Date(alert.end * 1000).toLocaleString()}<br>
+          <p>${alert.description}</p>
+        </div>
+      `).join('');
+
     } catch (error) {
       document.getElementById('weather-alerts').innerText = 'Unable to load alerts.';
       console.error('Fetch error:', error);
@@ -477,6 +493,7 @@
   // Call the function on page load
   loadWeatherAlerts();
 </script>
+
 
 
 
