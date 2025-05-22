@@ -457,25 +457,34 @@
   <div class="captain-widget">
   <h4>🔆 UV Index (Phuket)</h4>
   <iframe
-  src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=uv&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C"
-  frameborder="0"
-  width="100%"
-  height="300"
-  style="border:none;"
-></iframe>
+    src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&detailLat=7.880&detailLon=98.389&zoom=9&level=surface&overlay=uv&product=ecmwf&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C"
+    width="100%"
+    height="300"
+    style="border:none;"
+    frameborder="0"
+  ></iframe>
 </div>
 
- <div class="captain-widget" style="text-align:center;">
+<div class="captain-widget" style="text-align:center; width: 220px; margin: 0 auto;">
   <h4>🌕 Moon Phase</h4>
-  <iframe
-    src="https://moonphase.guide/widget?location=phuket"
-    width="220"
-    height="300"
-    style="border:none; display: block; margin: 0 auto;"
-    frameborder="0"
-    scrolling="no"
-    allowtransparency="true"
-  ></iframe>
+  <!-- MoonConnection.com current moon phase widget -->
+  <table cellpadding="0" cellspacing="0" border="0" width="220" height="260" style="margin: 0 auto;">
+    <tr>
+      <td align="center" valign="middle" style="height:260px;">
+        <a href="https://www.moonconnection.com" target="_blank" rel="noopener noreferrer" style="display:inline-block;">
+          <img src="https://www.moonmodule.com/cs/dm/hn.gif" width="220" height="136" border="0" alt="Current Moon Phase" />
+        </a>
+        <div style="position:relative; width: 150px; margin: 10px auto 0;">
+          <div style="background:#000; text-align:center; padding: 2px 0; color:#7F7F7F; font-family: Arial, Helvetica, sans-serif; font-size: 11px;">
+            <a href="https://www.moonconnection.com/moon_cycle.phtml" target="_blank" rel="noopener noreferrer" style="color:#7F7F7F; text-decoration:none;">
+              moon cycle
+            </a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <!-- End moon phase widget -->
 </div>
 
  <div class="captain-widget" style="text-align:center;">
