@@ -412,21 +412,21 @@
 
 <div class="widget-grid">
 
-  <div class="captain-widget">
-    <h4>🌬️ Wind Forecast (Phuket)</h4>
-    <iframe src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" frameborder="0" width="100%" height="250"></iframe>
-  </div>
-
  <div class="captain-widget">
+  <h4>🌬️ Wind Forecast (Phuket)</h4>
+  <iframe src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" frameborder="0" width="100%" height="250"></iframe>
+</div>
+
+<div class="captain-widget">
   <h4>🌤️ Weather Forecast (Phuket)</h4>
   <iframe src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" frameborder="0" scrolling="no" width="100%" height="250"></iframe>
 </div>
 
-<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
+<div class="captain-widget">
   <h4>🚨 Weather Alerts (Phuket)</h4>
   <iframe
-    src="https://embed.windy.com/embed2.html?lat=7.693&lon=98.067&zoom=9&overlay=warnings"
-    width="300"
+    src="https://embed.windy.com/embed2.html?lat=7.693&lon=98.067&zoom=9&overlay=warnings&level=surface&menu=&message=&calendar=now&type=map"
+    width="100%"
     height="250"
     frameborder="0"
     scrolling="no"
@@ -435,7 +435,7 @@
   ></iframe>
 </div>
 
- <div class="captain-widget">
+<div class="captain-widget">
   <h4>🌊 Tide Info (Phuket)</h4>
   <iframe 
     src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark"
@@ -446,29 +446,16 @@
   ></iframe>
 </div>
 
+<div class="captain-widget">
+  <h4>🚢 Live Ship Tracker</h4>
+  <iframe src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" frameborder="0" width="100%" height="300"></iframe>
+</div>
 
-  <div class="captain-widget">
-    <h4>🚢 Live Ship Tracker</h4>
-    <iframe src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" frameborder="0" width="100%" height="300"></iframe>
-  </div>
-
- <div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
+<div class="captain-widget">
   <h4>🌡️ Sea Surface Temperature (Phuket)</h4>
   <iframe
-    src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&detailLat=7.582&detailLon=98.135&width=300&height=250&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
-    width="300"
-    height="250"
-    frameborder="0"
-    scrolling="no"
-    style="border:none; overflow:hidden;"
-  ></iframe>
-</div>
-    
- <div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
-  <h4>🔆 UV Index (Phuket)</h4>
-  <iframe
-    src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&detailLat=7.729&detailLon=98.138&width=300&height=250&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
-    width="300"
+    src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&detailLat=7.582&detailLon=98.135&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
     height="250"
     frameborder="0"
     scrolling="no"
@@ -476,25 +463,35 @@
   ></iframe>
 </div>
 
-<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
+<div class="captain-widget">
+  <h4>🔆 UV Index (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&detailLat=7.729&detailLon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="250"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
   <h4>🌕 Moon Phase</h4>
   <a target="_blank" style="text-decoration:none;" href="https://moonphase.guide/">
     <img 
       src="https://moonphase.guide/module/MWE5MNnJyNWRtZlJlTTY1Uk9LQ2h0V1gydEVwbkRkS0QrLzBEaDRCeC9TbEhVUklsWVJlWHNEOG9uOGhINXhvc3Jid2FacjA4alVSL1ZlRWxVTzg4ZGc9PQ.png" 
       alt="Moon Phase" 
-      style="width: 300px; height: 300px; object-fit: contain; display: block; margin: 0 auto;" 
+      style="width: 100%; max-width: 300px; height: 300px; object-fit: contain; display: block; margin: 0 auto;" 
       border="0" 
     />
   </a>
 </div>
 
-
-
-<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
+<div class="captain-widget">
   <h4>🌅 Sunrise & Sunset (Phuket)</h4>
   <iframe
     src="https://www.timeanddate.com/scripts/sunrise-sunset.php?n=1151253&mode=location&iframe=1"
-    width="300"
+    width="100%"
     height="140"
     frameborder="0"
     scrolling="no"
@@ -502,9 +499,6 @@
     allowtransparency="true">
   </iframe>
 </div>
-
-
-
 
 
             <section id="about" class="content-section">
