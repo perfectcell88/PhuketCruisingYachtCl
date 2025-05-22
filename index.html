@@ -502,24 +502,17 @@
   </a>
 </div>
 
-<div class="captain-widget" style="text-align:left; max-width: 320px; margin: 0 auto;">
+<div class="captain-widget" style="text-align:center; width: 320px; margin: 0 auto;">
   <h4>🌊 Earthquake & Tsunami Alerts (Nearby Phuket)</h4>
-  <div id="gdacs-alerts"></div>
-  <script src="https://www.rssinclude.com/js/feed.js"></script>
-  <script>
-    var feed = new RSSinclude({
-      rss_url: "https://www.gdacs.org/xml/rss.xml",
-      target: "gdacs-alerts",
-      max: 5,
-      show_desc: true,
-      show_date: true,
-      date_format: "dd MMM yyyy"
-    });
-  </script>
-  <p style="font-size: 12px; margin-top: 10px; text-align: center;">
-    <a href="https://www.gdacs.org/" target="_blank" rel="noopener noreferrer">More alerts on GDACS</a>
-  </p>
+  <iframe
+    src="https://www.gdacs.org/mapviewer/index.html?countrycode=THA"
+    width="320"
+    height="300"
+    frameborder="0"
+    scrolling="no"
+  ></iframe>
 </div>
+
 
 
 
