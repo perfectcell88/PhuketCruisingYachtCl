@@ -1,10 +1,10 @@
 // main.js - Handles Three.js background and initial loading animation
 // This script is designed to be self-contained for the 3D background and loading sequence.
 
-import * as THREE from './three.module.js';
-import { OrbitControls } from './controls/OrbitControls.js';
-import { Water } from './objects/Water.js';
-import { Sky } from './objects/Sky.js';
+import * as THREE from './js/three.module.js'; // Updated path
+import { OrbitControls } from './js/controls/OrbitControls.js'; // Updated path
+import { Water } from './js/objects/Water.js'; // Updated path
+import { Sky } from './js/objects/Sky.js'; // Updated path
 
 // Global variables for Three.js scene elements
 let container;
@@ -53,7 +53,7 @@ function init() {
     textureWidth: 512,
     textureHeight: 512,
     // Load water normals texture and set wrapping properties
-    waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', function (texture) {
+    waterNormals: new THREE.TextureLoader().load('js/textures/waternormals.jpg', function (texture) { // Updated path
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     }),
     sunDirection: new THREE.Vector3(), // Initial sun direction
