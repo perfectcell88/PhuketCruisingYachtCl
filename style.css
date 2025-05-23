@@ -30,1251 +30,938 @@ body, html {
 /* NEW: Main scrollable content wrapper */
 /* This container is where your main page content (like home-content) resides */
 #page-content {
-    position: relative; /* Changed to relative to be in normal flow */
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%; /* Ensure it takes at least full height for content below fold */
-    z-index: 5; /* Above Three.js background */
-    opacity: 0;
-    transition: opacity 1.2s ease; /* Transition for initial page load */
-}
-
-#page-content.visible {
-    opacity: 1;
+    position: relative; /* Changed from fixed to relative */
+    z-index: 10; /* Above Three.js background */
+    height: 100%; /* Take full height of its parent body */
+    display: flex;
+    flex-direction: column;
 }
 
 #main-scrollable-content-wrapper {
-    position: relative; /* Essential for positioning children correctly */
-    min-height: 100vh; /* Make sure it's at least one viewport high */
-    padding-top: 100px; /* Space for the fixed navigation bar (adjust as needed) */
-    padding-bottom: 50px; /* Space at the bottom if needed */
+    flex-grow: 1; /* Allows it to take up remaining height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding-top: 80px; /* Space for the fixed navigation bar */
     box-sizing: border-box; /* Include padding in height calculation */
-    overflow-y: auto; /* THIS IS THE SCROLLBAR FOR THE MAIN PAGE */
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    height: 100vh; /* Fixed height for scrollable area */
-    width: 100%; /* Take full width */
 }
 
-/* --- CRITICAL: Styles to control scroll and home-content when a section is active --- */
-/* The body will get 'overlay-active' class from JavaScript when a content section is open */
+/* Hide body scroll when overlay active (for specific content sections) */
 body.overlay-active {
-    overflow: hidden; /* **MOST IMPORTANT: Disable scrolling on the entire body** */
-    position: fixed; /* **CRITICAL: Fix body position to prevent scroll jump/reflow** */
-    width: 100%;     /* Ensure body takes full width when fixed */
-    height: 100%;    /* Ensure body takes full height when fixed */
-    top: 0;
-    left: 0; /* Ensure body is fixed to the top-left of the viewport */
+    overflow: hidden; /* Prevent body scroll when content sections are open */
 }
 
-/* This targets the main content that should fade out */
-body.overlay-active .home-content {
-    opacity: 0; /* Hide home content when an overlay is active */
-    pointer-events: none; /* Disable interaction with home content */
-    visibility: hidden; /* Hide visually after opacity transition */
-    /* MODIFIED: Smoother transition duration/timing for main content */
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-}
-/* --------------------------------------------------------------------- */
-
-
-/* The loading overlay still covers everything */
+/* Loading overlay */
 #loading-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    pointer-events: all;
-    background: rgba(0,12,26,0.85);
-    opacity: 1;
-    transition: opacity 1s ease;
-}
-
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Enhanced text shadow for all white text - IMPROVED FOR CLARITY */
-.home-subtitle, .intro-text p, .content-container p, .content-container li { /* .nav-link removed as it has new specific styling */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Sharper black shadow added */
-}
-
-/* --- MODIFIED NAVIGATION STYLES START --- */
-.nav-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    width: 100%; /* Ensure full width */
-    padding: 0; /* Remove padding, will be handled by inner 'nav' */
-    z-index: 100;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 12, 26, 0.85); /* Dark blue overlay */
+    z-index: 9999; /* Ensure it's on top */
+    opacity: 1;
+    transition: opacity 1s ease;
+    pointer-events: all; /* Allows clicking/interaction during loading */
+}
+
+#loading-overlay.fade-out {
     opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 1s ease, transform 1s ease;
-    pointer-events: none;
-    visibility: hidden;
+    pointer-events: none; /* Disable interaction after fading out */
+}
+
+#loading-overlay::before {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(249, 217, 118, 0.1), transparent 70%);
+    border-radius: 50%;
+    animation: ripple 2.5s ease-out infinite;
+    pointer-events: none; /* Do not block clicks */
+}
+
+@keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
+}
+
+#loading-logo-circle-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+#loading-logo {
+    width: 200px;
+    height: 200px;
+    display: block;
+    filter: drop-shadow(0 0 8px #f9d976);
+    opacity: 0;
+    animation: logoPop 0.8s ease-out forwards 0.3s; /* Delay the pop animation */
+    position: relative;
+    z-index: 2; /* Above the circle */
+    border-radius: 50%; /* Ensure logo is circular if shape requires */
+}
+
+@keyframes logoPop {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+#loading-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    pointer-events: none; /* Make sure it doesn't block interaction */
+    z-index: 1; /* Below the logo */
+    animation: spin 1.6s linear infinite;
+    filter: drop-shadow(0 0 8px #f9d976);
+}
+
+#loading-circle.fade-out {
+    opacity: 0; /* Fade out spinner as overlay fades */
+}
+
+#loading-circle svg {
+    width: 200px;
+    height: 200px;
+    transform-origin: center;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+#loading-circle circle.base {
+    stroke: #333;
+    stroke-width: 12;
+    fill: none;
+    opacity: 0.2;
+}
+
+#loading-circle circle.progress {
+    stroke: #f9d976;
+    stroke-width: 12;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 283; /* Circumference of a circle with r=45, 2*PI*45 approx 282.78 */
+    stroke-dashoffset: 283; /* Start fully hidden */
+    transition: stroke-dashoffset 0.25s ease;
+}
+
+
+/* Navigation Bar */
+.nav-container {
+    position: fixed; /* Fixed position */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Slightly transparent dark background */
+    backdrop-filter: blur(8px); /* Glassmorphism effect */
+    border-bottom: 1px solid rgba(249, 217, 118, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 100; /* Ensure it's above other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    height: 80px; /* Fixed height for consistency */
+    box-sizing: border-box;
+    transform: translateY(-100%); /* Start off-screen */
+    transition: transform 0.5s ease-out; /* Slide in animation */
+    opacity: 0; /* Start hidden for fade-in */
 }
 
 .nav-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-    visibility: visible;
+    transform: translateY(0); /* Slide into view */
+    opacity: 1; /* Fade in */
 }
 
-nav {
+.nav-container nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 3rem; /* Increased vertical padding, adjust horizontal */
-    background: rgba(10, 25, 40, 0.6); /* Darker background */
-    backdrop-filter: blur(15px); /* Slightly stronger blur */
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(249, 217, 118, 0.1); /* Bottom border */
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3); /* Adjusted shadow */
-    border-radius: 0; /* Removed border-radius for full-width */
     width: 100%;
-    box-sizing: border-box;
+    max-width: 1200px; /* Limit width for larger screens */
 }
 
 .nav-logo {
-    height: 45px; /* Slightly larger logo */
+    height: 60px; /* Adjust logo size */
     width: auto;
-    filter: drop-shadow(0 0 10px rgba(249, 217, 118, 0.5)); /* Enhanced glow */
-    margin-left: 2rem; /* Spacing from edge */
+    filter: drop-shadow(0 0 5px rgba(249, 217, 118, 0.5));
 }
 
 .nav-links {
     display: flex;
-    gap: 1.5rem; /* Adjust gap */
-    justify-content: center;
-    flex-grow: 1;
+    gap: 25px; /* Space between links */
 }
 
 .nav-link {
-    font-family: 'Montserrat', sans-serif; /* Applied cleaner font */
-    color: rgba(255, 255, 255, 0.95); /* Brighter text */
-    text-decoration: none;
-    font-size: 1rem; /* Adjusted size */
-    font-weight: 500; /* Medium weight */
-    letter-spacing: 1px; /* Subtle spacing */
-    text-transform: uppercase;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-    position: relative;
-    padding: 0.8rem 1rem; /* Link touch area padding */
-    border: none; /* Cleaner look */
-    background: transparent; /* Cleaner look */
-    border-radius: 6px; /* Optional: slight rounding on hover/active */
-}
-
-.nav-link:hover,
-.nav-link.active {
     color: #f9d976;
-    text-shadow: 0 0 10px rgba(249, 217, 118, 0.7);
-    background: rgba(249, 217, 118, 0.1); /* Subtle background on hover/active */
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif; /* Modern font for nav */
+    font-weight: 500;
+    font-size: 1.1em;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.3s ease;
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    bottom: -5px;
     width: 0;
     height: 2px;
-    background: #f9d976;
-    opacity: 1;
+    background-color: #ffe57f;
     transition: width 0.3s ease;
 }
 
 .nav-link:hover::after,
 .nav-link.active::after {
-    width: 70%;
-}
-
-.social-icon {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.5rem; /* Slightly larger */
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-    margin-right: 2rem; /* Spacing from edge */
-}
-
-.social-icon:hover {
-    color: #f9d976;
-    text-shadow: 0 0 10px rgba(249, 217, 118, 0.5);
-}
-/* --- MODIFIED NAVIGATION STYLES END --- */
-
-/* Home content - Now relative to its parent (#main-scrollable-content-wrapper) */
-.home-content {
-    text-align: center;
-    position: relative;
     width: 100%;
-    min-height: calc(100vh - 100px);
+}
+
+.nav-link:hover {
+    color: #ffe57f;
+}
+
+.nav-link.active {
+    color: #ffe57f;
+    font-weight: 600; /* Make active link slightly bolder */
+}
+
+.social-icons a {
+    color: #f9d976;
+    font-size: 1.5em;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #ffe57f;
+}
+
+.mobile-menu-btn {
+    display: none; /* Hidden by default for desktop */
+    background: none;
+    border: none;
+    color: #f9d976;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+/* Home Content */
+.home-content {
+    min-height: calc(100vh - 80px); /* Full viewport height minus nav height */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: opacity 1s ease; /* Transition for initial page load */
-    z-index: 10;
-    padding: 0 20px;
-    margin-top: 0;
+    padding: 20px;
     box-sizing: border-box;
+    opacity: 0; /* Hidden by default, made visible by JS after loading */
+    animation: fadeIn 1s forwards 1s; /* Fade in after loading overlay fades out */
+    position: relative; /* For particle positioning */
+    z-index: 2; /* Above Three.js background, below nav */
 }
-
 
 .home-content.visible {
-    opacity: 1;
+    opacity: 1; /* Set by JS */
 }
 
+.main-logo {
+    width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 15px rgba(249, 217, 118, 0.6));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
 
 .home-title {
-    font-size: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8em; /* Large heading */
     color: #f9d976;
-    margin-bottom: 1.2rem;
-    text-shadow: 0 0 30px rgba(249, 217, 118, 3),
-        0 5px 15px rgba(0, 0, 0, 3),
-        0 0 50px rgba(0, 0, 0, 4),
-        -2px -2px 8px rgba(255, 255, 255, 2);
-    font-weight: 600;
-    letter-spacing: 1px;
-    position: relative;
-    animation: textWave 8s ease-in-out infinite;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    line-height: 1.2;
+    animation: textGlow 3s ease-in-out infinite alternate;
 }
 
-@keyframes textWave {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    25% {
-        transform: translateY(-5px);
-    }
-    50% {
-        transform: translateY(0);
-    }
-    75% {
-        transform: translateY(5px);
-    }
-}
-
-@keyframes shine {
-  0% {
-    left: -75%;
-  }
-  100% {
-    left: 125%;
-  }
-}
-
-/* Particle glow effect behind title */
-.home-title::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: -40px;
-    right: auto;
-    bottom: auto;
-    width: 180%;
-    height: 140%;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.4;
-    background: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.12), transparent 80%);
-    filter: blur(15px);
-    animation: glowShift 8s ease-in-out infinite;
-}
-
-@keyframes glowShift {
-    0% {
-        transform: translate(0, 0);
-        opacity: 0.4;
-    }
-    50% {
-        transform: translate(15px, 10px);
-        opacity: 0.6;
-    }
-    100% {
-        transform: translate(0, 0);
-        opacity: 0.4;
-    }
-}
-
-.home-subtitle {
-    font-size: 1.6rem; color: rgba(255, 255, 255, 0.95);
-    margin-bottom: 1.2rem;
-    font-weight: 400;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+@keyframes textGlow {
+    from { text-shadow: 0 0 5px #f9d976, 0 0 10px #f9d976; }
+    to { text-shadow: 0 0 10px #ffe57f, 0 0 20px #ffe57f; }
 }
 
 .intro-text {
     max-width: 800px;
-    margin: 0 auto 2rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.2rem;
+    font-size: 1.2em;
     line-height: 1.6;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: #e0e0e0;
+    margin: 20px auto 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-
 .event-link {
-    color: #f9d976; text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease; display: inline-flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    background: rgba(0, 12, 26, 0.3);
-    border: 1px solid rgba(249, 217, 118, 0.15);
+    background: linear-gradient(45deg, #3b5998, #6d84b4); /* Facebook colors */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .event-link:hover {
-    text-shadow: 0 0 8px rgba(249, 217, 118, 0.4);
-    background: rgba(0, 12, 26, 0.5);
-    border-color: rgba(249, 217, 118, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #4c69ba, #7f95d1);
 }
 
-.facebook-icon {
-    margin-right: 0.6rem;
+.event-link .facebook-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
-.glass-button {
-    display: none;
-}
 
-
-/* Content sections - These are the popup sections, they still cover the full screen */
-.content-section {
-    position: fixed; /* **CRITICAL: Fixed to viewport** */
+/* Particles for home-title */
+.particles-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex; /* IMPORTANT: Keep flex for centering */
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none; /* Not interactable when hidden */
-    visibility: hidden; /* Truly hidden when not active for proper fade */
-    /* MODIFIED: Smoother transition duration/timing for overlay itself */
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    z-index: 50; /* Higher than main scrollable content */
-    padding: 0 20px; /* Padding for content-container inside overlay */
-    box-sizing: border-box;
-    /* MODIFIED: Slightly more opaque background for better focus */
-    background-color: rgba(0, 12, 26, 0.85);
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1; /* Below the title text */
 }
 
+.particle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFade 4s ease-out forwards;
+    width: 4px;
+    height: 4px;
+    box-shadow: 0 0 5px #f9d976;
+}
+
+@keyframes particleFade {
+    0% { opacity: 0; transform: scale(0); }
+    20% { opacity: 1; transform: scale(1); }
+    80% { opacity: 0.5; }
+    100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* Content Sections (Dashboard, About Us, Services, etc.) */
+.content-section {
+    position: fixed; /* Position over the Three.js background */
+    top: 80px; /* Below the nav bar */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 80px); /* Remaining height */
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    backdrop-filter: blur(15px); /* Stronger blur for content sections */
+    z-index: 50; /* Above home content, below nav */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align content to the top */
+    overflow-y: auto; /* Enable scrolling within the section */
+    transform: translateY(100%); /* Start below view */
+    opacity: 0;
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    padding: 20px; /* Overall padding for the section */
+    box-sizing: border-box;
+}
 
 .content-section.active {
+    transform: translateY(0); /* Slide into view */
     opacity: 1;
-    pointer-events: all; /* Interactable when active */
-    visibility: visible; /* Visible when active */
 }
 
-.content-container {
-    max-width: 1200px;
-    width: 90%; /* Responsive width */
-    padding: 3rem;
-    border-radius: 1rem; background: rgba(0, 12, 26, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(249, 217, 118, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 16px rgba(249, 217, 118, 0.1);
-    color: rgba(255, 255, 255, 0.95);
-    max-height: 80vh; /* Max height to fit in viewport, allowing internal scroll */
-    overflow-y: auto; /* Scroll for content within the container */
+.content-section .content-container {
+    background: rgba(0, 0, 0, 0.4); /* Darker inner container */
+    border: 1px solid rgba(249, 217, 118, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 1000px; /* Max width for content */
+    width: 100%;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    position: relative; /* For close button positioning */
+    text-align: left; /* Content aligns left within container */
+    margin-top: 40px; /* Space from top of section */
+    margin-bottom: 40px; /* Space at bottom */
+}
+
+.content-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    color: #f9d976;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(249, 217, 118, 0.3);
+    padding-bottom: 10px;
+    display: inline-block; /* To make border-bottom only as wide as text */
+}
+
+.content-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8em;
+    color: #ffe57f;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.content-section h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4em;
+    color: #b3d9ff; /* A slightly different color for sub-subheadings */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.content-section p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05em;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.content-section ul {
+    list-style: none; /* Remove default bullet */
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.content-section ul li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1em;
+    color: #d0d0d0;
+    line-height: 1.5;
+    margin-bottom: 8px;
     position: relative;
-    margin: auto; /* Ensures vertical and horizontal centering if flex doesn't fully handle on some browsers */
-    box-sizing: border-box;
+    padding-left: 25px; /* Space for custom bullet */
 }
 
-/* Scrollbar styling for the content container */
-.content-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.content-container::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-
-.content-container::-webkit-scrollbar-thumb {
-    background: rgba(249, 217, 118, 0.3);
-    border-radius: 4px;
-}
-
-.content-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(249, 217, 118, 0.5);
-}
-
-
-.section-logo {
-    width: 80px;
-    height: 80px;
+.content-section ul li::before {
+    content: '\2022'; /* Unicode for a bold circle */
+    color: #f9d976; /* Gold color for bullet */
+    font-size: 1.2em;
     position: absolute;
-    top: -80px;
-    left: 50%;
-    transform: translateX(-50%); filter: drop-shadow(0 0 8px rgba(249, 217, 118, 0.4));
-    border-radius: 50%;
-    z-index: 2;
+    left: 0;
+    top: 0;
 }
 
+.content-section strong {
+    color: #ffe57f;
+    font-weight: 700;
+}
+
+/* Close Button for sections */
 .close-btn {
     position: absolute;
     top: 15px;
     right: 15px;
-    width: 30px;
-    height: 30px; background: rgba(0, 12, 26, 0.6);
-    border-radius: 50%;
-    border: 1px solid rgba(249, 217, 118, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center; cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.close-btn:hover {
-    background: rgba(249, 217, 118, 0.2);
-}
-
-.close-btn::before, .close-btn::after {
-    content: '';
-    position: absolute;
-    width: 15px;
-    height: 2px;
-    background: #f9d976;
+    background: none;
+    border: none;
+    color: #f9d976;
+    font-size: 2.5em;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    z-index: 10; /* Ensure it's clickable */
 }
 
 .close-btn::before {
-    transform: rotate(45deg);
+    content: '\00D7'; /* Multiplication sign for 'x' */
 }
 
-.close-btn::after {
-    transform: rotate(-45deg);
+.close-btn:hover {
+    transform: rotate(90deg);
+    color: #ff6b6b; /* Reddish on hover */
 }
 
-
-.content-container h2 {
-    font-size: 2.5rem;
-    color: #f9d976;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+.section-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(249, 217, 118, 0.4));
 }
 
-.content-container p {
-    line-height: 1.8; margin-bottom: 1.5rem;
-    font-weight: 400;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
-    letter-spacing: 0.3px;
-    padding: 0.5rem;
-    border-radius: 8px;
-    background: rgba(0, 12, 26, 0.3);
-    border: 1px solid rgba(249, 217, 118, 0.1);
+/* Dashboard Specific Styles (from previous step, ensuring integration) */
+.captain-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2em;
+    color: #ccc;
+    margin-top: -10px;
+    margin-bottom: 20px;
 }
 
-
-.content-container ul {
-    margin-bottom: 1.5rem;
-    padding-left: 0;
-    list-style-position: inside; text-align: center;
-}
-
-.content-container li {
-    margin-bottom: 0.8rem;
-    line-height: 1.6;
-    font-weight: 400;
-    text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
-}
-
-/* Gallery styles */
-.gallery-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-}
-
-.gallery-item {
-    border-radius: 0.5rem;
-    overflow: hidden;
-    aspect-ratio: 1/1;
-    cursor: pointer;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.05);
-}
-
-/* Lightbox */
-.lightbox {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
+.live-pulse {
+    display: inline-flex;
     align-items: center;
-    z-index: 1000;
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff6b6b;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 0, 0, 0.3);
 }
 
-.lightbox img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border: 2px solid rgba(255,255,255,0.1);
-    border-radius: 0.5rem;
+.live-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #ff6b6b;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 1.5s infinite;
 }
 
-/* Contact form */
-.contact-form {
-    background: rgba(0, 12, 26, 0.4);
-    padding: 2rem;
-    border-radius: 1rem; border: 1px solid rgba(249, 217, 118, 0.15);
-    margin-top: 2rem;
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #f9d976;
-    font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.8rem;
-    border-radius: 0.5rem; border: 1px solid rgba(249, 217, 118, 0.2);
-    background: rgba(0, 12, 26, 0.3);
-    color: white;
-    font-family: 'Playfair Display', serif;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: rgba(249, 217, 118, 0.5);
-    box-shadow: 0 0 0 2px rgba(249, 217, 118, 0.2);
-}
-
-textarea.form-control {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.submit-btn {
-    background: rgba(249, 217, 118, 0.2);
-    color: #f9d976;
-    border: 1px solid rgba(249, 217, 118, 0.3);
-    padding: 0.8rem 2rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Playfair Display', serif;
-    font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.submit-btn:hover {
-    background: rgba(249, 217, 118, 0.3);
-    transform: translateY(-2px);
-}
-
-/* Form success message */
-.form-success {
-    background: rgba(39, 174, 96, 0.2); border: 1px solid rgba(39, 174, 96, 0.3);
-    color: #2ecc71;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-top: 1rem;
+.captain-widget {
+    background: rgba(0, 0, 0, 0.5); /* Slightly more opaque for widgets */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(249, 217, 118, 0.15);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
-    display: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 280px; /* Ensure consistent height */
 }
 
-.form-success.visible {
-    display: block;
+.captain-widget h4 {
+    color: #f9d976;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
 }
 
-/* Facebook logo */
-.facebook-logo {
-    width: 24px;
-    height: 24px; vertical-align: middle;
-    margin-right: 5px;
+.captain-widget iframe {
+    width: 100%;
+    flex-grow: 1; /* Allow iframe to take available space */
+    border-radius: 8px;
+    background: #000; /* Fallback for iframes */
 }
 
-/* Scrollbar styling for the main content wrapper */
-#main-scrollable-content-wrapper::-webkit-scrollbar {
-    width: 8px;
+#localTime {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ffe57f;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-thumb {
-    background: rgba(249, 217, 118, 0.3);
-    border-radius: 4px;
-}
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-thumb:hover {
-    background: rgba(249, 217, 118, 0.5);
+.warning {
+    font-size: 0.9em;
+    color: #ccc;
 }
 
 
-/* Accommodation section */
+/* Accommodation Section */
 .accommodation-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
 }
 
 .bungalow-card {
-    background: rgba(0, 12, 26, 0.4);
-    border-radius: 0.8rem; overflow: hidden;
-    border: 1px solid rgba(249, 217, 118, 0.15);
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
 }
 
 .bungalow-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(249,217,118,0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .bungalow-img {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    display: block;
+    border-bottom: 1px solid rgba(249, 217, 118, 0.1);
 }
 
 .bungalow-info {
-    padding: 1.5rem;
+    padding: 20px;
 }
 
 .bungalow-title {
-    font-size: 1.5rem;
-    color: #f9d976;
+    color: #ffe57f;
+    font-size: 1.8em;
     margin-top: 0;
-    margin-bottom: 0.5rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
 }
 
 .bungalow-price {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 1rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-family: 'Montserrat', sans-serif;
+    color: #b3d9ff;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
 .bungalow-desc {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1.5rem; line-height: 1.6;
+    font-family: 'Montserrat', sans-serif;
+    color: #d0d0d0;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .book-btn {
-    background: rgba(249, 217, 118, 0.2);
-    color: #f9d976;
-    border: 1px solid rgba(249, 217, 118, 0.3);
-    padding: 0.6rem 1.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease; font-family: 'Playfair Display', serif;
-    text-decoration: none;
     display: inline-block;
+    background: linear-gradient(45deg, #007bff, #00bfff);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .book-btn:hover {
-    background: rgba(249, 217, 118, 0.3);
+    background: linear-gradient(45deg, #0056b3, #008fcc);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 
-/* Main logo */
-.main-logo {
-    width: 220px;
-    height: 220px;
-    display: block;
-    margin: 5rem auto 1.5rem; /* Added 5rem margin to the top to move it down */
-    filter: drop-shadow(0 0 8px #f9d976);
-    border-radius: 50%;
+/* Gallery */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 30px;
 }
 
-/* Enhanced Water particle effects - SMALLER AND MORE LIKE SEA SPRAY */
-.particles-container {
-    position: absolute;
+.gallery-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Lightbox for gallery images */
+.lightbox {
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; z-index: -1;
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0) translateX(0); opacity: 0;
-    }
-    25% {
-        opacity: 0.5; }
-    75% {
-        opacity: 0.5; }
-    100% {
-        transform: translateY(-80px) translateX(15px);
-        opacity: 0; }
-}
-
-/* Keyframes shine was already defined above, removing duplicate */
-
-.water-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    pointer-events: none; animation: float 3s infinite ease-out;
-}
-
-.water-particle:nth-child(2n) {
-    width: 6px;
-    height: 6px;
-    animation-duration: 3.5s;
-    animation-delay: 0.5s;
-}
-
-.water-particle:nth-child(3n) {
-    width: 3px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.8);
-    animation-duration: 2.5s;
-    animation-delay: 1s;
-}
-
-.water-particle:nth-child(4n) {
-    width: 5px;
-    height: 5px;
-    background: rgba(200, 220, 255, 0.7);
-    animation-duration: 3s;
-    animation-delay: 1.5s;
-}
-
-
-/* Import a premium nautical-style font */
-@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
-
-/* Commented out problematic body style from previous version */
-/* body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
-    font-family: 'Marcellus SC', serif;
-    color: #ffffff;
-    min-height: 100vh;
-    overflow-x: hidden;
-} */
-
-.dashboard-title {
-    font-size: 3.2rem;
-    text-align: center;
-    padding: 40px 0 20px;
-    color: #f9d976;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(249, 217, 118, 0.4);
-}
-
-.widget-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    padding: 20px 60px;
-}
-
-.widget {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.widget:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.widget h2 {
-    text-align: center;
-    font-size: 1.4rem;
-    margin: 20px 0 10px;
-    color: #ffffff;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
-    font-weight: normal;
-    letter-spacing: 1px;
-}
-
-.widget iframe {
-    width: 100%;
-    height: 250px;
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
-}
-
-/* Responsive layout */
-@media screen and (max-width: 1200px) {
-    .widget-grid {
-        grid-template-columns: repeat(2, 1fr);
-        padding: 20px 30px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .dashboard-title {
-        font-size: 2.5rem;
-    }
-
-    .widget-grid {
-        grid-template-columns: 1fr;
-        padding: 10px 20px;
-    }
-
-    .widget iframe {
-        height: 220px;
-    }
-}
-
-/* --- MEDIA QUERIES (from your style2.txt) --- */
-@media (min-width: 1400px) {
-    #main-scrollable-content-wrapper {
-        height: 100vh;
-        overflow-y: auto;
-        padding-top: 100px; /* This might need adjustment based on new nav height */
-    }
-
-    /* .home-content, .content-section - removed conflicting overrides */
-    .home-content,
-    .content-section {
-        /* No specific overrides here, let base styles handle */
-    }
-
-    #threejs-background {
-        transform: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 1;
-    }
-
-    /* .nav-container specific overrides for 1400px if needed, base style is now full width */
-    /* nav {
-          padding: 0.85rem 4rem; /* Example if different padding needed for very large screens * /
-      } */
-    /* .nav-logo {
-          margin-right: 3rem;
-      } */
-    /* .nav-links {
-          margin-left: 3rem;
-      } */
-    /* .nav-link {
-            font-size: 0.95rem;
-        } */
-
-    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
-        transform: none !important;
-        width: 360px !important;
-        max-width: 360px !important;
-        height: auto !important;
-        font-size: initial !important;
-        margin-left: auto !important; margin-right: auto !important;
-        margin-top: 2rem !important;
-        padding: 16px 20px !important;
-    }
-
-    .captain-widget *, .widget * { /* This rule seems to be for a different set of widgets, not nav */
-        transform: none !important; font-size: inherit !important;
-    }
-}
-
-
-/* Responsive adjustments */
-@media (min-width: 769px) and (max-width: 1024px) { /* Tablet */
-    #main-scrollable-content-wrapper {
-        padding-top: 80px; /* This might need adjustment based on new nav height */
-    }
-
-    /* .home-content, .content-section - removed conflicting overrides */
-    .home-content,
-    .content-section {
-        /* No specific overrides here, let base styles handle */
-    }
-    /* Nav container is full width by default, nav has its own padding */
-    /* nav {
-        max-width: none; padding: 0.85rem 2.5rem; /* Base nav padding will apply, can override if needed * /
-        margin: 0;
-    } */
-    /* .nav-logo {
-        height: 40px; margin-right: 2rem; /* Base nav-logo style will apply * /
-    } */
-    /* .nav-links {
-        gap: 2rem; /* Base nav-links style will apply * /
-        margin-left: 2rem; } */
-    /* .nav-link {
-          font-size: 0.95rem; } /* Base nav-link style will apply * / */
-
-    h1.home-title {
-        font-size: 3.5rem; }
-
-    .home-subtitle {
-        font-size: 1.6rem; }
-
-    .intro-text {
-        font-size: 1.2rem;
-        max-width: 800px; }
-      .main-logo {
-          width: 200px; height: 200px;
-      }
-      .captain-widget, .widget {  /* This rule seems to be for a different set of widgets, not nav */
-          max-width: 360px;
-      }
-
-    .content-container {
-        padding: 2.5rem; width: 95%;
-        margin-top: 0;
-    }
-
-    .accommodation-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
-
-    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
-        padding: 1.5rem;
-        max-width: 700px;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-}
-
-@media (max-width: 768px) { /* Smaller tablets and large mobiles */
-    #main-scrollable-content-wrapper {
-        padding-top: 70px; /* This might need adjustment based on new nav height */
-    }
-
-    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
-        /* padding: 1rem; /* Original was 1rem. New base is 0. Inner nav handles padding. * /
-    } */
-    nav { /* MODIFIED for mobile */
-        padding: 1rem 1.5rem;
-        flex-direction: row; /* Ensures logo and menu button are on the same line */
-        justify-content: space-between; /* Positions logo to left, menu button to right */
-        /* gap: 0.8rem; /* Original, less relevant with justify-content: space-between */
-    }
-
-    .nav-logo { /* MODIFIED for mobile */
-        height: 35px; /* Keep user's mobile specific height */
-        margin-bottom: 0; /* Removed as flex alignment handles vertical centering in new nav */
-        margin-right: 0; /* Not needed if logo is on the left */
-        margin-left: 0; /* My specific addition for mobile if different from base */
-    }
-    /* .nav-links { /* This is the container for links in DESKTOP. Mobile .nav-links are handled by .nav-links.open * /
-        /* gap: 1rem; /* Original. Base is 1.5rem. Let base apply or define specifically if needed * /
-        /* justify-content: center; /* Original. Base is center. Let base apply. * /
-        /* margin-left: 0; /* Original. Base has no margin-left. Let base apply. * /
-    /* } */
-    /* .nav-link { /* This is for individual links in DESKTOP. Mobile .nav-links .nav-link is separate * /
-        /* font-size: 0.9rem; /* Original. Base is 1rem. Let base apply or define specifically for desktop if smaller. * /
-        /* padding: 0.4rem 0.7rem; /* Original. Base is 0.8rem 1rem. Let base apply. * /
-    /* } */
-
-    h1.home-title {
-        font-size: 3rem;
-    }
-    .home-subtitle {
-        font-size: 1.4rem;
-    }
-    .intro-text {
-        font-size: 1.1rem;
-        max-width: 90%;
-    }
-    .content-container {
-        padding: 2rem;
-        max-height: 85vh;
-        margin-top: 0;
-        width: 95%;
-    }
-    .content-container h2 {
-        font-size: 2rem;
-    }
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 0.8rem;
-    }
-    .accommodation-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-    .section-logo {
-        width: 70px;
-        height: 70px;
-        top: -80px;
-    }
-
-    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
-        padding: 1.5rem;
-        max-width: 700px;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-
-    /* --- Mobile Menu Styles - Incorporating Changes --- */
-    .mobile-menu-btn { /* This is the button itself */
-        display: flex; /* Original rule to show the button */
-        /* Base styles for mobile-menu-btn (outside media query) handle background, border, font-size etc. */
-        /* The following will override base styles for top, right, color when on mobile */
-        top: 1.3rem;   /* My change for positioning */
-        right: 1.5rem;  /* My change for positioning */
-        color: #f9d976; /* My change for color */
-    }
-
-    .nav-links { /* This is the container that opens full screen */
-        /* Retain existing .nav-links styles for the full-screen overlay from original file */
-        /* e.g., display: flex, flex-direction: column, position: fixed, top, left, right, bottom, background, backdrop-filter, transform, transition, justify-content, align-items, z-index, overflow-y, padding, box-sizing */
-        /* My addition for nav-links when it's the mobile menu container */
-        gap: 0; /* Reset gap if using margin on links, or set desired gap for vertical links */
-    }
-
-    .nav-links.open { /* This is the class that shows the mobile menu */
-        transform: translateX(0); /* Original rule */
-    }
-
-    .nav-links .nav-link { /* MODIFIED: Styles for links *inside* the open mobile menu */
-        font-family: 'Montserrat', sans-serif; /* Ensure font consistency */
-        font-size: 1.2rem; /* My suggested size */
-        font-weight: 500;
-        letter-spacing: 1px;
-        margin: 10px 0; /* My suggested margin for spacing */
-        width: 90%;     /* My suggested width */
-        max-width: 300px; /* Original constraint, kept */
-        padding: 15px 20px; /* My suggested padding */
-        text-align: center; /* Original, kept */
-        color: #f9d976;   /* Original, kept */
-        background: rgba(249,217,118,0.1); /* Original background for links in menu, kept */
-        border: 1px solid rgba(249,217,118,0.2); /* Original border for links in menu, kept */
-        border-radius: 6px; /* Match base nav-link rounding if desired */
-    }
-
-    .nav-link::after { /* ADDED: Disable underline animation in mobile overlay */
-        display: none;
-    }
-
-    /* Hide original nav logo when mobile menu is open - User's original rule, kept for now. */
-    /* If the logo in the nav bar is disappearing on mobile and it shouldn't, this rule might be the cause. */
-    /* My new nav design intends for the .nav-logo to be visible with the .mobile-menu-btn. */
-    .nav-container nav .nav-logo {
-           display: none; /* Original rule from user. */
-    }
-}
-
-@media (max-width: 576px) { /* Mobile */
-    #main-scrollable-content-wrapper {
-        padding-top: 60px; /* This might need adjustment based on new nav height */
-    }
-    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
-        /* padding: 0.8rem; /* Original padding, new base is 0 * /
-    /* } */
-    /* .nav-link { /* Base .nav-link styles will apply, can be overridden if needed for very small screens * /
-        /* font-size: 0.85rem;
-        padding: 0.3rem 0.6rem;
-    } */
-
-    h1.home-title {
-        font-size: 1.8rem;
-    }
-    .home-subtitle {
-        font-size: 1rem;
-    }
-    .intro-text {
-        font-size: 1rem;
-        max-width: 100%;
-    }
-    .content-container {
-        padding: 1.5rem;
-        width: 100%;
-        border-radius: 0.8rem;
-        margin-top: 0;
-        max-height: 90vh;
-    }
-    .content-container h2 {
-        font-size: 1.8rem;
-    }
-    .section-logo {
-        width: 60px;
-        height: 60px;
-        top: -70px;
-    }
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 0.8rem;
-    }
-    .accommodation-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    .main-logo {
-        width: 150px;
-        height: 150px;
-        margin-bottom: 1rem;
-    }
-    .contact-form {
-        padding: 1.5rem;
-    }
-    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
-        padding: 15px;
-    }
-}
-
-
-/* Mobile menu button - Base styles (mostly for when it's not yet displayed as flex by media query) */
-.mobile-menu-btn { /* User's original base styles */
-    display: none; background: none;
-    border: none;
-    color: white; /* Will be overridden by mobile media query for #f9d976 */
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 101;
-    position: fixed;
-    top: 1rem; /* Will be overridden by mobile media query for 1.3rem */
-    right: 1rem; /* Will be overridden by mobile media query for 1.5rem */
-}
-
-/* Mobile menu styles - These are primarily for the .nav-links container when it opens */
-/* @media (max-width: 768px) is handled above for .mobile-menu-btn, .nav-links, .nav-links.open, .nav-links .nav-link */
-
-
-/* --- NEW MINIMAL STYLES FOR THE 3x3 WIDGET GRID --- */
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 25px;
-    padding: 20px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* .widget class was already defined earlier with different styles, this is a second definition. */
-/* Assuming this .widget definition is for the new dashboard grid, and the one above is for something else or older. */
-.widget { /* This is the second .widget definition */
-    background: rgba(0, 12, 26, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(249, 217, 118, 0.05);
-    color: #f0f0f0;
-    min-height: 280px;
-    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(249, 217, 118, 0.15);
-}
-
-.widget .widget-title { /* Styles for title within the new .widget */
-    font-size: 1.4em;
-    font-weight: 600;
-    color: #f9d976;
-    margin-bottom: 15px;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
-/* .widget iframe was already defined, this is a second definition. */
-.widget iframe { /* This is the second .widget iframe definition */
-    border: none;
-    width: 100%;
-    flex-grow: 1;
-    border-radius: 8px;
-    min-height: 220px;
-}
-
-.widget > div[id] {
-    padding: 10px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    font-size: 1em;
-    line-height: 1.5;
+    z-index: 200; /* Above everything */
+    cursor: pointer;
 }
-.widget > div[id] p {
-    margin: 5px 0;
-    color: #e0e0e0;
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
-.widget > div[id] p strong, .widget > div[id] p[style*="font-size: 1.8em"] {
+
+
+/* Contact Form */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    border: 1px solid rgba(249, 217, 118, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
     color: #f9d976;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
 }
 
-.widget .warning {
-    color: #ff8a80;
-    font-weight: bold;
-    font-size: 0.9em;
+.form-control {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 12px 10px;
+    border: 1px solid rgba(249, 217, 118, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    box-sizing: border-box; /* Include padding in width */
 }
 
-/* Responsive adjustments for the new dashboard grid */
-@media screen and (max-width: 1200px) {
-    .dashboard { /* Styles for .dashboard, not to be confused with .captain-dashboard */
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+.form-control:focus {
+    outline: none;
+    border-color: #ffe57f;
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 8px rgba(249, 217, 118, 0.5);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.submit-btn {
+    background: linear-gradient(45deg, #f9d976, #ffe57f);
+    color: #000c1a;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ffe57f, #f9d976);
+}
+
+.form-success {
+    background-color: rgba(60, 179, 113, 0.2); /* Green success background */
+    color: #3cb371;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: none; /* Hidden by default */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+/* Specific styles for lists of discounts for membership section */
+.discount-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.discount-list li {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(249, 217, 118, 0.1);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 5px rgba(249, 217, 118, 0.05);
+}
+
+.discount-list li::before {
+    content: '⭐'; /* Star emoji as bullet */
+    margin-right: 10px;
+    font-size: 1.2em;
+    line-height: 1; /* Align star vertically */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1024px) {
+    .nav-links {
+        gap: 15px;
+    }
+    .nav-link {
+        font-size: 1em;
+    }
+    .home-title {
+        font-size: 3em;
+    }
+    .intro-text {
+        font-size: 1.1em;
+    }
+    .content-section h2 {
+        font-size: 2.4em;
+    }
+    .content-section h3 {
+        font-size: 1.6em;
+    }
+    .content-section p, .content-section ul li {
+        font-size: 1em;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .dashboard { /* Styles for .dashboard */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
+    .nav-container nav {
+        flex-wrap: wrap; /* Allow items to wrap */
+        justify-content: center;
+        text-align: center;
     }
-    /* Assuming this .widget refers to the new dashboard grid's widgets */
-    .widget { /* This is the third .widget definition within a media query */
+    .nav-links {
+        display: none; /* Hidden by default on mobile */
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        margin-top: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        border-top: 1px solid rgba(249, 217, 118, 0.1);
+        padding: 10px 0;
+    }
+    .nav-links.open {
+        display: flex; /* Show when open */
+    }
+    .mobile-menu-btn {
+        display: block; /* Show hamburger icon */
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .nav-logo {
+        margin-bottom: 10px; /* Space from wrapped links */
+    }
+    .social-icons {
+        display: none; /* Hide social icons on small screens if desired */
+    }
+
+    .home-title {
+        font-size: 2.5em;
+    }
+    .intro-text {
+        font-size: 0.95em;
+    }
+    .main-logo {
+        width: 200px;
+    }
+
+    .content-section {
         padding: 15px;
-        min-height: 260px;
     }
-    .widget .widget-title { /* Styles for title within the new .widget */
-        font-size: 1.3em;
+    .content-section .content-container {
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
-    .widget iframe { /* This is the third .widget iframe definition */
-        min-height: 200px;
+    .content-section h2 {
+        font-size: 2em;
+    }
+    .content-section h3 {
+        font-size: 1.4em;
+    }
+    .widget-grid, .accommodation-grid, .gallery-grid {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
+    .captain-widget, .bungalow-card {
+        min-height: auto; /* Allow height to adjust */
+    }
+    .contact-form {
+        padding: 20px;
+    }
+    .form-control {
+        width: calc(100% - 20px);
     }
 }
 
 @media screen and (max-width: 480px) {
-    .dashboard { /* Styles for .dashboard */
-        grid-template-columns: 1fr;
-        gap: 15px;
+    .nav-container {
+        padding: 8px 10px;
+        height: 70px;
     }
-    /* Assuming this .widget refers to the new dashboard grid's widgets */
-    .widget { /* This is the fourth .widget definition within a media query */
-        min-height: 240px;
+    .nav-logo {
+        height: 50px;
     }
-    .widget .widget-title { /* Styles for title within the new .widget */
+    .mobile-menu-btn {
+        font-size: 1.8em;
+    }
+    .home-title {
+        font-size: 2em;
+    }
+    .intro-text {
+        font-size: 0.9em;
+    }
+    .event-link {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+    .content-section h2 {
+        font-size: 1.8em;
+    }
+    .content-section h3 {
         font-size: 1.2em;
+    }
+    .captain-subtitle {
+        font-size: 1em;
+    }
+    #localTime {
+        font-size: 2em;
+    }
+    .bungalow-title {
+        font-size: 1.5em;
+    }
+    .bungalow-price {
+        font-size: 1.1em;
     }
 }
