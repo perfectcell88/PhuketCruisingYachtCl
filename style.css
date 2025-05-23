@@ -1,84 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); /* ADDED for cleaner nav font */
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sail&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap'); /* For dashboard titles */
 
-/* Enhanced styles for Phuket Cruising Yacht Club */
+/* CSS Variables (Custom Properties) for consistency */
+:root {
+    --primary-dark: #000c1a;
+    --secondary-dark: #051422;
+    --tertiary-dark: #1a1f36;
+    --quaternary-dark: #0d1321;
+    --accent-color: #f9d976; /* Gold/Yellow */
+    --accent-light: #ffe57f;
+    --text-light: rgba(255, 255, 255, 0.95);
+    --text-medium: rgba(255, 255, 255, 0.9);
+    --text-dark: rgba(255, 255, 255, 0.7);
+    --blur-amount: 15px;
+    --shadow-light: rgba(249, 217, 118, 0.5);
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+    --border-light: rgba(249, 217, 118, 0.2);
+    --border-medium: rgba(249, 217, 118, 0.3);
+    --border-dark: rgba(249, 217, 118, 0.15);
+    --transition-speed: 0.3s;
+    --transition-ease: ease-in-out;
+}
 
+/* Reset & Base Styles */
 body, html {
     margin: 0;
     padding: 0;
-    height: 100%; /* Ensures body takes full height */
-    /* REMOVED overflow: hidden; from here - handled by body.overlay-active */
-    background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321);
+    height: 100%;
+    background: linear-gradient(270deg, var(--primary-dark), var(--secondary-dark), var(--tertiary-dark), var(--quaternary-dark));
     background-size: 800% 800%;
     animation: gradientShift 40s ease infinite;
     font-family: 'Playfair Display', serif;
-    color: #f9d976;
+    color: var(--accent-color);
     user-select: none;
     text-align: center;
-    cursor: url('Anchor.cur'), auto;
+    cursor: url('Anchor.cur'), auto; /* Custom cursor */
+    overflow: hidden; /* Prevent body scroll by default, #main-scrollable-content-wrapper handles it */
 }
 
-/* NEW: Three.js background container */
-#threejs-background {
-    position: fixed; /* Keep it fixed in the viewport */
+/* Gradient background animation */
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Body state when an overlay content section is active */
+body.overlay-active {
+    overflow: hidden; /* Disable scrolling on the entire body */
+    position: fixed; /* Fix body position to prevent scroll jump/reflow */
+    width: 100%;     /* Ensure body takes full width when fixed */
+    height: 100%;    /* Ensure body takes full height when fixed */
     top: 0;
     left: 0;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
+}
+
+/* Home content visibility when an overlay is active */
+body.overlay-active .home-content {
+    opacity: 0; /* Hide home content */
+    pointer-events: none; /* Disable interaction */
+    visibility: hidden; /* Hide visually after opacity transition */
+    transition: opacity 0.5s var(--transition-ease), visibility 0.5s var(--transition-ease);
+}
+
+/* Three.js Background Container */
+#threejs-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 1; /* Behind content, above base body background */
 }
 
-/* NEW: Main scrollable content wrapper */
-/* This container is where your main page content (like home-content) resides */
+/* Main Page Content Wrapper */
 #page-content {
-    position: relative; /* Changed to relative to be in normal flow */
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    min-height: 100%; /* Ensure it takes at least full height for content below fold */
+    min-height: 100%;
     z-index: 5; /* Above Three.js background */
     opacity: 0;
-    transition: opacity 1.2s ease; /* Transition for initial page load */
+    transition: opacity 1.2s var(--transition-ease);
 }
 
 #page-content.visible {
     opacity: 1;
 }
 
+/* Main scrollable area for the page content */
 #main-scrollable-content-wrapper {
-    position: relative; /* Essential for positioning children correctly */
-    min-height: 100vh; /* Make sure it's at least one viewport high */
-    padding-top: 100px; /* Space for the fixed navigation bar (adjust as needed) */
-    padding-bottom: 50px; /* Space at the bottom if needed */
-    box-sizing: border-box; /* Include padding in height calculation */
-    overflow-y: auto; /* THIS IS THE SCROLLBAR FOR THE MAIN PAGE */
+    position: relative;
+    min-height: 100vh;
+    padding-top: 100px; /* Space for fixed navigation bar */
+    padding-bottom: 50px; /* Space at the bottom */
+    box-sizing: border-box;
+    overflow-y: auto; /* This handles the main page scrollbar */
     overflow-x: hidden; /* Prevent horizontal scroll */
     height: 100vh; /* Fixed height for scrollable area */
-    width: 100%; /* Take full width */
+    width: 100%;
 }
 
-/* --- CRITICAL: Styles to control scroll and home-content when a section is active --- */
-/* The body will get 'overlay-active' class from JavaScript when a content section is open */
-body.overlay-active {
-    overflow: hidden; /* **MOST IMPORTANT: Disable scrolling on the entire body** */
-    position: fixed; /* **CRITICAL: Fix body position to prevent scroll jump/reflow** */
-    width: 100%;     /* Ensure body takes full width when fixed */
-    height: 100%;    /* Ensure body takes full height when fixed */
-    top: 0;
-    left: 0; /* Ensure body is fixed to the top-left of the viewport */
+/* Custom Scrollbar Styling for main content wrapper */
+#main-scrollable-content-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+#main-scrollable-content-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+#main-scrollable-content-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 4px;
+}
+#main-scrollable-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
 }
 
-/* This targets the main content that should fade out */
-body.overlay-active .home-content {
-    opacity: 0; /* Hide home content when an overlay is active */
-    pointer-events: none; /* Disable interaction with home content */
-    visibility: hidden; /* Hide visually after opacity transition */
-    /* MODIFIED: Smoother transition duration/timing for main content */
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-}
-/* --------------------------------------------------------------------- */
-
-
-/* The loading overlay still covers everything */
+/* Loading Overlay */
 #loading-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -90,96 +131,155 @@ body.overlay-active .home-content {
     pointer-events: all;
     background: rgba(0,12,26,0.85);
     opacity: 1;
-    transition: opacity 1s ease;
+    transition: opacity 1s var(--transition-ease);
+}
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+#loading-overlay::before {
+    content: "";
+    position: absolute;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(249,217,118,0.1), transparent 70%);
+    border-radius: 50%;
+    animation: ripple 2.5s ease-out infinite;
+    pointer-events: none;
+}
+@keyframes ripple {
+    0%   { transform: scale(1);  opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
 }
 
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Loading logo and spinner */
+#loading-logo-circle-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+#loading-logo {
+    width: 200px;
+    height: 200px;
+    display: block;
+    filter: drop-shadow(0 0 8px var(--accent-color));
+    opacity: 0;
+    animation: logoPop 0.8s var(--transition-ease) forwards 0.3s;
+    position: relative;
+    z-index: 2;
+    border-radius: 50%;
+}
+@keyframes logoPop {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+}
+#loading-circle {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+    z-index: 1;
+    animation: spin 1.6s linear infinite;
+    filter: drop-shadow(0 0 8px var(--accent-color));
+}
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+#loading-circle circle.base {
+    stroke: #333; stroke-width: 12; fill: none; opacity: 0.2;
+}
+#loading-circle circle.progress {
+    stroke: var(--accent-color); stroke-width: 12; fill: none;
+    stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
+    transition: stroke-dashoffset 0.25s var(--transition-ease);
+}
+.loading-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text-light);
+    text-shadow: 1px 1px 2px var(--shadow-dark);
 }
 
-/* Enhanced text shadow for all white text - IMPROVED FOR CLARITY */
-.home-subtitle, .intro-text p, .content-container p, .content-container li { /* .nav-link removed as it has new specific styling */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Sharper black shadow added */
+/* Enhanced text shadow for most text */
+.intro-text p,
+.content-container p,
+.content-container li,
+.bungalow-price,
+.bungalow-desc,
+.form-group label,
+.pcyc-info-section p,
+.pcyc-info-section li {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9); /* Sharper black shadow */
 }
 
-/* --- MODIFIED NAVIGATION STYLES START --- */
+/* Navigation Bar */
 .nav-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    width: 100%; /* Ensure full width */
-    padding: 0; /* Remove padding, will be handled by inner 'nav' */
+    width: 100%;
+    padding: 0;
     z-index: 100;
     opacity: 0;
     transform: translateY(-20px);
-    transition: opacity 1s ease, transform 1s ease;
+    transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
     pointer-events: none;
     visibility: hidden;
 }
-
 .nav-container.visible {
     opacity: 1;
     transform: translateY(0);
     pointer-events: all;
     visibility: visible;
 }
-
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 3rem; /* Increased vertical padding, adjust horizontal */
-    background: rgba(10, 25, 40, 0.6); /* Darker background */
-    backdrop-filter: blur(15px); /* Slightly stronger blur */
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(249, 217, 118, 0.1); /* Bottom border */
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3); /* Adjusted shadow */
-    border-radius: 0; /* Removed border-radius for full-width */
+    padding: 1.5rem 3rem;
+    background: rgba(10, 25, 40, 0.6);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: 0 10px 35px var(--shadow-dark);
     width: 100%;
     box-sizing: border-box;
 }
-
 .nav-logo {
-    height: 45px; /* Slightly larger logo */
+    height: 45px;
     width: auto;
-    filter: drop-shadow(0 0 10px rgba(249, 217, 118, 0.5)); /* Enhanced glow */
-    margin-left: 2rem; /* Spacing from edge */
+    filter: drop-shadow(0 0 10px var(--shadow-light));
+    margin-left: 2rem;
 }
-
 .nav-links {
     display: flex;
-    gap: 1.5rem; /* Adjust gap */
+    gap: 1.5rem;
     justify-content: center;
     flex-grow: 1;
 }
-
 .nav-link {
-    font-family: 'Montserrat', sans-serif; /* Applied cleaner font */
-    color: rgba(255, 255, 255, 0.95); /* Brighter text */
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-light);
     text-decoration: none;
-    font-size: 1rem; /* Adjusted size */
-    font-weight: 500; /* Medium weight */
-    letter-spacing: 1px; /* Subtle spacing */
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
     position: relative;
-    padding: 0.8rem 1rem; /* Link touch area padding */
-    border: none; /* Cleaner look */
-    background: transparent; /* Cleaner look */
-    border-radius: 6px; /* Optional: slight rounding on hover/active */
+    padding: 0.8rem 1rem;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
 }
-
 .nav-link:hover,
 .nav-link.active {
-    color: #f9d976;
-    text-shadow: 0 0 10px rgba(249, 217, 118, 0.7);
-    background: rgba(249, 217, 118, 0.1); /* Subtle background on hover/active */
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--shadow-light);
+    background: rgba(249, 217, 118, 0.1);
 }
-
 .nav-link::after {
     content: '';
     position: absolute;
@@ -188,98 +288,80 @@ nav {
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: #f9d976;
+    background: var(--accent-color);
     opacity: 1;
-    transition: width 0.3s ease;
+    transition: width var(--transition-speed) var(--transition-ease);
 }
-
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 70%;
 }
-
 .social-icon {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.5rem; /* Slightly larger */
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-    margin-right: 2rem; /* Spacing from edge */
+    color: var(--text-medium);
+    font-size: 1.5rem;
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
+    margin-right: 2rem;
 }
-
 .social-icon:hover {
-    color: #f9d976;
-    text-shadow: 0 0 10px rgba(249, 217, 118, 0.5);
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--shadow-light);
 }
-/* --- MODIFIED NAVIGATION STYLES END --- */
+.facebook-logo { /* For social icons */
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
 
-/* Home content - Now relative to its parent (#main-scrollable-content-wrapper) */
+/* Home Content */
 .home-content {
     text-align: center;
     position: relative;
     width: 100%;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px); /* Adjust for nav height */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Align content to the top */
     align-items: center;
-    transition: opacity 1s ease; /* Transition for initial page load */
+    transition: opacity 1s var(--transition-ease);
     z-index: 10;
     padding: 0 20px;
-    margin-top: 0;
     box-sizing: border-box;
 }
-
-
 .home-content.visible {
     opacity: 1;
 }
-
-
+.main-logo {
+    width: 220px;
+    height: 220px;
+    display: block;
+    margin: 5rem auto 1.5rem;
+    filter: drop-shadow(0 0 8px var(--accent-color));
+    border-radius: 50%;
+}
 .home-title {
-    font-size: 3rem;
-    color: #f9d976;
+    font-size: clamp(2rem, 5vw, 3rem); /* Fluid font size */
+    color: var(--accent-color);
     margin-bottom: 1.2rem;
-    text-shadow: 0 0 30px rgba(249, 217, 118, 3),
-        0 5px 15px rgba(0, 0, 0, 3),
-        0 0 50px rgba(0, 0, 0, 4),
-        -2px -2px 8px rgba(255, 255, 255, 2);
+    text-shadow: 0 0 30px rgba(249, 217, 118, 0.8), /* Adjusted glow intensity */
+        0 5px 15px rgba(0, 0, 0, 0.6), /* Adjusted shadow intensity */
+        0 0 50px rgba(0, 0, 0, 0.4),
+        -2px -2px 8px rgba(255, 255, 255, 0.5); /* Subtle white highlight */
     font-weight: 600;
     letter-spacing: 1px;
     position: relative;
-    animation: textWave 8s ease-in-out infinite;
+    animation: textWave 8s var(--transition-ease) infinite;
 }
-
 @keyframes textWave {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    25% {
-        transform: translateY(-5px);
-    }
-    50% {
-        transform: translateY(0);
-    }
-    75% {
-        transform: translateY(5px);
-    }
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-5px); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(5px); }
 }
-
-@keyframes shine {
-  0% {
-    left: -75%;
-  }
-  100% {
-    left: 125%;
-  }
-}
-
-/* Particle glow effect behind title */
 .home-title::before {
     content: '';
     position: absolute;
     top: 10px;
     left: -40px;
-    right: auto;
-    bottom: auto;
     width: 180%;
     height: 140%;
     pointer-events: none;
@@ -287,237 +369,472 @@ nav {
     opacity: 0.4;
     background: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.12), transparent 80%);
     filter: blur(15px);
-    animation: glowShift 8s ease-in-out infinite;
+    animation: glowShift 8s var(--transition-ease) infinite;
 }
-
 @keyframes glowShift {
-    0% {
-        transform: translate(0, 0);
-        opacity: 0.4;
-    }
-    50% {
-        transform: translate(15px, 10px);
-        opacity: 0.6;
-    }
-    100% {
-        transform: translate(0, 0);
-        opacity: 0.4;
-    }
+    0% { transform: translate(0, 0); opacity: 0.4; }
+    50% { transform: translate(15px, 10px); opacity: 0.6; }
+    100% { transform: translate(0, 0); opacity: 0.4; }
 }
-
-.home-subtitle {
-    font-size: 1.6rem; color: rgba(255, 255, 255, 0.95);
-    margin-bottom: 1.2rem;
-    font-weight: 400;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+.home-tagline {
+    font-family: 'Sail', cursive;
+    font-size: clamp(1.5rem, 3vw, 2rem); /* Fluid font size */
+    font-weight: 600;
+    background: linear-gradient(45deg, #004466, #00bcd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    margin-top: 40px;
+    animation: fadeIn 2s var(--transition-ease) forwards;
+    opacity: 0;
 }
-
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
 .intro-text {
     max-width: 800px;
     margin: 0 auto 2rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.2rem;
+    color: var(--text-medium);
+    font-size: clamp(1rem, 2vw, 1.2rem); /* Fluid font size */
     line-height: 1.6;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
-
-
 .event-link {
-    color: #f9d976; text-decoration: none;
+    color: var(--accent-color);
+    text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease; display: inline-flex;
+    transition: all var(--transition-speed) var(--transition-ease);
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     background: rgba(0, 12, 26, 0.3);
-    border: 1px solid rgba(249, 217, 118, 0.15);
+    border: 1px solid var(--border-dark);
 }
-
 .event-link:hover {
-    text-shadow: 0 0 8px rgba(249, 217, 118, 0.4);
+    text-shadow: 0 0 8px var(--shadow-light);
     background: rgba(0, 12, 26, 0.5);
-    border-color: rgba(249, 217, 118, 0.3);
+    border-color: var(--border-medium);
+}
+.spacer {
+    height: 80px; /* Consistent spacing */
 }
 
-.facebook-icon {
-    margin-right: 0.6rem;
+/* Water Particle Effects */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+.water-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatParticle 3s infinite var(--transition-ease);
+}
+.water-particle:nth-child(2n) {
+    width: 6px;
+    height: 6px;
+    animation-duration: 3.5s;
+    animation-delay: 0.5s;
+}
+.water-particle:nth-child(3n) {
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.8);
+    animation-duration: 2.5s;
+    animation-delay: 1s;
+}
+.water-particle:nth-child(4n) {
+    width: 5px;
+    height: 5px;
+    background: rgba(200, 220, 255, 0.7);
+    animation-duration: 3s;
+    animation-delay: 1.5s;
+}
+@keyframes floatParticle {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    25% { opacity: 0.5; }
+    75% { opacity: 0.5; }
+    100% { transform: translateY(-80px) translateX(15px); opacity: 0; }
 }
 
-.glass-button {
-    display: none;
+/* NEW: PCYC Info Section Styling */
+.pcyc-info-section {
+    max-width: 900px;
+    margin: 40px auto 60px auto;
+    padding: 30px;
+    background: rgba(0, 12, 26, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-dark);
+    text-align: left;
 }
 
+.pcyc-info-section .section-title {
+    font-family: 'Marcellus SC', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--accent-color);
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 1px 1px 3px var(--shadow-dark);
+    position: relative;
+}
 
-/* Content sections - These are the popup sections, they still cover the full screen */
+.pcyc-info-section .section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+.info-block {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(0, 12, 26, 0.4);
+    border-radius: 10px;
+    border: 1px solid rgba(249, 217, 118, 0.1);
+    box-shadow: inset 0 0 10px rgba(249, 217, 118, 0.05);
+}
+
+.info-block h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--accent-light);
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.info-block p, .info-block li {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    color: var(--text-medium);
+    line-height: 1.7;
+    margin-bottom: 1em;
+    text-align: justify; /* Justify text for a more formal look */
+    padding: 0; /* Remove padding from general p/li rules */
+    background: none; /* Remove background from general p/li rules */
+    border: none; /* Remove border from general p/li rules */
+    text-shadow: none; /* Remove text-shadow from general p/li rules */
+}
+
+.info-block ul {
+    list-style: disc inside;
+    padding-left: 20px;
+    margin-top: 15px;
+}
+
+.info-block ul li {
+    margin-bottom: 0.5em;
+    text-align: left;
+}
+
+/* Glass Box for Dashboard Header */
+.glass-box {
+    background: rgba(255, 255, 255, 0.08); /* Slightly less opaque */
+    backdrop-filter: blur(8px); /* Slightly less blur */
+    -webkit-backdrop-filter: blur(8px);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 720px;
+    margin: 30px auto 15px auto;
+    text-align: center;
+    border: 1px solid var(--border-light);
+}
+.captain-header {
+    font-family: 'Marcellus SC', serif; /* Premium nautical font */
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem); /* Fluid font size */
+    font-weight: bold;
+    color: var(--accent-color);
+    text-shadow: 1px 1px 2px var(--shadow-dark);
+    animation: floatHeader 2.5s var(--transition-ease) infinite;
+}
+@keyframes floatHeader {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+.wave-underline {
+    width: 200px;
+    height: 5px;
+    margin: 10px auto 20px;
+    background: linear-gradient(90deg, #0077b6, #00b4d8, #0077b6);
+    background-size: 300% 100%;
+    animation: waveUnderline 4s var(--transition-ease) infinite;
+    border-radius: 3px;
+}
+@keyframes waveUnderline {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.captain-subtitle {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    color: var(--text-medium);
+    margin-bottom: 15px;
+    font-style: italic;
+}
+.live-pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #c60000;
+    font-size: 1rem;
+    animation: pulseText 2s infinite;
+}
+.live-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+    animation: pulseDot 1.2s infinite;
+}
+@keyframes pulseDot {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes pulseText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Dashboard Widget Grid (New, consolidated styles) */
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjusted min-width for better fit */
+    gap: 25px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.widget {
+    background: rgba(0, 12, 26, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(249, 217, 118, 0.05);
+    color: var(--text-medium);
+    min-height: 280px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-dark);
+    transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
+}
+.widget:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(249, 217, 118, 0.1);
+}
+.widget .widget-title {
+    font-family: 'Marcellus SC', serif; /* Apply premium font */
+    font-size: clamp(1.2em, 2.5vw, 1.4em); /* Fluid font size */
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+.widget iframe {
+    border: none;
+    width: 100%;
+    flex-grow: 1;
+    border-radius: 8px;
+    min-height: 220px;
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+}
+.widget > div[id] { /* For dynamic content widgets like UV Index, Sea Temp */
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    line-height: 1.5;
+}
+.widget > div[id] p {
+    margin: 5px 0;
+    color: var(--text-medium);
+}
+.widget > div[id] p strong, .widget > div[id] p[style*="font-size: 1.8em"] {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+.widget .warning {
+    color: #ff8a80; /* Red for warnings */
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Content Sections (Overlays) */
 .content-section {
-    position: fixed; /* **CRITICAL: Fixed to viewport** */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    display: flex; /* IMPORTANT: Keep flex for centering */
+    display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    pointer-events: none; /* Not interactable when hidden */
-    visibility: hidden; /* Truly hidden when not active for proper fade */
-    /* MODIFIED: Smoother transition duration/timing for overlay itself */
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    z-index: 50; /* Higher than main scrollable content */
-    padding: 0 20px; /* Padding for content-container inside overlay */
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.5s var(--transition-ease), visibility 0.5s var(--transition-ease);
+    z-index: 50;
+    padding: 0 20px;
     box-sizing: border-box;
-    /* MODIFIED: Slightly more opaque background for better focus */
-    background-color: rgba(0, 12, 26, 0.85);
+    background-color: rgba(0, 12, 26, 0.85); /* Slightly more opaque background */
 }
-
-
 .content-section.active {
     opacity: 1;
-    pointer-events: all; /* Interactable when active */
-    visibility: visible; /* Visible when active */
+    pointer-events: all;
+    visibility: visible;
 }
-
 .content-container {
     max-width: 1200px;
-    width: 90%; /* Responsive width */
+    width: 90%;
     padding: 3rem;
-    border-radius: 1rem; background: rgba(0, 12, 26, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(249, 217, 118, 0.15);
+    border-radius: 1rem;
+    background: rgba(0, 12, 26, 0.5);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    border: 1px solid var(--border-dark);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 16px rgba(249, 217, 118, 0.1);
-    color: rgba(255, 255, 255, 0.95);
-    max-height: 80vh; /* Max height to fit in viewport, allowing internal scroll */
+    color: var(--text-light);
+    max-height: 80vh;
     overflow-y: auto; /* Scroll for content within the container */
     position: relative;
-    margin: auto; /* Ensures vertical and horizontal centering if flex doesn't fully handle on some browsers */
+    margin: auto;
     box-sizing: border-box;
 }
-
-/* Scrollbar styling for the content container */
+/* Custom Scrollbar Styling for content container */
 .content-container::-webkit-scrollbar {
     width: 8px;
 }
-
 .content-container::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
 }
-
 .content-container::-webkit-scrollbar-thumb {
-    background: rgba(249, 217, 118, 0.3);
+    background: var(--border-medium);
     border-radius: 4px;
 }
-
 .content-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(249, 217, 118, 0.5);
+    background: var(--accent-color);
 }
-
-
 .section-logo {
     width: 80px;
     height: 80px;
     position: absolute;
     top: -80px;
     left: 50%;
-    transform: translateX(-50%); filter: drop-shadow(0 0 8px rgba(249, 217, 118, 0.4));
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 8px var(--shadow-light));
     border-radius: 50%;
     z-index: 2;
 }
-
 .close-btn {
     position: absolute;
     top: 15px;
     right: 15px;
     width: 30px;
-    height: 30px; background: rgba(0, 12, 26, 0.6);
+    height: 30px;
+    background: rgba(0, 12, 26, 0.6);
     border-radius: 50%;
-    border: 1px solid rgba(249, 217, 118, 0.2);
+    border: 1px solid var(--border-light);
     display: flex;
     justify-content: center;
-    align-items: center; cursor: pointer;
-    transition: all 0.3s ease;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--transition-speed) var(--transition-ease);
     z-index: 10;
 }
-
 .close-btn:hover {
     background: rgba(249, 217, 118, 0.2);
 }
-
 .close-btn::before, .close-btn::after {
     content: '';
     position: absolute;
     width: 15px;
     height: 2px;
-    background: #f9d976;
+    background: var(--accent-color);
 }
-
-.close-btn::before {
-    transform: rotate(45deg);
-}
-
-.close-btn::after {
-    transform: rotate(-45deg);
-}
-
-
+.close-btn::before { transform: rotate(45deg); }
+.close-btn::after { transform: rotate(-45deg); }
 .content-container h2 {
-    font-size: 2.5rem;
-    color: #f9d976;
+    font-size: clamp(2rem, 4vw, 2.5rem); /* Fluid font size */
+    color: var(--accent-color);
     margin-top: 0;
     margin-bottom: 1.5rem;
     font-weight: 600;
     letter-spacing: 1px;
-    text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
-}
-
-.content-container p {
-    line-height: 1.8; margin-bottom: 1.5rem;
-    font-weight: 400;
     text-align: center;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+}
+.content-container p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    text-align: center;
     letter-spacing: 0.3px;
     padding: 0.5rem;
     border-radius: 8px;
     background: rgba(0, 12, 26, 0.3);
-    border: 1px solid rgba(249, 217, 118, 0.1);
+    border: 1px solid var(--border-dark);
 }
-
-
 .content-container ul {
     margin-bottom: 1.5rem;
     padding-left: 0;
-    list-style-position: inside; text-align: center;
+    list-style-position: inside;
+    text-align: center;
 }
-
 .content-container li {
     margin-bottom: 0.8rem;
     line-height: 1.6;
     font-weight: 400;
-    text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+    text-align: center;
 }
 
 /* Gallery styles */
 .gallery-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
 }
-
 .gallery-item {
     border-radius: 0.5rem;
     overflow: hidden;
     aspect-ratio: 1/1;
     cursor: pointer;
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-speed) var(--transition-ease);
 }
-
 .gallery-item:hover img {
     transform: scale(1.05);
 }
@@ -534,7 +851,6 @@ nav {
     align-items: center;
     z-index: 1000;
 }
-
 .lightbox img {
     max-width: 90%;
     max-height: 90%;
@@ -547,62 +863,57 @@ nav {
 .contact-form {
     background: rgba(0, 12, 26, 0.4);
     padding: 2rem;
-    border-radius: 1rem; border: 1px solid rgba(249, 217, 118, 0.15);
+    border-radius: 1rem;
+    border: 1px solid var(--border-dark);
     margin-top: 2rem;
 }
-
 .form-group {
     margin-bottom: 1.5rem;
     text-align: left;
 }
-
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #f9d976;
-    font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    color: var(--accent-color);
+    font-weight: 500;
 }
-
 .form-control {
     width: 100%;
     padding: 0.8rem;
-    border-radius: 0.5rem; border: 1px solid rgba(249, 217, 118, 0.2);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-light);
     background: rgba(0, 12, 26, 0.3);
     color: white;
     font-family: 'Playfair Display', serif;
 }
-
 .form-control:focus {
     outline: none;
-    border-color: rgba(249, 217, 118, 0.5);
+    border-color: var(--accent-color);
     box-shadow: 0 0 0 2px rgba(249, 217, 118, 0.2);
 }
-
 textarea.form-control {
     min-height: 120px;
     resize: vertical;
 }
-
 .submit-btn {
     background: rgba(249, 217, 118, 0.2);
-    color: #f9d976;
-    border: 1px solid rgba(249, 217, 118, 0.3);
+    color: var(--accent-color);
+    border: 1px solid var(--border-medium);
     padding: 0.8rem 2rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) var(--transition-ease);
     font-family: 'Playfair Display', serif;
-    font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
-
 .submit-btn:hover {
     background: rgba(249, 217, 118, 0.3);
     transform: translateY(-2px);
 }
-
-/* Form success message */
 .form-success {
-    background: rgba(39, 174, 96, 0.2); border: 1px solid rgba(39, 174, 96, 0.3);
+    background: rgba(39, 174, 96, 0.2);
+    border: 1px solid rgba(39, 174, 96, 0.3);
     color: #2ecc71;
     padding: 1rem;
     border-radius: 0.5rem;
@@ -610,418 +921,226 @@ textarea.form-control {
     text-align: center;
     display: none;
 }
-
 .form-success.visible {
     display: block;
 }
-
-/* Facebook logo */
-.facebook-logo {
-    width: 24px;
-    height: 24px; vertical-align: middle;
-    margin-right: 5px;
+.facebook-link { /* Specific style for Facebook link in contact */
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) var(--transition-ease);
 }
-
-/* Scrollbar styling for the main content wrapper */
-#main-scrollable-content-wrapper::-webkit-scrollbar {
-    width: 8px;
-}
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-thumb {
-    background: rgba(249, 217, 118, 0.3);
-    border-radius: 4px;
-}
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-thumb:hover {
-    background: rgba(249, 217, 118, 0.5);
+.facebook-link:hover {
+    color: var(--accent-light);
 }
 
 
 /* Accommodation section */
 .accommodation-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted min-width */
     gap: 2rem;
     margin-top: 2rem;
 }
-
 .bungalow-card {
     background: rgba(0, 12, 26, 0.4);
-    border-radius: 0.8rem; overflow: hidden;
-    border: 1px solid rgba(249, 217, 118, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+    transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
 }
-
 .bungalow-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(249,217,118,0.1);
 }
-
 .bungalow-img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
-
 .bungalow-info {
     padding: 1.5rem;
 }
-
 .bungalow-title {
-    font-size: 1.5rem;
-    color: #f9d976;
+    font-size: clamp(1.3rem, 2.5vw, 1.5rem); /* Fluid font size */
+    color: var(--accent-color);
     margin-top: 0;
-    margin-bottom: 0.5rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.5rem;
 }
-
 .bungalow-price {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 1rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text-light);
+    margin-bottom: 1rem;
 }
-
 .bungalow-desc {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1.5rem; line-height: 1.6;
+    color: var(--text-medium);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
-
 .book-btn {
     background: rgba(249, 217, 118, 0.2);
-    color: #f9d976;
-    border: 1px solid rgba(249, 217, 118, 0.3);
+    color: var(--accent-color);
+    border: 1px solid var(--border-medium);
     padding: 0.6rem 1.5rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease; font-family: 'Playfair Display', serif;
+    transition: all var(--transition-speed) var(--transition-ease);
+    font-family: 'Playfair Display', serif;
     text-decoration: none;
     display: inline-block;
 }
-
 .book-btn:hover {
     background: rgba(249, 217, 118, 0.3);
 }
 
-
-/* Main logo */
-.main-logo {
-    width: 220px;
-    height: 220px;
-    display: block;
-    margin: 5rem auto 1.5rem; /* Added 5rem margin to the top to move it down */
-    filter: drop-shadow(0 0 8px #f9d976);
-    border-radius: 50%;
-}
-
-/* Enhanced Water particle effects - SMALLER AND MORE LIKE SEA SPRAY */
-.particles-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; z-index: -1;
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0) translateX(0); opacity: 0;
-    }
-    25% {
-        opacity: 0.5; }
-    75% {
-        opacity: 0.5; }
-    100% {
-        transform: translateY(-80px) translateX(15px);
-        opacity: 0; }
-}
-
-/* Keyframes shine was already defined above, removing duplicate */
-
-.water-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    pointer-events: none; animation: float 3s infinite ease-out;
-}
-
-.water-particle:nth-child(2n) {
-    width: 6px;
-    height: 6px;
-    animation-duration: 3.5s;
-    animation-delay: 0.5s;
-}
-
-.water-particle:nth-child(3n) {
-    width: 3px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.8);
-    animation-duration: 2.5s;
-    animation-delay: 1s;
-}
-
-.water-particle:nth-child(4n) {
-    width: 5px;
-    height: 5px;
-    background: rgba(200, 220, 255, 0.7);
-    animation-duration: 3s;
-    animation-delay: 1.5s;
-}
-
-
-/* Import a premium nautical-style font */
-@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
-
-/* Commented out problematic body style from previous version */
-/* body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
-    font-family: 'Marcellus SC', serif;
-    color: #ffffff;
-    min-height: 100vh;
-    overflow-x: hidden;
-} */
-
-.dashboard-title {
-    font-size: 3.2rem;
-    text-align: center;
-    padding: 40px 0 20px;
-    color: #f9d976;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(249, 217, 118, 0.4);
-}
-
-.widget-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    padding: 20px 60px;
-}
-
-.widget {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.widget:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.widget h2 {
-    text-align: center;
-    font-size: 1.4rem;
-    margin: 20px 0 10px;
-    color: #ffffff;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
-    font-weight: normal;
-    letter-spacing: 1px;
-}
-
-.widget iframe {
-    width: 100%;
-    height: 250px;
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none; /* Hidden by default, shown in media queries */
+    background: none;
     border: none;
-    border-radius: 12px;
-    overflow: hidden;
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 101; /* Above nav */
+    position: fixed;
+    top: 1.3rem;
+    right: 1.5rem;
+    transition: transform var(--transition-speed) var(--transition-ease);
+}
+.mobile-menu-btn:hover {
+    transform: scale(1.1);
 }
 
-/* Responsive layout */
+/* Responsive Adjustments */
 @media screen and (max-width: 1200px) {
     .widget-grid {
-        grid-template-columns: repeat(2, 1fr);
-        padding: 20px 30px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust for smaller screens */
+    }
+    nav {
+        padding: 1.2rem 2rem;
+    }
+    .nav-logo {
+        margin-left: 1rem;
+    }
+    .social-icon {
+        margin-right: 1rem;
+    }
+    .pcyc-info-section {
+        padding: 25px;
+        margin: 30px auto 50px auto;
+    }
+    .info-block {
+        padding: 15px;
     }
 }
 
-@media screen and (max-width: 768px) {
-    .dashboard-title {
-        font-size: 2.5rem;
-    }
-
-    .widget-grid {
-        grid-template-columns: 1fr;
-        padding: 10px 20px;
-    }
-
-    .widget iframe {
-        height: 220px;
-    }
-}
-
-/* --- MEDIA QUERIES (from your style2.txt) --- */
-@media (min-width: 1400px) {
+@media screen and (max-width: 1024px) { /* Tablet */
     #main-scrollable-content-wrapper {
-        height: 100vh;
-        overflow-y: auto;
-        padding-top: 100px; /* This might need adjustment based on new nav height */
+        padding-top: 80px;
     }
-
-    /* .home-content, .content-section - removed conflicting overrides */
-    .home-content,
-    .content-section {
-        /* No specific overrides here, let base styles handle */
+    .home-title {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
     }
-
-    #threejs-background {
-        transform: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 1;
+    .home-tagline {
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
     }
-
-    /* .nav-container specific overrides for 1400px if needed, base style is now full width */
-    /* nav {
-          padding: 0.85rem 4rem; /* Example if different padding needed for very large screens * /
-      } */
-    /* .nav-logo {
-          margin-right: 3rem;
-      } */
-    /* .nav-links {
-          margin-left: 3rem;
-      } */
-    /* .nav-link {
-            font-size: 0.95rem;
-        } */
-
-    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
-        transform: none !important;
-        width: 360px !important;
-        max-width: 360px !important;
-        height: auto !important;
-        font-size: initial !important;
-        margin-left: auto !important; margin-right: auto !important;
-        margin-top: 2rem !important;
-        padding: 16px 20px !important;
-    }
-
-    .captain-widget *, .widget * { /* This rule seems to be for a different set of widgets, not nav */
-        transform: none !important; font-size: inherit !important;
-    }
-}
-
-
-/* Responsive adjustments */
-@media (min-width: 769px) and (max-width: 1024px) { /* Tablet */
-    #main-scrollable-content-wrapper {
-        padding-top: 80px; /* This might need adjustment based on new nav height */
-    }
-
-    /* .home-content, .content-section - removed conflicting overrides */
-    .home-content,
-    .content-section {
-        /* No specific overrides here, let base styles handle */
-    }
-    /* Nav container is full width by default, nav has its own padding */
-    /* nav {
-        max-width: none; padding: 0.85rem 2.5rem; /* Base nav padding will apply, can override if needed * /
-        margin: 0;
-    } */
-    /* .nav-logo {
-        height: 40px; margin-right: 2rem; /* Base nav-logo style will apply * /
-    } */
-    /* .nav-links {
-        gap: 2rem; /* Base nav-links style will apply * /
-        margin-left: 2rem; } */
-    /* .nav-link {
-          font-size: 0.95rem; } /* Base nav-link style will apply * / */
-
-    h1.home-title {
-        font-size: 3.5rem; }
-
-    .home-subtitle {
-        font-size: 1.6rem; }
-
     .intro-text {
-        font-size: 1.2rem;
-        max-width: 800px; }
-      .main-logo {
-          width: 200px; height: 200px;
-      }
-      .captain-widget, .widget {  /* This rule seems to be for a different set of widgets, not nav */
-          max-width: 360px;
-      }
-
+        font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    }
     .content-container {
-        padding: 2.5rem; width: 95%;
-        margin-top: 0;
+        padding: 2.5rem;
+        width: 95%;
     }
-
+    .content-container h2 {
+        font-size: clamp(1.8rem, 3.5vw, 2.2rem);
+    }
     .accommodation-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
-
-    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
-        padding: 1.5rem;
-        max-width: 700px;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    .pcyc-info-section .section-title {
+        font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    }
+    .info-block h3 {
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    }
+    .info-block p, .info-block li {
+        font-size: clamp(0.9rem, 1.7vw, 1.05rem);
     }
 }
 
-@media (max-width: 768px) { /* Smaller tablets and large mobiles */
+@media screen and (max-width: 768px) { /* Smaller tablets and mobiles */
     #main-scrollable-content-wrapper {
-        padding-top: 70px; /* This might need adjustment based on new nav height */
+        padding-top: 70px;
     }
-
-    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
-        /* padding: 1rem; /* Original was 1rem. New base is 0. Inner nav handles padding. * /
-    } */
-    nav { /* MODIFIED for mobile */
+    /* Mobile Nav */
+    .mobile-menu-btn {
+        display: block; /* Show hamburger menu */
+    }
+    nav {
+        flex-direction: row;
+        justify-content: space-between;
         padding: 1rem 1.5rem;
-        flex-direction: row; /* Ensures logo and menu button are on the same line */
-        justify-content: space-between; /* Positions logo to left, menu button to right */
-        /* gap: 0.8rem; /* Original, less relevant with justify-content: space-between */
+    }
+    .nav-links {
+        /* This is the mobile menu overlay */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 12, 26, 0.95); /* Nearly opaque background */
+        backdrop-filter: blur(20px); /* Stronger blur for mobile menu */
+        -webkit-backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transform: translateX(100%); /* Hide off-screen */
+        transition: transform var(--transition-speed) var(--transition-ease);
+        z-index: 90; /* Below mobile menu button, above page content */
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .nav-links.open {
+        transform: translateX(0); /* Slide in */
+    }
+    .nav-links .nav-link {
+        font-size: 1.2rem;
+        margin: 10px 0;
+        width: 90%;
+        max-width: 300px;
+        padding: 15px 20px;
+        text-align: center;
+        background: rgba(249,217,118,0.1);
+        border: 1px solid rgba(249,217,118,0.2);
+        border-radius: 6px;
+    }
+    .nav-links .nav-link::after { /* Disable underline for mobile menu links */
+        display: none;
+    }
+    .nav-logo { /* Ensure nav logo is visible in main nav bar, not hidden by mobile menu */
+        display: block;
+        margin-left: 0; /* Reset margin */
+    }
+    .social-icon { /* Hide social icon in main nav bar on mobile */
+        display: none;
     }
 
-    .nav-logo { /* MODIFIED for mobile */
-        height: 35px; /* Keep user's mobile specific height */
-        margin-bottom: 0; /* Removed as flex alignment handles vertical centering in new nav */
-        margin-right: 0; /* Not needed if logo is on the left */
-        margin-left: 0; /* My specific addition for mobile if different from base */
+    .home-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
     }
-    /* .nav-links { /* This is the container for links in DESKTOP. Mobile .nav-links are handled by .nav-links.open * /
-        /* gap: 1rem; /* Original. Base is 1.5rem. Let base apply or define specifically if needed * /
-        /* justify-content: center; /* Original. Base is center. Let base apply. * /
-        /* margin-left: 0; /* Original. Base has no margin-left. Let base apply. * /
-    /* } */
-    /* .nav-link { /* This is for individual links in DESKTOP. Mobile .nav-links .nav-link is separate * /
-        /* font-size: 0.9rem; /* Original. Base is 1rem. Let base apply or define specifically for desktop if smaller. * /
-        /* padding: 0.4rem 0.7rem; /* Original. Base is 0.8rem 1rem. Let base apply. * /
-    /* } */
-
-    h1.home-title {
-        font-size: 3rem;
-    }
-    .home-subtitle {
-        font-size: 1.4rem;
+    .home-tagline {
+        font-size: clamp(1rem, 2vw, 1.5rem);
     }
     .intro-text {
-        font-size: 1.1rem;
-        max-width: 90%;
+        font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+        max-width: 100%;
     }
     .content-container {
         padding: 2rem;
         max-height: 85vh;
-        margin-top: 0;
         width: 95%;
     }
     .content-container h2 {
-        font-size: 2rem;
+        font-size: clamp(1.6rem, 3vw, 2rem);
     }
     .gallery-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -1035,246 +1154,104 @@ textarea.form-control {
         height: 70px;
         top: -80px;
     }
-
-    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
-        padding: 1.5rem;
-        max-width: 700px;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
+    .widget-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust for smaller screens */
+        gap: 20px;
     }
-
-    /* --- Mobile Menu Styles - Incorporating Changes --- */
-    .mobile-menu-btn { /* This is the button itself */
-        display: flex; /* Original rule to show the button */
-        /* Base styles for mobile-menu-btn (outside media query) handle background, border, font-size etc. */
-        /* The following will override base styles for top, right, color when on mobile */
-        top: 1.3rem;   /* My change for positioning */
-        right: 1.5rem;  /* My change for positioning */
-        color: #f9d976; /* My change for color */
+    .widget {
+        min-height: 260px;
+        padding: 15px;
     }
-
-    .nav-links { /* This is the container that opens full screen */
-        /* Retain existing .nav-links styles for the full-screen overlay from original file */
-        /* e.g., display: flex, flex-direction: column, position: fixed, top, left, right, bottom, background, backdrop-filter, transform, transition, justify-content, align-items, z-index, overflow-y, padding, box-sizing */
-        /* My addition for nav-links when it's the mobile menu container */
-        gap: 0; /* Reset gap if using margin on links, or set desired gap for vertical links */
+    .widget .widget-title {
+        font-size: 1.3em;
     }
-
-    .nav-links.open { /* This is the class that shows the mobile menu */
-        transform: translateX(0); /* Original rule */
+    .widget iframe {
+        min-height: 200px;
     }
-
-    .nav-links .nav-link { /* MODIFIED: Styles for links *inside* the open mobile menu */
-        font-family: 'Montserrat', sans-serif; /* Ensure font consistency */
-        font-size: 1.2rem; /* My suggested size */
-        font-weight: 500;
-        letter-spacing: 1px;
-        margin: 10px 0; /* My suggested margin for spacing */
-        width: 90%;     /* My suggested width */
-        max-width: 300px; /* Original constraint, kept */
-        padding: 15px 20px; /* My suggested padding */
-        text-align: center; /* Original, kept */
-        color: #f9d976;   /* Original, kept */
-        background: rgba(249,217,118,0.1); /* Original background for links in menu, kept */
-        border: 1px solid rgba(249,217,118,0.2); /* Original border for links in menu, kept */
-        border-radius: 6px; /* Match base nav-link rounding if desired */
+    .pcyc-info-section {
+        padding: 20px;
+        margin: 20px auto 40px auto;
     }
-
-    .nav-link::after { /* ADDED: Disable underline animation in mobile overlay */
-        display: none;
+    .pcyc-info-section .section-title {
+        font-size: clamp(1.4rem, 3vw, 2rem);
     }
-
-    /* Hide original nav logo when mobile menu is open - User's original rule, kept for now. */
-    /* If the logo in the nav bar is disappearing on mobile and it shouldn't, this rule might be the cause. */
-    /* My new nav design intends for the .nav-logo to be visible with the .mobile-menu-btn. */
-    .nav-container nav .nav-logo {
-           display: none; /* Original rule from user. */
+    .info-block h3 {
+        font-size: clamp(1rem, 2vw, 1.5rem);
+    }
+    .info-block p, .info-block li {
+        font-size: clamp(0.85rem, 1.6vw, 1rem);
     }
 }
 
-@media (max-width: 576px) { /* Mobile */
+@media screen and (max-width: 480px) { /* Smallest mobiles */
     #main-scrollable-content-wrapper {
-        padding-top: 60px; /* This might need adjustment based on new nav height */
+        padding-top: 60px;
     }
-    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
-        /* padding: 0.8rem; /* Original padding, new base is 0 * /
-    /* } */
-    /* .nav-link { /* Base .nav-link styles will apply, can be overridden if needed for very small screens * /
-        /* font-size: 0.85rem;
-        padding: 0.3rem 0.6rem;
-    } */
-
-    h1.home-title {
-        font-size: 1.8rem;
+    nav {
+        padding: 0.8rem 1rem;
     }
-    .home-subtitle {
-        font-size: 1rem;
+    .mobile-menu-btn {
+        top: 0.8rem;
+        right: 1rem;
+    }
+    .main-logo {
+        width: 150px;
+        height: 150px;
+        margin-top: 2rem;
+    }
+    .home-title {
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    }
+    .home-tagline {
+        font-size: clamp(0.9rem, 1.8vw, 1.2rem);
     }
     .intro-text {
-        font-size: 1rem;
+        font-size: clamp(0.8rem, 1.5vw, 1rem);
         max-width: 100%;
     }
     .content-container {
         padding: 1.5rem;
         width: 100%;
         border-radius: 0.8rem;
-        margin-top: 0;
         max-height: 90vh;
     }
     .content-container h2 {
-        font-size: 1.8rem;
-    }
-    .section-logo {
-        width: 60px;
-        height: 60px;
-        top: -70px;
+        font-size: clamp(1.4rem, 2.8vw, 1.8rem);
     }
     .gallery-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 0.8rem;
+        gap: 0.6rem;
     }
     .accommodation-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    .main-logo {
-        width: 150px;
-        height: 150px;
-        margin-bottom: 1rem;
+    .section-logo {
+        width: 60px;
+        height: 60px;
+        top: -60px;
     }
-    .contact-form {
-        padding: 1.5rem;
-    }
-    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
-        padding: 15px;
-    }
-}
-
-
-/* Mobile menu button - Base styles (mostly for when it's not yet displayed as flex by media query) */
-.mobile-menu-btn { /* User's original base styles */
-    display: none; background: none;
-    border: none;
-    color: white; /* Will be overridden by mobile media query for #f9d976 */
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 101;
-    position: fixed;
-    top: 1rem; /* Will be overridden by mobile media query for 1.3rem */
-    right: 1rem; /* Will be overridden by mobile media query for 1.5rem */
-}
-
-/* Mobile menu styles - These are primarily for the .nav-links container when it opens */
-/* @media (max-width: 768px) is handled above for .mobile-menu-btn, .nav-links, .nav-links.open, .nav-links .nav-link */
-
-
-/* --- NEW MINIMAL STYLES FOR THE 3x3 WIDGET GRID --- */
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 25px;
-    padding: 20px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* .widget class was already defined earlier with different styles, this is a second definition. */
-/* Assuming this .widget definition is for the new dashboard grid, and the one above is for something else or older. */
-.widget { /* This is the second .widget definition */
-    background: rgba(0, 12, 26, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(249, 217, 118, 0.05);
-    color: #f0f0f0;
-    min-height: 280px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(249, 217, 118, 0.15);
-}
-
-.widget .widget-title { /* Styles for title within the new .widget */
-    font-size: 1.4em;
-    font-weight: 600;
-    color: #f9d976;
-    margin-bottom: 15px;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
-/* .widget iframe was already defined, this is a second definition. */
-.widget iframe { /* This is the second .widget iframe definition */
-    border: none;
-    width: 100%;
-    flex-grow: 1;
-    border-radius: 8px;
-    min-height: 220px;
-}
-
-.widget > div[id] {
-    padding: 10px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 1em;
-    line-height: 1.5;
-}
-.widget > div[id] p {
-    margin: 5px 0;
-    color: #e0e0e0;
-}
-.widget > div[id] p strong, .widget > div[id] p[style*="font-size: 1.8em"] {
-    color: #f9d976;
-    font-weight: bold;
-}
-
-.widget .warning {
-    color: #ff8a80;
-    font-weight: bold;
-    font-size: 0.9em;
-}
-
-/* Responsive adjustments for the new dashboard grid */
-@media screen and (max-width: 1200px) {
-    .dashboard { /* Styles for .dashboard, not to be confused with .captain-dashboard */
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .dashboard { /* Styles for .dashboard */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-    /* Assuming this .widget refers to the new dashboard grid's widgets */
-    .widget { /* This is the third .widget definition within a media query */
-        padding: 15px;
-        min-height: 260px;
-    }
-    .widget .widget-title { /* Styles for title within the new .widget */
-        font-size: 1.3em;
-    }
-    .widget iframe { /* This is the third .widget iframe definition */
-        min-height: 200px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .dashboard { /* Styles for .dashboard */
+    .widget-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    /* Assuming this .widget refers to the new dashboard grid's widgets */
-    .widget { /* This is the fourth .widget definition within a media query */
+    .widget {
         min-height: 240px;
     }
-    .widget .widget-title { /* Styles for title within the new .widget */
+    .widget .widget-title {
         font-size: 1.2em;
+    }
+    .pcyc-info-section {
+        padding: 15px;
+        margin: 15px auto 30px auto;
+    }
+    .pcyc-info-section .section-title {
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    }
+    .info-block h3 {
+        font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+    }
+    .info-block p, .info-block li {
+        font-size: clamp(0.8rem, 1.5vw, 0.95rem);
     }
 }
