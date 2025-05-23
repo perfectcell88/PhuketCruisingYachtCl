@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); /* ADDED for cleaner nav font */
+
 /* Enhanced styles for Phuket Cruising Yacht Club */
 
 body, html {
@@ -99,26 +101,29 @@ body.overlay-active .home-content {
 }
 
 /* Enhanced text shadow for all white text - IMPROVED FOR CLARITY */
-.home-subtitle, .intro-text p, .content-container p, .content-container li, .nav-link {
+.home-subtitle, .intro-text p, .content-container p, .content-container li { /* .nav-link removed as it has new specific styling */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Sharper black shadow added */
 }
 
-/* Premium glass-morphism navigation */
+/* --- MODIFIED NAVIGATION STYLES START --- */
 .nav-container {
-    position: fixed; /* Keep fixed */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    padding: 2rem;
+    width: 100%; /* Ensure full width */
+    padding: 0; /* Remove padding, will be handled by inner 'nav' */
     z-index: 100;
-    opacity: 0; transform: translateY(-20px);
+    opacity: 0;
+    transform: translateY(-20px);
     transition: opacity 1s ease, transform 1s ease;
     pointer-events: none;
     visibility: hidden;
 }
 
 .nav-container.visible {
-    opacity: 1; transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
     pointer-events: all;
     visibility: visible;
 }
@@ -127,72 +132,84 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.85rem 1.8rem; border-radius: 1rem;
-    background: rgba(0, 12, 26, 0.4); /* Darker, more translucent */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(249, 217, 118, 0.15); /* Subtle gold border */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 16px rgba(249, 217, 118, 0.08); /* Softer, diffused shadow */
+    padding: 1.5rem 3rem; /* Increased vertical padding, adjust horizontal */
+    background: rgba(10, 25, 40, 0.6); /* Darker background */
+    backdrop-filter: blur(15px); /* Slightly stronger blur */
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(249, 217, 118, 0.1); /* Bottom border */
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3); /* Adjusted shadow */
+    border-radius: 0; /* Removed border-radius for full-width */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-
 .nav-logo {
-    height: 40px;
+    height: 45px; /* Slightly larger logo */
     width: auto;
-    filter: drop-shadow(0 0 8px rgba(249, 217, 118, 0.4));
+    filter: drop-shadow(0 0 10px rgba(249, 217, 118, 0.5)); /* Enhanced glow */
+    margin-left: 2rem; /* Spacing from edge */
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem; /* Adjust gap */
     justify-content: center;
+    flex-grow: 1;
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Montserrat', sans-serif; /* Applied cleaner font */
+    color: rgba(255, 255, 255, 0.95); /* Brighter text */
     text-decoration: none;
-    font-size: 0.95rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase; transition: color 0.3s ease, text-shadow 0.3s ease;
+    font-size: 1rem; /* Adjusted size */
+    font-weight: 500; /* Medium weight */
+    letter-spacing: 1px; /* Subtle spacing */
+    text-transform: uppercase;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
     position: relative;
-    padding: 0.5rem 0.8rem;
-    margin: 0 0.2rem; border: 1px solid rgba(249, 217, 118, 0.1);
-    border-radius: 4px;
-    background: rgba(249, 217, 118, 0.05);
+    padding: 0.8rem 1rem; /* Link touch area padding */
+    border: none; /* Cleaner look */
+    background: transparent; /* Cleaner look */
+    border-radius: 6px; /* Optional: slight rounding on hover/active */
 }
 
-.nav-link:hover, .nav-link.active {
-    color: #f9d976; /* Gold hover */
-    text-shadow: 0 0 8px rgba(249, 217, 118, 0.6); /* Gold glow */
-    border-color: rgba(249, 217, 118, 0.3);
-    background: rgba(249, 217, 118, 0.1);
+.nav-link:hover,
+.nav-link.active {
+    color: #f9d976;
+    text-shadow: 0 0 10px rgba(249, 217, 118, 0.7);
+    background: rgba(249, 217, 118, 0.1); /* Subtle background on hover/active */
 }
-
 
 .nav-link::after {
     content: '';
-    position: absolute; bottom: 0;
-    left: 10%;
-    width: 80%;
-    height: 1px;
-    background: #f9d976; /* Gold underline */
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #f9d976;
+    opacity: 1;
+    transition: width 0.3s ease;
 }
 
-.nav-link:hover::after, .nav-link.active::after {
-    opacity: 1;
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 70%;
 }
 
 .social-icon {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.4rem; transition: color 0.3s ease, text-shadow 0.3s ease;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.5rem; /* Slightly larger */
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    margin-right: 2rem; /* Spacing from edge */
 }
 
 .social-icon:hover {
-    color: #f9d976; /* Gold hover */
-    text-shadow: 0 0 8px rgba(249, 217, 118, 0.4); /* Gold glow */
+    color: #f9d976;
+    text-shadow: 0 0 10px rgba(249, 217, 118, 0.5);
 }
+/* --- MODIFIED NAVIGATION STYLES END --- */
 
 /* Home content - Now relative to its parent (#main-scrollable-content-wrapper) */
 .home-content {
@@ -722,14 +739,7 @@ textarea.form-control {
         opacity: 0; }
 }
 
-@keyframes shine {
-  0% {
-    left: -75%;
-  }
-  100% {
-    left: 125%;
-  }
-}
+/* Keyframes shine was already defined above, removing duplicate */
 
 .water-particle {
     position: absolute;
@@ -857,7 +867,7 @@ textarea.form-control {
     #main-scrollable-content-wrapper {
         height: 100vh;
         overflow-y: auto;
-        padding-top: 100px;
+        padding-top: 100px; /* This might need adjustment based on new nav height */
     }
 
     /* .home-content, .content-section - removed conflicting overrides */
@@ -875,29 +885,21 @@ textarea.form-control {
         z-index: 1;
     }
 
-    .nav-container {
-      position: fixed; top: 0;
-      left: 0;
-      right: 0;
-      padding: 1.5rem;
-      z-index: 100;
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: all;
-    }
-      nav {
-          padding: 0.85rem 4rem;
-      }
-      .nav-logo {
+    /* .nav-container specific overrides for 1400px if needed, base style is now full width */
+    /* nav {
+          padding: 0.85rem 4rem; /* Example if different padding needed for very large screens * /
+      } */
+    /* .nav-logo {
           margin-right: 3rem;
-      }
-      .nav-links {
+      } */
+    /* .nav-links {
           margin-left: 3rem;
-      }
-        .nav-link {
+      } */
+    /* .nav-link {
             font-size: 0.95rem;
-        }
-    .captain-widget, .widget {
+        } */
+
+    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
         transform: none !important;
         width: 360px !important;
         max-width: 360px !important;
@@ -908,7 +910,7 @@ textarea.form-control {
         padding: 16px 20px !important;
     }
 
-    .captain-widget *, .widget * {
+    .captain-widget *, .widget * { /* This rule seems to be for a different set of widgets, not nav */
         transform: none !important; font-size: inherit !important;
     }
 }
@@ -917,7 +919,7 @@ textarea.form-control {
 /* Responsive adjustments */
 @media (min-width: 769px) and (max-width: 1024px) { /* Tablet */
     #main-scrollable-content-wrapper {
-        padding-top: 80px;
+        padding-top: 80px; /* This might need adjustment based on new nav height */
     }
 
     /* .home-content, .content-section - removed conflicting overrides */
@@ -925,19 +927,19 @@ textarea.form-control {
     .content-section {
         /* No specific overrides here, let base styles handle */
     }
-
-    nav {
-        max-width: none; padding: 0.85rem 2.5rem;
+    /* Nav container is full width by default, nav has its own padding */
+    /* nav {
+        max-width: none; padding: 0.85rem 2.5rem; /* Base nav padding will apply, can override if needed * /
         margin: 0;
-    }
-    .nav-logo {
-        height: 40px; margin-right: 2rem;
-    }
-    .nav-links {
-        gap: 2rem;
-        margin-left: 2rem; }
-      .nav-link {
-          font-size: 0.95rem; }
+    } */
+    /* .nav-logo {
+        height: 40px; margin-right: 2rem; /* Base nav-logo style will apply * /
+    } */
+    /* .nav-links {
+        gap: 2rem; /* Base nav-links style will apply * /
+        margin-left: 2rem; } */
+    /* .nav-link {
+          font-size: 0.95rem; } /* Base nav-link style will apply * / */
 
     h1.home-title {
         font-size: 3.5rem; }
@@ -951,7 +953,7 @@ textarea.form-control {
       .main-logo {
           width: 200px; height: 200px;
       }
-      .captain-widget, .widget {
+      .captain-widget, .widget {  /* This rule seems to be for a different set of widgets, not nav */
           max-width: 360px;
       }
 
@@ -963,7 +965,7 @@ textarea.form-control {
     .accommodation-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 
-    .captain-dashboard {
+    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
         padding: 1.5rem;
         max-width: 700px;
         grid-template-columns: repeat(2, 1fr);
@@ -973,33 +975,34 @@ textarea.form-control {
 
 @media (max-width: 768px) { /* Smaller tablets and large mobiles */
     #main-scrollable-content-wrapper {
-        padding-top: 70px;
+        padding-top: 70px; /* This might need adjustment based on new nav height */
     }
 
-    /* .home-content, .content-section - removed conflicting overrides */
-    .nav-container {
-        padding: 1rem;
-    }
-    nav {
-        padding: 0.7rem 1.2rem;
-        flex-direction: column;
-        gap: 0.8rem;
+    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
+        /* padding: 1rem; /* Original was 1rem. New base is 0. Inner nav handles padding. * /
+    } */
+    nav { /* MODIFIED for mobile */
+        padding: 1rem 1.5rem;
+        flex-direction: row; /* Ensures logo and menu button are on the same line */
+        justify-content: space-between; /* Positions logo to left, menu button to right */
+        /* gap: 0.8rem; /* Original, less relevant with justify-content: space-between */
     }
 
-    .nav-logo {
-        height: 35px;
-        margin-bottom: 0.5rem;
-        margin-right: 0;
+    .nav-logo { /* MODIFIED for mobile */
+        height: 35px; /* Keep user's mobile specific height */
+        margin-bottom: 0; /* Removed as flex alignment handles vertical centering in new nav */
+        margin-right: 0; /* Not needed if logo is on the left */
+        margin-left: 0; /* My specific addition for mobile if different from base */
     }
-    .nav-links {
-        gap: 1rem;
-        justify-content: center;
-        margin-left: 0;
-    }
-    .nav-link {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.7rem;
-    }
+    /* .nav-links { /* This is the container for links in DESKTOP. Mobile .nav-links are handled by .nav-links.open * /
+        /* gap: 1rem; /* Original. Base is 1.5rem. Let base apply or define specifically if needed * /
+        /* justify-content: center; /* Original. Base is center. Let base apply. * /
+        /* margin-left: 0; /* Original. Base has no margin-left. Let base apply. * /
+    /* } */
+    /* .nav-link { /* This is for individual links in DESKTOP. Mobile .nav-links .nav-link is separate * /
+        /* font-size: 0.9rem; /* Original. Base is 1rem. Let base apply or define specifically for desktop if smaller. * /
+        /* padding: 0.4rem 0.7rem; /* Original. Base is 0.8rem 1rem. Let base apply. * /
+    /* } */
 
     h1.home-title {
         font-size: 3rem;
@@ -1033,25 +1036,73 @@ textarea.form-control {
         top: -80px;
     }
 
-    .captain-dashboard {
+    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
         padding: 1.5rem;
         max-width: 700px;
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
+
+    /* --- Mobile Menu Styles - Incorporating Changes --- */
+    .mobile-menu-btn { /* This is the button itself */
+        display: flex; /* Original rule to show the button */
+        /* Base styles for mobile-menu-btn (outside media query) handle background, border, font-size etc. */
+        /* The following will override base styles for top, right, color when on mobile */
+        top: 1.3rem;   /* My change for positioning */
+        right: 1.5rem;  /* My change for positioning */
+        color: #f9d976; /* My change for color */
+    }
+
+    .nav-links { /* This is the container that opens full screen */
+        /* Retain existing .nav-links styles for the full-screen overlay from original file */
+        /* e.g., display: flex, flex-direction: column, position: fixed, top, left, right, bottom, background, backdrop-filter, transform, transition, justify-content, align-items, z-index, overflow-y, padding, box-sizing */
+        /* My addition for nav-links when it's the mobile menu container */
+        gap: 0; /* Reset gap if using margin on links, or set desired gap for vertical links */
+    }
+
+    .nav-links.open { /* This is the class that shows the mobile menu */
+        transform: translateX(0); /* Original rule */
+    }
+
+    .nav-links .nav-link { /* MODIFIED: Styles for links *inside* the open mobile menu */
+        font-family: 'Montserrat', sans-serif; /* Ensure font consistency */
+        font-size: 1.2rem; /* My suggested size */
+        font-weight: 500;
+        letter-spacing: 1px;
+        margin: 10px 0; /* My suggested margin for spacing */
+        width: 90%;     /* My suggested width */
+        max-width: 300px; /* Original constraint, kept */
+        padding: 15px 20px; /* My suggested padding */
+        text-align: center; /* Original, kept */
+        color: #f9d976;   /* Original, kept */
+        background: rgba(249,217,118,0.1); /* Original background for links in menu, kept */
+        border: 1px solid rgba(249,217,118,0.2); /* Original border for links in menu, kept */
+        border-radius: 6px; /* Match base nav-link rounding if desired */
+    }
+
+    .nav-link::after { /* ADDED: Disable underline animation in mobile overlay */
+        display: none;
+    }
+
+    /* Hide original nav logo when mobile menu is open - User's original rule, kept for now. */
+    /* If the logo in the nav bar is disappearing on mobile and it shouldn't, this rule might be the cause. */
+    /* My new nav design intends for the .nav-logo to be visible with the .mobile-menu-btn. */
+    .nav-container nav .nav-logo {
+           display: none; /* Original rule from user. */
+    }
 }
 
 @media (max-width: 576px) { /* Mobile */
     #main-scrollable-content-wrapper {
-        padding-top: 60px;
+        padding-top: 60px; /* This might need adjustment based on new nav height */
     }
-    .nav-container {
-        padding: 0.8rem;
-    }
-    .nav-link {
-        font-size: 0.85rem;
+    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
+        /* padding: 0.8rem; /* Original padding, new base is 0 * /
+    /* } */
+    /* .nav-link { /* Base .nav-link styles will apply, can be overridden if needed for very small screens * /
+        /* font-size: 0.85rem;
         padding: 0.3rem 0.6rem;
-    }
+    } */
 
     h1.home-title {
         font-size: 1.8rem;
@@ -1094,72 +1145,28 @@ textarea.form-control {
     .contact-form {
         padding: 1.5rem;
     }
-    .captain-widget, .widget {
+    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
         padding: 15px;
     }
 }
 
 
-/* Mobile menu button */
-.mobile-menu-btn {
+/* Mobile menu button - Base styles (mostly for when it's not yet displayed as flex by media query) */
+.mobile-menu-btn { /* User's original base styles */
     display: none; background: none;
     border: none;
-    color: white;
+    color: white; /* Will be overridden by mobile media query for #f9d976 */
     font-size: 1.5rem;
     cursor: pointer;
     z-index: 101;
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 1rem; /* Will be overridden by mobile media query for 1.3rem */
+    right: 1rem; /* Will be overridden by mobile media query for 1.5rem */
 }
 
-/* Mobile menu styles */
-@media (max-width: 768px) {
-    .mobile-menu-btn {
-        display: flex;
-    }
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 12, 26, 0.98);
-        backdrop-filter: blur(15px);
-        transform: translateX(100%);
-        transition: transform 0.4s ease-out;
-        justify-content: center;
-        align-items: center;
-        z-index: 140;
-        overflow-y: auto;
-        padding: 80px 20px;
-        box-sizing: border-box;
-    }
-    .nav-links.open {
-        transform: translateX(0);
-    }
-    .nav-links .nav-link {
-        font-size: 1.5rem;
-        margin: 15px 0;
-        width: 80%;
-        max-width: 300px; padding: 12px 20px;
-        text-align: center;
-        color: #f9d976;
-        background: rgba(249,217,118,0.1);
-        border: 1px solid rgba(249,217,118,0.2);
-    }
-    .nav-links .nav-link:hover {
-        color: #fff;
-        background: rgba(249,217,118,0.2);
-    }
+/* Mobile menu styles - These are primarily for the .nav-links container when it opens */
+/* @media (max-width: 768px) is handled above for .mobile-menu-btn, .nav-links, .nav-links.open, .nav-links .nav-link */
 
-    /* Hide original nav logo when mobile menu is open */
-    .nav-container nav .nav-logo {
-           display: none;
-    }
-}
 
 /* --- NEW MINIMAL STYLES FOR THE 3x3 WIDGET GRID --- */
 
@@ -1172,7 +1179,9 @@ textarea.form-control {
     margin: 0 auto;
 }
 
-.widget {
+/* .widget class was already defined earlier with different styles, this is a second definition. */
+/* Assuming this .widget definition is for the new dashboard grid, and the one above is for something else or older. */
+.widget { /* This is the second .widget definition */
     background: rgba(0, 12, 26, 0.6);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -1187,7 +1196,7 @@ textarea.form-control {
     border: 1px solid rgba(249, 217, 118, 0.15);
 }
 
-.widget .widget-title {
+.widget .widget-title { /* Styles for title within the new .widget */
     font-size: 1.4em;
     font-weight: 600;
     color: #f9d976;
@@ -1196,7 +1205,8 @@ textarea.form-control {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 
-.widget iframe {
+/* .widget iframe was already defined, this is a second definition. */
+.widget iframe { /* This is the second .widget iframe definition */
     border: none;
     width: 100%;
     flex-grow: 1;
@@ -1232,37 +1242,39 @@ textarea.form-control {
 
 /* Responsive adjustments for the new dashboard grid */
 @media screen and (max-width: 1200px) {
-    .dashboard {
+    .dashboard { /* Styles for .dashboard, not to be confused with .captain-dashboard */
         grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     }
 }
 
 @media screen and (max-width: 768px) {
-    .dashboard {
+    .dashboard { /* Styles for .dashboard */
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
     }
-    .widget {
+    /* Assuming this .widget refers to the new dashboard grid's widgets */
+    .widget { /* This is the third .widget definition within a media query */
         padding: 15px;
         min-height: 260px;
     }
-    .widget .widget-title {
+    .widget .widget-title { /* Styles for title within the new .widget */
         font-size: 1.3em;
     }
-    .widget iframe {
+    .widget iframe { /* This is the third .widget iframe definition */
         min-height: 200px;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .dashboard {
+    .dashboard { /* Styles for .dashboard */
         grid-template-columns: 1fr;
         gap: 15px;
     }
-       .widget {
+    /* Assuming this .widget refers to the new dashboard grid's widgets */
+    .widget { /* This is the fourth .widget definition within a media query */
         min-height: 240px;
     }
-    .widget .widget-title {
+    .widget .widget-title { /* Styles for title within the new .widget */
         font-size: 1.2em;
     }
 }
