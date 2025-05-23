@@ -467,223 +467,67 @@ nav {
     color: #f9d976;
     margin-top: 0;
     margin-bottom: 1.5rem;
-    text-shadow: 0 0 15px rgba(249, 217, 118, 0.4), 0 2px 5px rgba(0, 0, 0, 0.5);
     font-weight: 600;
+    letter-spacing: 1px;
+    text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
 }
 
 .content-container p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8; margin-bottom: 1.5rem;
+    font-weight: 400;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+    letter-spacing: 0.3px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: rgba(0, 12, 26, 0.3);
+    border: 1px solid rgba(249, 217, 118, 0.1);
 }
 
+
 .content-container ul {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0;
-    text-align: left;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 0;
+    list-style-position: inside; text-align: center;
 }
 
 .content-container li {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
-    position: relative;
-    padding-left: 1.5rem;
-    line-height: 1.5;
-}
-
-.content-container li::before {
-    content: '⚓'; /* Anchor icon */
-    position: absolute;
-    left: 0;
-    color: #f9d976;
-    font-size: 1em;
-}
-
-/* Contact form */
-.contact-form {
-    background: rgba(0, 12, 26, 0.4);
-    padding: 2rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(249, 217, 118, 0.15);
-    margin-top: 2rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #f9d976;
-    font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.8rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgba(249, 217, 118, 0.2);
-    background: rgba(0, 12, 26, 0.3);
-    color: white;
-    font-family: 'Playfair Display', serif;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: rgba(249, 217, 118, 0.5);
-    box-shadow: 0 0 0 3px rgba(249, 217, 118, 0.2);
-}
-
-textarea.form-control {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.submit-btn {
-    background: #f9d976;
-    color: #001f3f;
-    border: none;
-    padding: 0.8rem 1.8rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
-}
-
-.submit-btn:hover {
-    background: #ffe57f;
-    box-shadow: 0 0 15px rgba(249, 217, 118, 0.6);
-}
-
-.form-success {
-    background: rgba(0, 200, 0, 0.2);
-    color: #90ee90;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-top: 1.5rem;
-    display: none;
-    font-weight: 500;
-}
-
-/* Accommodation Grid */
-.accommodation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-    text-align: left;
-}
-
-.bungalow-card {
-    background: rgba(0, 12, 26, 0.4);
-    border-radius: 1rem;
-    overflow: hidden;
-    border: 1px solid rgba(249, 217, 118, 0.15);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.bungalow-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-}
-
-.bungalow-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-}
-
-.bungalow-info {
-    padding: 1.5rem;
-}
-
-.bungalow-title {
-    font-size: 1.8rem;
-    color: #f9d976;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.bungalow-price {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.bungalow-desc {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
     line-height: 1.6;
-}
-
-.book-btn {
-    background: rgba(249, 217, 118, 0.2);
-    color: #f9d976;
-    border: 1px solid rgba(249, 217, 118, 0.3);
-    padding: 0.6rem 1.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Playfair Display', serif;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.book-btn:hover {
-    background: rgba(249, 217, 118, 0.3);
-}
-
-/* Main logo */
-.main-logo {
-    width: 220px;
-    height: 220px;
-    display: block;
-    margin: 5rem auto 1.5rem; /* Added 5rem margin to the top to move it down */
-    filter: drop-shadow(0 0 8px rgba(249, 217, 118, 0.4));
+    font-weight: 400;
+    text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
 }
 
 /* Gallery styles */
 .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
-    margin-top: 2rem;
 }
 
-.gallery-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+.gallery-item {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    aspect-ratio: 1/1;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.gallery-img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-/* Lightbox for gallery images */
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Lightbox */
 .lightbox {
     position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0,0,0,0.9);
     display: flex;
     justify-content: center;
@@ -699,262 +543,738 @@ textarea.form-control {
     border-radius: 0.5rem;
 }
 
-/* Mobile menu button */
-.mobile-menu-btn {
-    display: none; /* Hidden by default, shown via media query */
-    background: none;
-    border: none;
+/* Contact form */
+.contact-form {
+    background: rgba(0, 12, 26, 0.4);
+    padding: 2rem;
+    border-radius: 1rem; border: 1px solid rgba(249, 217, 118, 0.15);
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
     color: #f9d976;
-    font-size: 1.8rem;
+    font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 0.5rem; border: 1px solid rgba(249, 217, 118, 0.2);
+    background: rgba(0, 12, 26, 0.3);
+    color: white;
+    font-family: 'Playfair Display', serif;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: rgba(249, 217, 118, 0.5);
+    box-shadow: 0 0 0 2px rgba(249, 217, 118, 0.2);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    background: rgba(249, 217, 118, 0.2);
+    color: #f9d976;
+    border: 1px solid rgba(249, 217, 118, 0.3);
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    z-index: 101; /* Above nav bar */
-    position: fixed;
-    top: 1.3rem;
-    right: 1.5rem;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    font-family: 'Playfair Display', serif;
+    font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.mobile-menu-btn.active {
-    transform: rotate(90deg); /* Rotate for 'X' effect */
+.submit-btn:hover {
+    background: rgba(249, 217, 118, 0.3);
+    transform: translateY(-2px);
 }
 
-/* Dashboard Specific Styles */
-.widget-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3x3 grid */
-    gap: 25px;
-    padding: 40px;
-    max-width: 1200px;
-    margin: 30px auto;
-    box-sizing: border-box;
-}
-
-.captain-widget {
-    background: rgba(0, 12, 26, 0.4); /* Darker glass effect */
-    padding: 20px;
-    border-radius: 15px;
-    border: 1px solid rgba(249, 217, 118, 0.15);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden; /* Important for iframes */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+/* Form success message */
+.form-success {
+    background: rgba(39, 174, 96, 0.2); border: 1px solid rgba(39, 174, 96, 0.3);
+    color: #2ecc71;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
     text-align: center;
-    min-height: 300px; /* Ensure consistent height for widgets */
+    display: none;
 }
 
-.captain-widget:hover {
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+.form-success.visible {
+    display: block;
 }
 
-.captain-widget h4 {
-    font-size: 1.6rem;
+/* Facebook logo */
+.facebook-logo {
+    width: 24px;
+    height: 24px; vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Scrollbar styling for the main content wrapper */
+#main-scrollable-content-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+#main-scrollable-content-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+#main-scrollable-content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(249, 217, 118, 0.3);
+    border-radius: 4px;
+}
+
+#main-scrollable-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(249, 217, 118, 0.5);
+}
+
+
+/* Accommodation section */
+.accommodation-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.bungalow-card {
+    background: rgba(0, 12, 26, 0.4);
+    border-radius: 0.8rem; overflow: hidden;
+    border: 1px solid rgba(249, 217, 118, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bungalow-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(249,217,118,0.1);
+}
+
+.bungalow-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.bungalow-info {
+    padding: 1.5rem;
+}
+
+.bungalow-title {
+    font-size: 1.5rem;
     color: #f9d976;
     margin-top: 0;
-    margin-bottom: 15px;
-    font-weight: 600;
-    text-shadow: 0 0 8px rgba(249, 217, 118, 0.3);
+    margin-bottom: 0.5rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.captain-widget iframe {
-    width: 100%;
-    height: 100%; /* Take full height of the widget container */
-    border: none;
-    border-radius: 8px;
-    overflow: hidden;
-    filter: brightness(0.95); /* Slightly dim iframes for aesthetic */
+.bungalow-price {
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 1rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Specific styles for dashboard text/elements */
-.captain-subtitle {
-    font-size: 1.3rem;
+.bungalow-desc {
     color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1rem;
-    font-style: italic;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    margin-bottom: 1.5rem; line-height: 1.6;
 }
 
-.live-pulse {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    color: #c60000;
-    font-size: 1.1rem;
-    animation: pulseText 2s infinite;
-    margin-bottom: 2rem;
+.book-btn {
+    background: rgba(249, 217, 118, 0.2);
+    color: #f9d976;
+    border: 1px solid rgba(249, 217, 118, 0.3);
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease; font-family: 'Playfair Display', serif;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.live-dot {
-    width: 14px;
-    height: 14px;
-    background-color: #ff0000;
+.book-btn:hover {
+    background: rgba(249, 217, 118, 0.3);
+}
+
+
+/* Main logo */
+.main-logo {
+    width: 220px;
+    height: 220px;
+    display: block;
+    margin: 5rem auto 1.5rem; /* Added 5rem margin to the top to move it down */
+    filter: drop-shadow(0 0 8px #f9d976);
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
-    animation: pulseDot 1.2s infinite;
 }
 
-@keyframes pulseDot {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.6; }
-    100% { transform: scale(1); opacity: 1; }
+/* Enhanced Water particle effects - SMALLER AND MORE LIKE SEA SPRAY */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; z-index: -1;
 }
 
-@keyframes pulseText {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0); opacity: 0;
+    }
+    25% {
+        opacity: 0.5; }
+    75% {
+        opacity: 0.5; }
+    100% {
+        transform: translateY(-80px) translateX(15px);
+        opacity: 0; }
 }
 
-/* Responsive layout for Dashboard */
+/* Keyframes shine was already defined above, removing duplicate */
+
+.water-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    pointer-events: none; animation: float 3s infinite ease-out;
+}
+
+.water-particle:nth-child(2n) {
+    width: 6px;
+    height: 6px;
+    animation-duration: 3.5s;
+    animation-delay: 0.5s;
+}
+
+.water-particle:nth-child(3n) {
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.8);
+    animation-duration: 2.5s;
+    animation-delay: 1s;
+}
+
+.water-particle:nth-child(4n) {
+    width: 5px;
+    height: 5px;
+    background: rgba(200, 220, 255, 0.7);
+    animation-duration: 3s;
+    animation-delay: 1.5s;
+}
+
+
+/* Import a premium nautical-style font */
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+
+/* Commented out problematic body style from previous version */
+/* body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Marcellus SC', serif;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+} */
+
+.dashboard-title {
+    font-size: 3.2rem;
+    text-align: center;
+    padding: 40px 0 20px;
+    color: #f9d976;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(249, 217, 118, 0.4);
+}
+
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 20px 60px;
+}
+
+.widget {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.widget:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.widget h2 {
+    text-align: center;
+    font-size: 1.4rem;
+    margin: 20px 0 10px;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+.widget iframe {
+    width: 100%;
+    height: 250px;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Responsive layout */
 @media screen and (max-width: 1200px) {
     .widget-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
-        padding: 30px;
-    }
-    .captain-widget {
-        min-height: 280px;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 20px 30px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    nav {
-        flex-wrap: wrap;
-        padding: 1rem 1rem;
-        justify-content: center;
-    }
-
-    .nav-logo {
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
-
-    .nav-links {
-        display: none; /* Hide navigation links by default on mobile */
-        flex-direction: column;
-        width: 100%;
-        background: rgba(10, 25, 40, 0.95);
-        position: absolute;
-        top: 100%; /* Position below nav bar */
-        left: 0;
-        padding: 1rem 0;
-        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-        transform: translateY(-100%); /* Start off-screen */
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .nav-links.open {
-        display: flex;
-        transform: translateY(0); /* Slide in */
-    }
-
-    .nav-link {
-        padding: 0.7rem 0;
-        margin: 0.5rem 0;
-        width: 90%;
-        max-width: 250px;
-        border: 1px solid rgba(249, 217, 118, 0.2);
-        background: rgba(249, 217, 118, 0.1);
-        border-radius: 6px;
-    }
-
-    .nav-link::after {
-        display: none; /* Hide underline on mobile */
-    }
-
-    .social-icons {
-        display: none; /* Hide social icons on mobile to save space */
-    }
-
-    .mobile-menu-btn {
-        display: block; /* Show hamburger button on mobile */
-    }
-
-    .home-title {
+    .dashboard-title {
         font-size: 2.5rem;
     }
 
-    .home-subtitle {
-        font-size: 1.3rem;
-    }
-
-    .intro-text {
-        font-size: 1rem;
-        max-width: 95%;
-    }
-
-    .main-logo {
-        width: 180px;
-        height: 180px;
-        margin-top: 3rem;
-    }
-
-    .content-container {
-        padding: 2rem 1.5rem;
-        width: 95%;
-        max-height: 90vh; /* Allow more height for content on smaller screens */
-    }
-
-    .content-container h2 {
-        font-size: 2rem;
-    }
-
-    .content-container li {
-        font-size: 1rem;
-        padding-left: 1.3rem;
-    }
-
-    .content-container li::before {
-        font-size: 0.9em;
-    }
-
-    .accommodation-grid, .gallery-grid {
-        grid-template-columns: 1fr; /* Single column on mobile */
-    }
-
     .widget-grid {
-        grid-template-columns: 1fr; /* Single column on small screens */
-        padding: 20px;
-        gap: 20px;
+        grid-template-columns: 1fr;
+        padding: 10px 20px;
     }
-    .captain-widget {
-        min-height: 250px; /* Adjust height for single column layout */
-    }
-    .captain-widget h4 {
-        font-size: 1.4rem;
+
+    .widget iframe {
+        height: 220px;
     }
 }
 
-@media screen and (max-width: 480px) {
-    .home-title {
-        font-size: 2rem;
+/* --- MEDIA QUERIES (from your style2.txt) --- */
+@media (min-width: 1400px) {
+    #main-scrollable-content-wrapper {
+        height: 100vh;
+        overflow-y: auto;
+        padding-top: 100px; /* This might need adjustment based on new nav height */
+    }
+
+    /* .home-content, .content-section - removed conflicting overrides */
+    .home-content,
+    .content-section {
+        /* No specific overrides here, let base styles handle */
+    }
+
+    #threejs-background {
+        transform: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+    }
+
+    /* .nav-container specific overrides for 1400px if needed, base style is now full width */
+    /* nav {
+          padding: 0.85rem 4rem; /* Example if different padding needed for very large screens * /
+      } */
+    /* .nav-logo {
+          margin-right: 3rem;
+      } */
+    /* .nav-links {
+          margin-left: 3rem;
+      } */
+    /* .nav-link {
+            font-size: 0.95rem;
+        } */
+
+    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
+        transform: none !important;
+        width: 360px !important;
+        max-width: 360px !important;
+        height: auto !important;
+        font-size: initial !important;
+        margin-left: auto !important; margin-right: auto !important;
+        margin-top: 2rem !important;
+        padding: 16px 20px !important;
+    }
+
+    .captain-widget *, .widget * { /* This rule seems to be for a different set of widgets, not nav */
+        transform: none !important; font-size: inherit !important;
+    }
+}
+
+
+/* Responsive adjustments */
+@media (min-width: 769px) and (max-width: 1024px) { /* Tablet */
+    #main-scrollable-content-wrapper {
+        padding-top: 80px; /* This might need adjustment based on new nav height */
+    }
+
+    /* .home-content, .content-section - removed conflicting overrides */
+    .home-content,
+    .content-section {
+        /* No specific overrides here, let base styles handle */
+    }
+    /* Nav container is full width by default, nav has its own padding */
+    /* nav {
+        max-width: none; padding: 0.85rem 2.5rem; /* Base nav padding will apply, can override if needed * /
+        margin: 0;
+    } */
+    /* .nav-logo {
+        height: 40px; margin-right: 2rem; /* Base nav-logo style will apply * /
+    } */
+    /* .nav-links {
+        gap: 2rem; /* Base nav-links style will apply * /
+        margin-left: 2rem; } */
+    /* .nav-link {
+          font-size: 0.95rem; } /* Base nav-link style will apply * / */
+
+    h1.home-title {
+        font-size: 3.5rem; }
+
+    .home-subtitle {
+        font-size: 1.6rem; }
+
+    .intro-text {
+        font-size: 1.2rem;
+        max-width: 800px; }
+      .main-logo {
+          width: 200px; height: 200px;
+      }
+      .captain-widget, .widget {  /* This rule seems to be for a different set of widgets, not nav */
+          max-width: 360px;
+      }
+
+    .content-container {
+        padding: 2.5rem; width: 95%;
+        margin-top: 0;
+    }
+
+    .accommodation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+
+    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
+        padding: 1.5rem;
+        max-width: 700px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) { /* Smaller tablets and large mobiles */
+    #main-scrollable-content-wrapper {
+        padding-top: 70px; /* This might need adjustment based on new nav height */
+    }
+
+    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
+        /* padding: 1rem; /* Original was 1rem. New base is 0. Inner nav handles padding. * /
+    } */
+    nav { /* MODIFIED for mobile */
+        padding: 1rem 1.5rem;
+        flex-direction: row; /* Ensures logo and menu button are on the same line */
+        justify-content: space-between; /* Positions logo to left, menu button to right */
+        /* gap: 0.8rem; /* Original, less relevant with justify-content: space-between */
+    }
+
+    .nav-logo { /* MODIFIED for mobile */
+        height: 35px; /* Keep user's mobile specific height */
+        margin-bottom: 0; /* Removed as flex alignment handles vertical centering in new nav */
+        margin-right: 0; /* Not needed if logo is on the left */
+        margin-left: 0; /* My specific addition for mobile if different from base */
+    }
+    /* .nav-links { /* This is the container for links in DESKTOP. Mobile .nav-links are handled by .nav-links.open * /
+        /* gap: 1rem; /* Original. Base is 1.5rem. Let base apply or define specifically if needed * /
+        /* justify-content: center; /* Original. Base is center. Let base apply. * /
+        /* margin-left: 0; /* Original. Base has no margin-left. Let base apply. * /
+    /* } */
+    /* .nav-link { /* This is for individual links in DESKTOP. Mobile .nav-links .nav-link is separate * /
+        /* font-size: 0.9rem; /* Original. Base is 1rem. Let base apply or define specifically for desktop if smaller. * /
+        /* padding: 0.4rem 0.7rem; /* Original. Base is 0.8rem 1rem. Let base apply. * /
+    /* } */
+
+    h1.home-title {
+        font-size: 3rem;
     }
     .home-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.4rem;
     }
     .intro-text {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
+        max-width: 90%;
     }
-    .main-logo {
-        width: 150px;
-        height: 150px;
+    .content-container {
+        padding: 2rem;
+        max-height: 85vh;
+        margin-top: 0;
+        width: 95%;
+    }
+    .content-container h2 {
+        font-size: 2rem;
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.8rem;
+    }
+    .accommodation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .section-logo {
+        width: 70px;
+        height: 70px;
+        top: -80px;
+    }
+
+    .captain-dashboard { /* This rule seems to be for a different set of widgets, not nav */
+        padding: 1.5rem;
+        max-width: 700px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* --- Mobile Menu Styles - Incorporating Changes --- */
+    .mobile-menu-btn { /* This is the button itself */
+        display: flex; /* Original rule to show the button */
+        /* Base styles for mobile-menu-btn (outside media query) handle background, border, font-size etc. */
+        /* The following will override base styles for top, right, color when on mobile */
+        top: 1.3rem;   /* My change for positioning */
+        right: 1.5rem;  /* My change for positioning */
+        color: #f9d976; /* My change for color */
+    }
+
+    .nav-links { /* This is the container that opens full screen */
+        /* Retain existing .nav-links styles for the full-screen overlay from original file */
+        /* e.g., display: flex, flex-direction: column, position: fixed, top, left, right, bottom, background, backdrop-filter, transform, transition, justify-content, align-items, z-index, overflow-y, padding, box-sizing */
+        /* My addition for nav-links when it's the mobile menu container */
+        gap: 0; /* Reset gap if using margin on links, or set desired gap for vertical links */
+    }
+
+    .nav-links.open { /* This is the class that shows the mobile menu */
+        transform: translateX(0); /* Original rule */
+    }
+
+    .nav-links .nav-link { /* MODIFIED: Styles for links *inside* the open mobile menu */
+        font-family: 'Montserrat', sans-serif; /* Ensure font consistency */
+        font-size: 1.2rem; /* My suggested size */
+        font-weight: 500;
+        letter-spacing: 1px;
+        margin: 10px 0; /* My suggested margin for spacing */
+        width: 90%;     /* My suggested width */
+        max-width: 300px; /* Original constraint, kept */
+        padding: 15px 20px; /* My suggested padding */
+        text-align: center; /* Original, kept */
+        color: #f9d976;   /* Original, kept */
+        background: rgba(249,217,118,0.1); /* Original background for links in menu, kept */
+        border: 1px solid rgba(249,217,118,0.2); /* Original border for links in menu, kept */
+        border-radius: 6px; /* Match base nav-link rounding if desired */
+    }
+
+    .nav-link::after { /* ADDED: Disable underline animation in mobile overlay */
+        display: none;
+    }
+
+    /* Hide original nav logo when mobile menu is open - User's original rule, kept for now. */
+    /* If the logo in the nav bar is disappearing on mobile and it shouldn't, this rule might be the cause. */
+    /* My new nav design intends for the .nav-logo to be visible with the .mobile-menu-btn. */
+    .nav-container nav .nav-logo {
+           display: none; /* Original rule from user. */
+    }
+}
+
+@media (max-width: 576px) { /* Mobile */
+    #main-scrollable-content-wrapper {
+        padding-top: 60px; /* This might need adjustment based on new nav height */
+    }
+    /* .nav-container { /* Base .nav-container is full width, padding is 0 * /
+        /* padding: 0.8rem; /* Original padding, new base is 0 * /
+    /* } */
+    /* .nav-link { /* Base .nav-link styles will apply, can be overridden if needed for very small screens * /
+        /* font-size: 0.85rem;
+        padding: 0.3rem 0.6rem;
+    } */
+
+    h1.home-title {
+        font-size: 1.8rem;
+    }
+    .home-subtitle {
+        font-size: 1rem;
+    }
+    .intro-text {
+        font-size: 1rem;
+        max-width: 100%;
     }
     .content-container {
         padding: 1.5rem;
+        width: 100%;
+        border-radius: 0.8rem;
+        margin-top: 0;
+        max-height: 90vh;
     }
     .content-container h2 {
         font-size: 1.8rem;
     }
-    .captain-widget h4 {
-        font-size: 1.2rem;
+    .section-logo {
+        width: 60px;
+        height: 60px;
+        top: -70px;
     }
-    .live-pulse {
-        font-size: 1rem;
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.8rem;
     }
-    .live-dot {
-        width: 12px;
-        height: 12px;
+    .accommodation-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .main-logo {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 1rem;
+    }
+    .contact-form {
+        padding: 1.5rem;
+    }
+    .captain-widget, .widget { /* This rule seems to be for a different set of widgets, not nav */
+        padding: 15px;
+    }
+}
+
+
+/* Mobile menu button - Base styles (mostly for when it's not yet displayed as flex by media query) */
+.mobile-menu-btn { /* User's original base styles */
+    display: none; background: none;
+    border: none;
+    color: white; /* Will be overridden by mobile media query for #f9d976 */
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 101;
+    position: fixed;
+    top: 1rem; /* Will be overridden by mobile media query for 1.3rem */
+    right: 1rem; /* Will be overridden by mobile media query for 1.5rem */
+}
+
+/* Mobile menu styles - These are primarily for the .nav-links container when it opens */
+/* @media (max-width: 768px) is handled above for .mobile-menu-btn, .nav-links, .nav-links.open, .nav-links .nav-link */
+
+
+/* --- NEW MINIMAL STYLES FOR THE 3x3 WIDGET GRID --- */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* .widget class was already defined earlier with different styles, this is a second definition. */
+/* Assuming this .widget definition is for the new dashboard grid, and the one above is for something else or older. */
+.widget { /* This is the second .widget definition */
+    background: rgba(0, 12, 26, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(249, 217, 118, 0.05);
+    color: #f0f0f0;
+    min-height: 280px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(249, 217, 118, 0.15);
+}
+
+.widget .widget-title { /* Styles for title within the new .widget */
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #f9d976;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* .widget iframe was already defined, this is a second definition. */
+.widget iframe { /* This is the second .widget iframe definition */
+    border: none;
+    width: 100%;
+    flex-grow: 1;
+    border-radius: 8px;
+    min-height: 220px;
+}
+
+.widget > div[id] {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    line-height: 1.5;
+}
+.widget > div[id] p {
+    margin: 5px 0;
+    color: #e0e0e0;
+}
+.widget > div[id] p strong, .widget > div[id] p[style*="font-size: 1.8em"] {
+    color: #f9d976;
+    font-weight: bold;
+}
+
+.widget .warning {
+    color: #ff8a80;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Responsive adjustments for the new dashboard grid */
+@media screen and (max-width: 1200px) {
+    .dashboard { /* Styles for .dashboard, not to be confused with .captain-dashboard */
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard { /* Styles for .dashboard */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    /* Assuming this .widget refers to the new dashboard grid's widgets */
+    .widget { /* This is the third .widget definition within a media query */
+        padding: 15px;
+        min-height: 260px;
+    }
+    .widget .widget-title { /* Styles for title within the new .widget */
+        font-size: 1.3em;
+    }
+    .widget iframe { /* This is the third .widget iframe definition */
+        min-height: 200px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .dashboard { /* Styles for .dashboard */
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    /* Assuming this .widget refers to the new dashboard grid's widgets */
+    .widget { /* This is the fourth .widget definition within a media query */
+        min-height: 240px;
+    }
+    .widget .widget-title { /* Styles for title within the new .widget */
+        font-size: 1.2em;
     }
 }
