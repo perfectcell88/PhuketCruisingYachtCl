@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); /* ADDED for cleaner nav font */
 
 /* Enhanced styles for Phuket Cruising Yacht Club */
@@ -62,8 +61,8 @@ body, html {
 body.overlay-active {
     overflow: hidden; /* **MOST IMPORTANT: Disable scrolling on the entire body** */
     position: fixed; /* **CRITICAL: Fix body position to prevent scroll jump/reflow** */
-    width: 100%;     /* Ensure body takes full width when fixed */
-    height: 100%;    /* Ensure body takes full height when fixed */
+    width: 100%;       /* Ensure body takes full width when fixed */
+    height: 100%;      /* Ensure body takes full height when fixed */
     top: 0;
     left: 0; /* Ensure body is fixed to the top-left of the viewport */
 }
@@ -265,12 +264,12 @@ nav {
 }
 
 @keyframes shine {
-  0% {
-    left: -75%;
-  }
-  100% {
-    left: 125%;
-  }
+    0% {
+        left: -75%;
+    }
+    100% {
+        left: 125%;
+    }
 }
 
 /* Particle glow effect behind title */
@@ -425,6 +424,193 @@ nav {
     transform: translateX(-50%); filter: drop-shadow(0 0 8px rgba(249, 217, 118, 0.4));
     border-radius: 50%;
     z-index: 2;
+}
+
+/* Base styling for all content sections, which #about-pcyc will inherit */
+.content-section {
+    padding: 80px 40px; /* Ample padding for clear separation */
+    min-height: 100vh; /* Ensures sections take full viewport height for smooth scrolling */
+    display: flex;
+    justify-content: center; /* Center content horizontally within the section */
+    align-items: flex-start; /* Align content to the top within the section */
+    flex-direction: column; /* Stack content vertically */
+    text-align: center; /* Default text alignment for the section */
+    opacity: 0; /* Hidden by default, managed by script.js for transitions */
+    visibility: hidden; /* Hidden by default, managed by script.js */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth fade in/out */
+}
+
+.content-section.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Base styling for the glass-card container, shared by all content within this section */
+.glass-card {
+    background-color: rgba(255, 255, 255, 0.08); /* Semi-transparent white for glassmorphism */
+    backdrop-filter: blur(10px); /* The core blur effect */
+    border-radius: 20px; /* Rounded corners for a softer look */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle border for depth */
+    padding: 40px;
+    margin: 20px auto; /* Center the card horizontally and add vertical spacing */
+    max-width: 900px; /* Default max-width for content readability */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Elegant shadow for pop */
+    text-align: left; /* Text aligns left within the card for better readability */
+    color: #f9d976; /* Your existing primary text color */
+}
+
+/* Specific styling for the main "About PCYC" card to make it wider */
+.glass-card.full-width-card {
+    max-width: 1200px; /* Allows the main content card to be wider */
+    margin: 40px auto; /* More vertical margin to separate it from other elements */
+}
+
+
+/* Styling for main section titles (e.g., "Welcome to the Phuket Cruising Yacht Club!") */
+.glass-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em; /* Prominent size for main titles */
+    color: #fff; /* Pure white for strong contrast and elegance */
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Deeper text shadow for impact */
+    line-height: 1.2;
+}
+
+/* Styling for sub-titles within sections (e.g., "Your Unforgettable Stay & Essential Amenities") */
+.glass-card h3.section-sub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em; /* Smaller than h2, but still commanding */
+    color: #ffcc66; /* Your accent color for sub-headings */
+    margin-top: 40px; /* More space above new topics */
+    margin-bottom: 20px;
+    text-align: left; /* Align sub-titles left for natural reading flow */
+    position: relative;
+    padding-bottom: 10px; /* Space for a subtle underline effect */
+}
+
+/* Subtle underline for sub-titles */
+.glass-card h3.section-sub-title::after {
+    content: '';
+    display: block;
+    width: 60px; /* Short, elegant underline */
+    height: 3px;
+    background-color: #ffcc66; /* Accent color for the underline */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-radius: 2px;
+}
+
+/* Styling for event highlights (e.g., "Taco Tuesday: An Unmissable Event!") */
+.glass-card h4.event-highlight {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6em;
+    color: #ffd700; /* Brighter gold for highlights */
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+
+/* Styling for paragraphs */
+.glass-card p {
+    font-family: 'Montserrat', sans-serif; /* Clean, modern font for body text, ensures good readability */
+    font-size: 1.15em; /* Slightly larger text for enhanced readability */
+    line-height: 1.7; /* Increased line height for comfortable reading */
+    margin-bottom: 20px;
+    color: #f9d976;
+}
+
+/* Styling for lists */
+.glass-card ul {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 25px 0;
+}
+
+.glass-card ul li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1em;
+    padding-left: 35px; /* Space for custom icon */
+    position: relative;
+    margin-bottom: 12px;
+    color: #f9d976;
+}
+
+/* Custom bullet points for lists using emojis for easy implementation */
+.glass-card ul li::before {
+    content: '⚓'; /* Default anchor icon for nautical theme */
+    font-size: 1.3em;
+    color: #ffcc66; /* Accent color for icons */
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: 1.5; /* Align icon with text */
+}
+
+/* Specific icons for different list types for enhanced visual meaning */
+.service-list li::before {
+    content: '✅'; /* Checkmark for services, clear and concise */
+}
+
+.discount-list li::before {
+    content: '💰'; /* Money bag for discounts, visually impactful */
+}
+
+
+/* Responsive adjustments for optimal readability on all screen sizes */
+@media screen and (max-width: 1200px) {
+    .glass-card.full-width-card {
+        max-width: 95%; /* Adjust width for larger screens to give some margin */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .content-section {
+        padding: 60px 20px; /* Reduced padding on smaller screens */
+    }
+    .glass-card {
+        padding: 25px;
+        margin: 15px auto;
+    }
+    .glass-card h2 {
+        font-size: 2em; /* Smaller main titles */
+    }
+    .glass-card h3.section-sub-title {
+        font-size: 1.5em;
+        text-align: center; /* Center sub-titles on mobile for better flow */
+    }
+    .glass-card h3.section-sub-title::after {
+        left: 50%; /* Center underline on mobile */
+        transform: translateX(-50%);
+    }
+    .glass-card h4.event-highlight {
+        font-size: 1.3em;
+    }
+    .glass-card p,
+    .glass-card ul li {
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    .glass-card ul li::before {
+        font-size: 1.1em;
+        top: 2px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .glass-card h2 {
+        font-size: 1.8em;
+    }
+    .glass-card h3.section-sub-title {
+        font-size: 1.3em;
+    }
+    .glass-card p,
+    .glass-card ul li {
+        font-size: 0.95em;
+    }
 }
 
 .close-btn {
