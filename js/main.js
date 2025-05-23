@@ -13,7 +13,7 @@ let controls, water, sun;
 
 // DOM elements for the loading overlay
 const loadingOverlay = document.getElementById('loading-overlay');
-const loadingText = document.getElementById('loading-text'); // Added for dynamic text updates
+// Removed: const loadingText = document.getElementById('loading-text'); as per user request
 
 /**
  * Initializes the Three.js scene, camera, renderer, water, sky, and OrbitControls.
@@ -148,25 +148,19 @@ function simulateLoadingAndStart() {
     progress += Math.random() * 5; // Increment progress by a random amount (0-5%)
     if (progress >= 100) {
       progress = 100; // Cap progress at 100%
-      updateLoadingUI(progress); // Update UI to 100%
+      // Removed: updateLoadingUI(progress); as per user request
       clearInterval(interval); // Stop the interval
       fadeOutLoadingOverlay(); // Start fading out the overlay
       animate(); // Start the Three.js animation loop
     } else {
-      updateLoadingUI(progress); // Update loading UI with current progress
+      // Removed: updateLoadingUI(progress); as per user request
     }
   }, 100); // Update every 100 milliseconds
 }
 
 /**
- * Updates the loading UI text with the current progress percentage.
- * @param {number} progress - The current loading progress (0-100).
+ * Removed: updateLoadingUI function as per user request.
  */
-function updateLoadingUI(progress) {
-  if (loadingText) {
-    loadingText.textContent = `Setting sail... ${Math.floor(progress)}%`;
-  }
-}
 
 /**
  * Fades out the loading overlay smoothly and then removes it from the DOM.
