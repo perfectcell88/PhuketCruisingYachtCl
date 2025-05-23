@@ -1,5 +1,5 @@
 // script.js - Handles all page interactivity except the Three.js background and initial loading.
-// This includes navigation, content section toggling, form submission, gallery, and API fetches for dashboard widgets.
+// This includes navigation, content section toggling, form submission, gallery, and local time display.
 
 // --- DOM Element References ---
 // These elements are expected to be present in indexpl.txt
@@ -335,163 +335,14 @@ setInterval(() => {
     });
 }, 15 * 60 * 1000); // 15 minutes
 
-// --- API Keys (Note: For production, consider environment variables) ---
-// These are hardcoded as per your original script.
-const lat = 7.8; // Latitude for Phuket
-const lon = 98.34; // Longitude for Phuket
-const openWeatherKey = '28851ddd3b7cc40ca37d8834dc944ade'; // OpenWeatherMap API Key
-const weatherApiKey = 'a6ee8a34083c4ab296b65918252105'; // WeatherAPI.com API Key
-
-// --- Dashboard Widget Data Fetching Functions ---
-
-/**
- * Fetches and displays weather warnings from OpenWeatherMap.
- */
-async function fetchWarnings() {
-    const warningDiv = document.getElementById('weather-warnings');
-    if (!warningDiv) return;
-    try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,current&appid=${openWeatherKey}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-
-        if (data.alerts && data.alerts.length > 0) {
-            warningDiv.innerHTML = data.alerts.map(alert =>
-                `<p class='warning'><strong>${alert.event}</strong> (${new Date(alert.start * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${new Date(alert.end * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}):<br>${alert.description}</p>`
-            ).join('');
-        } else {
-            warningDiv.innerHTML = '<p>No active weather alerts.</p>';
-        }
-    } catch (error) {
-        console.error('Error fetching weather warnings:', error);
-        warningDiv.innerHTML = '<p class="error-message">Could not load weather alerts.</p>';
-    }
-}
-
-/**
- * Fetches and displays the UV Index from OpenWeatherMap.
- */
-async function fetchUvIndex() {
-    const uvDiv = document.getElementById('uv-index');
-    if (!uvDiv) return;
-    try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${openWeatherKey}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-
-        if (data.current && typeof data.current.uvi !== 'undefined') {
-            let uviDesc = "";
-            if (data.current.uvi <= 2) uviDesc = "Low";
-            else if (data.current.uvi <= 5) uviDesc = "Moderate";
-            else if (data.current.uvi <= 7) uviDesc = "High";
-            else if (data.current.uvi <= 10) uviDesc = "Very High";
-            else uviDesc = "Extreme";
-            uvDiv.innerHTML = `<p style="font-size: 1.8em; margin-bottom: 5px;">${data.current.uvi}</p><p>(${uviDesc})</p>`;
-        } else {
-            uvDiv.innerHTML = '<p>UV Index data not available.</p>';
-        }
-    } catch (error) {
-        console.error('Error fetching UV Index:', error);
-        uvDiv.innerHTML = '<p class="error-message">Could not load UV Index.</p>';
-    }
-}
-
-/**
- * Fetches and displays sunrise and sunset times from OpenWeatherMap.
- */
-async function fetchSunriseSunset() {
-    const sunriseSunsetDiv = document.getElementById('sunrise-sunset');
-    if (!sunriseSunsetDiv) return;
-    try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${openWeatherKey}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-
-        if (data.current && data.current.sunrise && data.current.sunset) {
-            const sunriseTime = new Date(data.current.sunrise * 1000).toLocaleTimeString('en-GB', { timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit' });
-            const sunsetTime = new Date(data.current.sunset * 1000).toLocaleTimeString('en-GB', { timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit' });
-            sunriseSunsetDiv.innerHTML = `<p>Sunrise: ${sunriseTime}</p><p>Sunset: ${sunsetTime}</p>`;
-        } else {
-            sunriseSunsetDiv.innerHTML = '<p>Sunrise/Sunset data not available.</p>';
-        }
-    } catch (error) {
-        console.error('Error fetching Sunrise/Sunset:', error);
-        sunriseSunsetDiv.innerHTML = '<p class="error-message">Could not load Sunrise/Sunset data.</p>';
-    }
-}
-
-/**
- * Fetches and displays sea surface temperature from WeatherAPI.com.
- */
-async function fetchSeaTemp() {
-    const seaTempDiv = document.getElementById('sea-temp');
-    if (!seaTempDiv) return;
-    try {
-        const response = await fetch(`https://api.weatherapi.com/v1/marine.json?key=${weatherApiKey}&q=${lat},${lon}&days=1`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-
-        if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0] && data.forecast.forecastday[0].hour) {
-            const hoursArray = data.forecast.forecastday[0].hour;
-            const currentHour = new Date().getHours();
-            let temp = 'N/A';
-
-            // Try to find temperature for the current hour
-            const currentHourData = hoursArray.find(h => new Date(h.time_epoch * 1000).getHours() === currentHour);
-            if (currentHourData && typeof currentHourData.water_temp_c !== 'undefined') {
-                temp = currentHourData.water_temp_c;
-            }
-            // Fallback to the first available temperature if current hour not found
-            else if (hoursArray.length > 0 && typeof hoursArray[0].water_temp_c !== 'undefined') {
-                temp = hoursArray[0].water_temp_c;
-            }
-            seaTempDiv.innerHTML = `<p style="font-size: 1.8em; margin-bottom: 5px;">${temp}°C</p>`;
-        } else {
-            seaTempDiv.innerHTML = '<p>Sea Temp data not available.</p>';
-        }
-    } catch (error) {
-        console.error('Error fetching Sea Temperature:', error);
-        seaTempDiv.innerHTML = '<p class="error-message">Could not load Sea Temp.</p>';
-    }
-}
-
-/**
- * Fetches and displays moon phase information from WeatherAPI.com.
- */
-async function fetchMoonPhase() {
-    const moonPhaseDiv = document.getElementById('moon-phase-content');
-    if (!moonPhaseDiv) return;
-    try {
-        const response = await fetch(`https://api.weatherapi.com/v1/astronomy.json?key=${weatherApiKey}&q=${lat},${lon}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-
-        if (data.astronomy && data.astronomy.astro && data.astronomy.astro.moon_phase) {
-            moonPhaseDiv.innerHTML = `<p><strong>${data.astronomy.astro.moon_phase}</strong></p><p style="font-size:0.9em;">Moonrise: ${data.astronomy.astro.moonrise}</p><p style="font-size:0.9em;">Moonset: ${data.astronomy.astro.moonset}</p>`;
-        } else {
-            moonPhaseDiv.innerHTML = '<p>Moon Phase data not available.</p>';
-        }
-    } catch (error) {
-        console.error('Error fetching Moon Phase:', error);
-        moonPhaseDiv.innerHTML = '<p class="error-message">Could not load Moon Phase data.</p>';
-    }
-}
+// --- Dashboard Widget Data Handling (Reverted to static/placeholder as per user request) ---
+// Removed API keys and fetch functions for weather warnings, UV index, sunrise/sunset, sea temp, and moon phase.
+// These widgets will now display their default HTML content or "Data not available".
 
 // --- Event Listeners and Initial Calls ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial fetch for all dashboard widgets
-    fetchWarnings();
-    fetchUvIndex();
-    fetchSunriseSunset();
-    fetchSeaTemp();
-    fetchMoonPhase();
-
-    // Set intervals for periodic data refresh (adjust as needed)
-    setInterval(fetchWarnings, 10 * 60 * 1000); // Every 10 minutes
-    setInterval(fetchUvIndex, 30 * 60 * 1000); // Every 30 minutes
-    setInterval(fetchSunriseSunset, 60 * 60 * 1000); // Every 60 minutes
-    setInterval(fetchSeaTemp, 30 * 60 * 1000); // Every 30 minutes
-    setInterval(fetchMoonPhase, 6 * 60 * 60 * 1000); // Every 6 hours
+    // Initial call for local time (already handled by setInterval, but good for immediate display)
+    updateLocalTime();
 
     // Call water particles creation if home content is visible on initial load
     // This handles cases where the script loads after the 'visible' class is applied by main.js
