@@ -1,385 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Phuket Cruising Yacht Club</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phuket Cruising Yacht Club</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Sail&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style (2).css" />     <style>
-        /* Inline fallback & critical styles */
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Sail&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 
-        /* Reset & base styles */
-        body, html {
-            margin: 0; padding: 0; height: 100%; /* Keep full height */
-            /* REMOVED overflow: hidden; from here, it will be on the main-content-wrapper */
-            background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321);
-            background-size: 800% 800%;
-            animation: gradientShift 40s ease infinite;
-            font-family: 'Playfair Display', serif;
-            color: #f9d976;
-            user-select: none;
-            text-align: center;
-            cursor: url('Anchor.cur'), auto;
-        }
-        @keyframes gradientShift {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    <style>
+        /* Inline fallback & critical styles */
 
-        /* Loading overlay */
-        #loading-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            pointer-events: all;
-            background: rgba(0,12,26,0.85);
-            opacity: 1;
-            transition: opacity 1s ease;
-        }
-        #loading-overlay.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
+        /* Reset & base styles */
+        body, html {
+            margin: 0; padding: 0; height: 100%; /* Keep full height */
+            /* REMOVED overflow: hidden; from here, it will be on the main-content-wrapper */
+            background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321);
+            background-size: 800% 800%;
+            animation: gradientShift 40s ease infinite;
+            font-family: 'Playfair Display', serif;
+            color: #f9d976;
+            user-select: none;
+            text-align: center;
+            cursor: url('Anchor.cur'), auto;
+        }
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        #loading-overlay::before {
-            content: "";
-            position: absolute;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(249,217,118,0.1), transparent 70%);
-            border-radius: 50%;
-            animation: ripple 2.5s ease-out infinite;
-            pointer-events: none;
-        }
-        @keyframes ripple {
-            0%   { transform: scale(1);  opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
+        /* Loading overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: all;
+            background: rgba(0,12,26,0.85);
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+        #loading-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-        /* Loading logo and spinner */
-        #loading-logo-circle-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 20px;
-        }
-        #loading-logo {
-            width: 200px;
-            height: 200px;
-            display: block;
-            filter: drop-shadow(0 0 8px #f9d976);
-            opacity: 0;
-            animation: logoPop 0.8s ease-out forwards 0.3s;
-            position: relative;
-            z-index: 2;
-            border-radius: 50%;
-        }
-        @keyframes logoPop {
-            from { opacity: 0; transform: scale(0.8); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-        #loading-circle {
-            position: absolute;
-            top: 0; left: 0;
-            width: 200px;
-            height: 200px;
-            pointer-events: none;
-            z-index: 1;
-            animation: spin 1.6s linear infinite;
-            filter: drop-shadow(0 0 8px #f9d976);
-        }
-        #loading-circle.fade-out {
-            opacity: 0;
-        }
-        #loading-circle svg {
-            width: 200px;
-            height: 200px;
-            transform-origin: center;
-        }
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-        #loading-circle circle.base {
-            stroke: #333; stroke-width: 12; fill: none; opacity: 0.2;
-        }
-        #loading-circle circle.progress {
-            stroke: #f9d976; stroke-width: 12; fill: none;
-            stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
-            transition: stroke-dashoffset 0.25s ease;
-        }
+        #loading-overlay::before {
+            content: "";
+            position: absolute;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(249,217,118,0.1), transparent 70%);
+            border-radius: 50%;
+            animation: ripple 2.5s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            0%   { transform: scale(1);  opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
 
-        /* Specific styles for Captain's Dashboard widgets to ensure they fit */
-        /* These were from the old structure, will be overridden by style.css */
-         .captain-dashboard {
-            display: flex;
-            flex-direction: column;
-            gap: 20px; /* Space between widgets */
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
-            border: 1px solid rgba(249, 217, 118, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            margin-top: 40px; /* Add some space from content above */
-        }
+        /* Loading logo and spinner */
+        #loading-logo-circle-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #loading-logo {
+            width: 200px;
+            height: 200px;
+            display: block;
+            filter: drop-shadow(0 0 8px #f9d976);
+            opacity: 0;
+            animation: logoPop 0.8s ease-out forwards 0.3s;
+            position: relative;
+            z-index: 2;
+            border-radius: 50%;
+        }
+        @keyframes logoPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        #loading-circle {
+            position: absolute;
+            top: 0; left: 0;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: 1;
+            animation: spin 1.6s linear infinite;
+            filter: drop-shadow(0 0 8px #f9d976);
+        }
+        #loading-circle.fade-out {
+            opacity: 0;
+        }
+        #loading-circle svg {
+            width: 200px;
+            height: 200px;
+            transform-origin: center;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        #loading-circle circle.base {
+            stroke: #333; stroke-width: 12; fill: none; opacity: 0.2;
+        }
+        #loading-circle circle.progress {
+            stroke: #f9d976; stroke-width: 12; fill: none;
+            stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.25s ease;
+        }
 
-        .captain-widget {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(249, 217, 118, 0.1);
-            text-align: center;
-            box-shadow: inset 0 0 5px rgba(249, 217, 118, 0.1);
-            color: #fff; /* Ensure text is visible */
-        }
+        /* Specific styles for Captain's Dashboard widgets to ensure they fit */
+        /* These were from the old structure, will be overridden by style.css */
+         .captain-dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between widgets */
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
+            border: 1px solid rgba(249, 217, 118, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 40px; /* Add some space from content above */
+        }
 
-        .captain-widget h4 {
-            color: #f9d976;
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-            font-weight: 600;
-        }
+        .captain-widget {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(249, 217, 118, 0.1);
+            text-align: center;
+            box-shadow: inset 0 0 5px rgba(249, 217, 118, 0.1);
+            color: #fff; /* Ensure text is visible */
+        }
 
-        /* Specific styles for weather widget elements */
-        /* These were from the old structure, will be removed from style.css */
-        #weather-widget {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+        .captain-widget h4 {
+            color: #f9d976;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
 
-        .weather-current {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
+        /* Specific styles for weather widget elements */
+        /* These were from the old structure, will be removed from style.css */
+        #weather-widget {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-        .weather-icon {
-            width: 60px; /* Adjusted size */
-            height: 60px; /* Adjusted size */
-            filter: drop-shadow(0 0 5px rgba(249,217,118,0.5));
-        }
+        .weather-current {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
 
-        .weather-details {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* Align text to the left */
-        }
+        .weather-icon {
+            width: 60px; /* Adjusted size */
+            height: 60px; /* Adjusted size */
+            filter: drop-shadow(0 0 5px rgba(249,217,118,0.5));
+        }
 
-        .weather-temp {
-            font-size: 2.2em; /* Larger temp */
-            font-weight: 700;
-            color: #ffe57f;
-        }
+        .weather-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text to the left */
+        }
 
-        .weather-description {
-            font-size: 1em;
-            text-transform: capitalize;
-            color: #ccc;
-        }
+        .weather-temp {
+            font-size: 2.2em; /* Larger temp */
+            font-weight: 700;
+            color: #ffe57f;
+        }
 
-        .weather-location {
-            font-size: 0.9em;
-            color: #aaa;
-        }
+        .weather-description {
+            font-size: 1em;
+            text-transform: capitalize;
+            color: #ccc;
+        }
 
-        .weather-info {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 10px;
-            color: #ccc;
-            font-size: 0.9em;
-        }
+        .weather-location {
+            font-size: 0.9em;
+            color: #aaa;
+        }
 
-        .error-message {
-            color: #ff6b6b;
-            font-weight: bold;
-            text-align: center;
-        }
+        .weather-info {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 10px;
+            color: #ccc;
+            font-size: 0.9em;
+        }
 
-        /* Sun & Moon Widget Styles (minimal, as per existing content) */
-        /* These were from the old structure, will be removed from style.css */
-        #sun-moon-widget {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-        #sun-moon-widget .time-info {
-            font-size: 1.2em;
-            color: #ffe57f;
-            font-weight: 600;
-        }
-        #sun-moon-widget .phase-info {
-            font-size: 1em;
-            color: #ccc;
-        }
-        #sun-moon-widget .phase-icon {
-            font-size: 2em; /* Larger icon for visibility */
-            color: #f9d976;
-            margin-bottom: 5px;
-        }
+        .error-message {
+            color: #ff6b6b;
+            font-weight: bold;
+            text-align: center;
+        }
 
-        /* General glass-widget inherited styles */
-        .glass-widget {
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
-            border: 1px solid rgba(249, 217, 118, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            margin: 20px auto;
-            max-width: 800px;
-            text-align: center;
-        }
+        /* Sun & Moon Widget Styles (minimal, as per existing content) */
+        /* These were from the old structure, will be removed from style.css */
+        #sun-moon-widget {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        #sun-moon-widget .time-info {
+            font-size: 1.2em;
+            color: #ffe57f;
+            font-weight: 600;
+        }
+        #sun-moon-widget .phase-info {
+            font-size: 1em;
+            color: #ccc;
+        }
+        #sun-moon-widget .phase-icon {
+            font-size: 2em; /* Larger icon for visibility */
+            color: #f9d976;
+            margin-bottom: 5px;
+        }
 
-        .widget-title {
-            color: #f9d976;
-            font-size: 2.2em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
+        /* General glass-widget inherited styles */
+        .glass-widget {
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
+            border: 1px solid rgba(249, 217, 118, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
 
-        .widget-description {
-            color: #ccc;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
+        .widget-title {
+            color: #f9d976;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .widget-description {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0"></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0"></script>
 
-    <div id="loading-overlay" role="alert" aria-live="polite" aria-busy="true">
-        <div id="loading-logo-circle-wrapper" aria-hidden="true">
-            <img id="loading-logo" src="logob.png" alt="Phuket Cruising Yacht Club Logo" />
-            <div id="loading-circle" aria-hidden="true">
-                <svg viewBox="0 0 100 100" role="img" aria-hidden="true" >
-                    <defs>
-                        <linearGradient id="loading-gradient" x1="1" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#f9d976"/>
-                            <stop offset="50%" stop-color="#ffe57f"/>
-                            <stop offset="100%" stop-color="#f9d976"/>
-                        </linearGradient>
-                    </defs>
-                    <circle class="base"    cx="50" cy="50" r="45" />
-                    <circle class="progress" cx="50" cy="50" r="45" stroke="url(#loading-gradient)"/>
-                </svg>
-            </div>
-        </div>
-    </div>
+    <div id="loading-overlay" role="alert" aria-live="polite" aria-busy="true">
+        <div id="loading-logo-circle-wrapper" aria-hidden="true">
+            <img id="loading-logo" src="logob.png" alt="Phuket Cruising Yacht Club Logo" />
+            <div id="loading-circle" aria-hidden="true">
+                <svg viewBox="0 0 100 100" role="img" aria-hidden="true" >
+                    <defs>
+                        <linearGradient id="loading-gradient" x1="1" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#f9d976"/>
+                            <stop offset="50%" stop-color="#ffe57f"/>
+                            <stop offset="100%" stop-color="#f9d976"/>
+                        </linearGradient>
+                    </defs>
+                    <circle class="base"    cx="50" cy="50" r="45" />
+                    <circle class="progress" cx="50" cy="50" r="45" stroke="url(#loading-gradient)"/>
+                </svg>
+            </div>
+        </div>
+    </div>
 
-    <div id="threejs-background"></div>
+    <div id="threejs-background"></div>
 
-    <div id="page-content" aria-hidden="true">
-        <div id="main-scrollable-content-wrapper">
-            <div class="home-content" id="home">
-                <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="main-logo">
-                <h1 class="home-title">Phuket Cruising Yacht Club</h1>
-                <div class="particles-container" id="particles-container"></div>
-                <p style="
-    font-family: 'Sail', cursive;
-    font-size: 32px;
-    font-weight: 600;
-    background: linear-gradient(45deg, #004466, #00bcd4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-    margin-top: 40px;
-    animation: fadeIn 2s ease-in-out forwards;
-    opacity: 0;
-"> 
-    The Islands Premier Yacht Club
-                    <br>
+    <div id="page-content" aria-hidden="true">
+        <div id="main-scrollable-content-wrapper">
+            <div class="home-content" id="home">
+                <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="main-logo">
+                <h1 class="home-title">Phuket Cruising Yacht Club</h1>
+                <div class="particles-container" id="particles-container"></div>
+                <p style="
+    font-family: 'Sail', cursive;
+    font-size: 32px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #004466, #00bcd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    margin-top: 40px;
+    animation: fadeIn 2s ease-in-out forwards;
+    opacity: 0;
+"> 
+    The Islands Premier Yacht Club
+                    <br>
 </p>
-                <div class="intro-text">
-                    <p>The fastest growing Yacht Club in Phuket - With a simple mission: to Inform & Entertain you.</p>
-                    <p>Enjoy Ice Cold Beer, Great Food & Atmosphere. Meet world cruisers & salty expats.</p>
-                    <p>Phuket Cruising Yacht Club - Where our Guests pay the same low prices as Members!</p>
-                </div>
-
-                <p><a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="event-link">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
-                    Follow us to keep up to date with our Events & Community!
-                </a></p>
-                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-<div style="height: 80px;"></div>
-
-                <div id="about-pcyc" class="content-section">
-                    <div class="glass-card full-width-card">
-                        <h2>Welcome to the Phuket Cruising Yacht Club!</h2>
-                        <p>Established seven years ago by Captain and founder Brent McInnes, the Phuket Cruising Yacht Club (PCYC) is meticulously designed to be your ultimate home base in the stunning waters of Phuket. Our commitment is to inform, entertain, and ensure every guest, member or not, experiences the same exceptional value and access to our extensive services.</p>
-                        <p>We have continually evolved, now proudly offering a comprehensive suite of maritime services, including specialized brokerage & charter solutions, and even an in-house law office to support your journey.</p>
-
-                        <h3 class="section-sub-title">Your Unforgettable Stay & Essential Amenities</h3>
-                        <p>Experience true convenience with our range of rentals, including motorcycles, cars, charming bungalows, agile RIBs, dependable tender outboard engines, and dinghies. Rest assured, your dinghy will be secure on our flood-lit dinghy lines directly in front of the clubhouse. Our refreshing showers are open to all, complemented by ample charging outlets for your devices. For those seeking to master the seas, our accredited AYS sailing school actively provides top-tier training in both sailing and powerboat seamanship.</p>
-
-                        <h3 class="section-sub-title">Streamlined Port & Specialized Services</h3>
-                        <p>As an authorized port-entrance agent and a trusted Royal Thai Customs yacht visa extension service provider, PCYC dramatically simplifies your check-in/check-out processes with Immigration. We expertly handle customs accreditation and extensions for your vessel, with most boats receiving a standard six-month stay upon arrival, extendable for an additional six months before departure is required.</p>
-                        <p>We are the island's premier full-service yacht club, proudly offering:</p>
-                        <ul class="service-list">
-                            <li>Thai Customs Visa Extensions</li>
-                            <li>Brokerage & Yacht Charter Services</li>
-                            <li>Marine Salvage Operations</li>
-                            <li>Dedicated Law Office</li>
-                            <li>Second-Hand Boat Parts & Equipment Sales</li>
-                            <li>Comprehensive Boat Minding (Basic Care)</li>
-                            <li>Rental Services: Cars, Bikes, RIBs, Beach Bungalows</li>
-                            <li>Exclusive Access to Preferred Contractors</li>
-                        </ul>
-                        <p>Captain Brent remains your trusted contact, always just a phone call away for unparalleled assistance.</p>
-
-                        <h3 class="section-sub-title">Vibrant Club Life & Exquisite Dining</h3>
-                        <p>Our newly renovated clubhouse, boasting stunning new beach decks, welcomes you from 8 AM until late. Immerse yourself in our lively Happy Hour from 5-7 PM, featuring reduced prices on alcoholic beverages. Our full-service bar takes pride in crafting the PCYC's signature Margarita from scratch, alongside classic Bloody Marys and a wide selection of premium local and imported beers. At PCYC, you'll find the perfect blend of ice-cold beer, delectable cuisine, and the opportunity to connect with seasoned world cruisers and engaging expats. Our well-traveled bar manager, Yai, possesses an invaluable wealth of local insights.</p>
-                        <p>Indulge in Captain Brent's delicious menu, a harmonious blend of authentic Thai and comforting Western-style dishes, with a particular specialization in Tex-Mex favorites like quesadillas, nachos, and tacos. Begin your day with our delightful Eggs Benedict and freshly ground coffee, or savor our world-class fish and chips & hamburgers. Every dish is proudly MSG-free. For your convenience, we also offer charming waterfront bungalows for rent and reliable Wi-Fi access. Complimentary Phuket Tide Tables, local marine guides, and magazines are readily available.</p>
-
-                        <h4 class="event-highlight">Taco Tuesday: An Unmissable Event!</h4>
-                        <p>Everyone's favorite night is back! Taco Tuesday at the Phuket Cruising Yacht Club Chalong is in full swing. Revel in cheap Tex-Mex & pizza, just 50 baht for Gin and Rum, and a refreshing 80 baht for frozen Margaritas. Join us for captivating music, vibrant drinks, cold beer, and an exciting T-shirt lotto, every Tuesday on the beach at Chalong, conveniently located next to Arch 39 hotel. We look forward to seeing you around sunset until late!</p>
-
-                        <h3 class="section-sub-title">Dynamic Music & Memorable Events</h3>
-                        <p>The PCYC is equipped with a professional PA system, mixing board, and mic stands, enthusiastically encouraging yachties to showcase their musical talents. We are thrilled to frequently feature exceptional local entertainers, including the talented Gene Neilson. Our clubhouse is offered free of charge to both members and guests as an ideal party venue, providing flexible catering options or the freedom to bring your own food while we expertly manage the bar. We can comfortably accommodate up to 100 guests and hold a 2 AM closing license, ensuring your events are truly unforgettable.</p>
-
-                        <h3 class="section-sub-title">Membership & Exclusive Benefits</h3>
-                        <p>At PCYC, we foster an exceptionally welcoming atmosphere where both members and non-members enjoy the same advantageous pricing. This philosophy has cultivated a large, loyal expat following and a diverse community of over 100 members, ranging from influential oil tycoons to intrepid sea gypsies. Khun Thitti, a distinguished retired Bangkok lawyer and our esteemed co-founder, is frequently at the clubhouse, always available to offer invaluable sound advice.</p>
-                        <p>We provide extended-period boat minding services, offering "basic care" for just Bt2,000 per month. This includes diligent daily checks of mooring lines, waterline, and companionway, a service highly endorsed by numerous insurance companies.</p>
-                        <p>The recent installation of new storm-water culverts in Chalong has significantly enhanced our beach, creating pristine sandy areas perfectly suited for beaching catamarans and powerboats for essential maintenance. Our reception is charmingly headed by our resident black poodle, Teddy, accompanied by three friendly soi dogs and our beloved large boat cat, Meow Yai.</p>
-                        <p>Annual membership is an incredible value at just Bt3,000, commencing from your sign-up date, and includes a personalized photo ID, a stylish club t-shirt, and an exclusive sticker—all with absolutely no joiner's fee. We provide full-yacht service and leverage our extensive local knowledge to expertly assist with cruising grounds navigation and meticulous yacht maintenance.</p>
-                        <p>Stay tuned for our thrilling upcoming twilight race series! PCYC members are also cordially invited to participate in the prestigious Phuket Yacht Club (PYC) race series. The most effective way to stay informed and connected is to request to join our active Facebook group.</p>
-
-                        <h4 class="section-sub-title">Exclusive Member Discounts</h4>
-                        <p>Unlock significant savings and unparalleled value with your PCYC membership, including:</p>
-                        <ul class="discount-list">
-                            <li><strong>15% off</strong> at Rolly Tasker (exclusive club promotion)</li>
-                            <li><strong>20% off</strong> haul-outs and hard-stand work at Ratanachai shipyard</li>
-                            <li><strong>20% discount</strong> on marina berths and F&B at Royal Langkawi Yacht Club (reciprocated by PCYC)</li>
-                            <li>Exclusive discounts at major Phuket chandleries such as AME Marine, Tops Marine, and Surapol</li>
-                            <li>Up to <strong>20% off</strong> oil-belts, filters, tools, and diesel algae killer at Chao Fa East Auto Parts</li>
-                            <li><strong>15% off</strong> at Aqua Master Chalong</li>
-                        </ul>
-                        <p>Visit our website for a continuously updated, comprehensive list of growing member discounts!</p>
-                    </div>
+                <div class="intro-text">
+                    <p>The fastest growing Yacht Club in Phuket - With a simple mission: to Inform & Entertain you.</p>
+                    <p>Enjoy Ice Cold Beer, Great Food & Atmosphere. Meet world cruisers & salty expats.</p>
+                    <p>Phuket Cruising Yacht Club - Where our Guests pay the same low prices as Members!</p>
                 </div>
-                <div class="glass-box">
-    <div class="captain-header">- Phuket Maritime Dashboard -</div>
-    <div class="wave-underline"></div>
-    <div class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</div>
-    <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
+
+                <p><a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="event-link">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+                    Follow us to keep up to date with our Events & Community!
+                </a></p>
+                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+<div style="height: 80px;"></div>
+                <style>
+    .glass-box {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(6px);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 720px;
+        margin: 30px auto 15px auto;
+        text-align: center;
+    }
+
+    .captain-header {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #004466;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.40);
+        animation: float 2.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+        100% { transform: translateY(0); }
+    }
+
+    .wave-underline {
+        width: 200px;
+        height: 5px;
+        margin: 10px auto 20px;
+        background: linear-gradient(90deg, #0077b6, #00b4d8, #0077b6);
+        background-size: 300% 100%;
+        animation: wave 4s ease-in-out infinite;
+        border-radius: 3px;
+    }
+
+    @keyframes wave {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .captain-subtitle {
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 15px;
+        font-style: italic;
+    }
+
+    .live-pulse {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #c60000;
+        font-size: 1rem;
+        animation: pulseText 2s infinite;
+    }
+
+    .live-dot {
+        width: 12px;
+        height: 12px;
+        background-color: #ff0000;
+        border-radius: 50%;
+        box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+        animation: pulseDot 1.2s infinite;
+    }
+
+    @keyframes pulseDot {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.6; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulseText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+</style>
+
+<div class="glass-box">
+    <div class="captain-header">- Phuket Maritime Dashboard -</div>
+    <div class="wave-underline"></div>
+    <div class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</div>
+    <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
 </div>
 
 <div class="widget-grid">
