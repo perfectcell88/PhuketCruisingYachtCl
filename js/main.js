@@ -1,7 +1,7 @@
-import * as THREE from './js/three.module.js';
-import { OrbitControls } from './js/controls/OrbitControls.js';
-import { Water } from './js/objects/Water.js';
-import { Sky } from './js/objects/Sky.js';
+import * as THREE from './three.module.js';
+import { OrbitControls } from './controls/OrbitControls.js';
+import { Water } from './objects/Water.js';
+import { Sky } from './objects/Sky.js';
 
 let container;
 let camera, scene, renderer;
@@ -29,14 +29,14 @@ function init() {
   water = new Water(waterGeometry, {
     textureWidth: 512,
     textureHeight: 512,
-    waterNormals: new THREE.TextureLoader().load('js/textures/waternormals.jpg', function (texture) {
+    waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', function (texture) {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     }),
     sunDirection: new THREE.Vector3(),
     sunColor: 0xffcc66,
-    waterColor: 0x001e0f,
+    waterColor: 0x00A0D2,
     distortionScale: 3.7,
-    fog: false
+    fog: scene.fog !== undefined
   });
 
   water.rotation.x = -Math.PI / 2;
@@ -52,41 +52,21 @@ function init() {
   skyUniforms['mieCoefficient'].value = 0.005;
   skyUniforms['mieDirectionalG'].value = 0.8;
 
-  const parameters = {
-    elevation: 3,
-    azimuth: 110
-  };
+  const parameters = { elevation: 3, azimuth: 180 };
+  const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
+  const theta = THREE.MathUtils.degToRad(parameters.azimuth);
 
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
-  let renderTarget;
+  sun.setFromSphericalCoords(1, phi, theta);
+  sky.material.uniforms['sunPosition'].value.copy(sun);
+  water.material.uniforms['sunDirection'].value.copy(sun).normalize();
 
-  function updateSun() {
-    const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
-    const theta = THREE.MathUtils.degToRad(parameters.azimuth);
-
-    sun.setFromSphericalCoords(1, phi, theta);
-
-    sky.material.uniforms['sunPosition'].value.copy(sun);
-    water.material.uniforms['sunDirection'].value.copy(sun).normalize();
-
-    if (renderTarget) renderTarget.dispose();
-    renderTarget = pmremGenerator.fromScene(sky);
-    scene.environment = renderTarget.texture;
-  }
-
-  updateSun();
-
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.5; // Lowered exposure for better look
   container.appendChild(renderer.domElement);
-  renderer.domElement.id = 'threejs-background'; // Set ID for styling
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = Math.PI * 0.495;
-  controls.target.set(0, 10, 0);
+  controls.maxPolarAngle = Math.PI * 0.4;
   controls.minDistance = 40.0;
   controls.maxDistance = 200.0;
 
@@ -133,17 +113,13 @@ function simulateLoadingAndStart() {
 }
 
 function updateLoadingUI(progress) {
-  if (loadingText) {
-    loadingText.textContent = `Loading... ${Math.round(progress)}%`;
-  }
+  loadingText.textContent = `Setting sail... ${Math.floor(progress)}%`;
 }
 
+// Fade out loading overlay smoothly
 function fadeOutLoadingOverlay() {
-  if (loadingOverlay) {
-    loadingOverlay.style.opacity = '0';
-    setTimeout(() => {
-      loadingOverlay.style.display = 'none';
-      document.body.classList.remove('no-scroll'); // Re-enable scroll after loading
-    }, 1000); // Wait for fade-out transition
-  }
+  loadingOverlay.style.opacity = '0';
+  setTimeout(() => {
+    loadingOverlay.style.display = 'none';
+  }, 1000); // match CSS transition duration
 }
