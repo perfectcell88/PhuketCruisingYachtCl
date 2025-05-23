@@ -10,9 +10,12 @@
     <link rel="stylesheet" href="style.css" />
 
     <style>
+        /* Inline fallback & critical styles */
+
         /* Reset & base styles */
         body, html {
             margin: 0; padding: 0; height: 100%; /* Keep full height */
+            /* REMOVED overflow: hidden; from here, it will be on the main-content-wrapper */
             background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321);
             background-size: 800% 800%;
             animation: gradientShift 40s ease infinite;
@@ -22,971 +25,1055 @@
             text-align: center;
             cursor: url('Anchor.cur'), auto;
         }
-
-        /* NEW: Three.js background container */
-        #threejs-background {
-            position: fixed; /* Keep it fixed in the viewport */
-            top: 0;
-            left: 0;
-            width: 100vw; /* Full viewport width */
-            height: 100vh; /* Full viewport height */
-            z-index: 1; /* Behind content, above base body background */
-        }
-
-        /* NEW: Main scrollable content wrapper */
-        /* This container is where your main page content (like home-content) resides */
-        #page-content {
-            position: relative; /* Changed from fixed to relative */
-            z-index: 2; /* Above the Three.js background */
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 100vh; /* Ensure it takes full viewport height for proper scrolling */
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Hide overflow of itself, not the body */
-        }
-
-        #main-scrollable-content-wrapper {
-            flex-grow: 1; /* Allow content to take available space */
-            overflow-y: auto; /* Enable vertical scrolling */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            padding-top: 80px; /* Space for fixed nav */
-            box-sizing: border-box;
-            position: relative; /* For absolutely positioned children */
-        }
-
-        /* Loading Overlay Styles */
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000c1a; /* Dark background */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* On top of everything */
-            opacity: 1;
-            transition: opacity 1s ease-out;
-            color: #f9d976;
-            font-size: 1.5em;
-        }
-
-        #loading-text {
-            margin-top: 20px;
-        }
-
-        .spinner {
-            border: 4px solid rgba(249, 217, 118, 0.3); /* Light gold border */
-            border-top: 4px solid #f9d976; /* Solid gold top border */
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Utility class to prevent body scroll when overlay is active */
-        body.no-scroll, body.overlay-active {
-            overflow: hidden !important;
-        }
-
-        /* Keyframe animation for background gradient shift */
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* General layout and content */
-        .header {
+        /* Loading overlay */
+        #loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: rgba(0, 12, 26, 0.8); /* Semi-transparent dark background */
-            padding: 10px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .nav-container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        .logo img {
-            height: 60px;
-        }
-
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        .nav-links li {
-            margin-left: 30px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #f9d976;
-            font-weight: 500;
-            font-family: 'Montserrat', sans-serif; /* Applied Montserrat */
-            font-size: 1.1em;
-            transition: color 0.3s ease, transform 0.2s ease;
-            position: relative;
-            padding-bottom: 5px;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background-color: #f9d976;
-            left: 0;
-            bottom: 0;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
-
-        .nav-link:hover {
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        .nav-link.active {
-            color: #fff; /* Active link color */
-            font-weight: 700;
-        }
-
-        .mobile-menu-btn {
-            display: none; /* Hidden by default for desktop */
-            background: none;
-            border: none;
-            font-size: 2em;
-            color: #f9d976;
-            cursor: pointer;
-            z-index: 1100; /* Above nav links when open */
-        }
-
-        /* Home Content styles */
-        .home-content {
-            position: relative;
-            z-index: 5; /* Above Three.js, below fixed header/nav */
+            top: 0; left: 0; right: 0; bottom: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 80px); /* Adjust for fixed header */
-            padding: 0 20px;
-            box-sizing: border-box;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            opacity: 0; /* Hidden by default, made visible by JS */
-            transition: opacity 1s ease-in;
-            pointer-events: none; /* No interaction until visible */
-        }
-
-        .home-content.visible {
+            z-index: 9999;
+            pointer-events: all;
+            background: rgba(0,12,26,0.85);
             opacity: 1;
-            pointer-events: auto;
+            transition: opacity 1s ease;
         }
-
-        .home-title {
-            font-family: 'Sail', cursive;
-            font-size: 5em;
-            margin-bottom: 15px;
-            color: #f9d976;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-            line-height: 1.1;
-        }
-
-        .home-tagline {
-            font-size: 1.5em;
-            color: #fff;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-
-        /* Water particles container for home screen */
-        #particles-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none; /* Allow clicks to pass through */
-            z-index: -1; /* Behind home-content */
-        }
-
-        .water-particle {
-            position: absolute;
-            background-color: rgba(173, 216, 230, 0.6); /* Light blue, semi-transparent */
-            border-radius: 50%;
-            animation: float 5s infinite ease-in-out, fadeOut 5s infinite forwards;
+        #loading-overlay.fade-out {
             opacity: 0;
-            width: 8px; /* Default size */
-            height: 8px; /* Default size */
+            pointer-events: none;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.2); }
+        #loading-overlay::before {
+            content: "";
+            position: absolute;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(249,217,118,0.1), transparent 70%);
+            border-radius: 50%;
+            animation: ripple 2.5s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            0%   { transform: scale(1);  opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
 
-        @keyframes fadeOut {
-            0% { opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.8; }
-            100% { opacity: 0; }
+        /* Loading logo and spinner */
+        #loading-logo-circle-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #loading-logo {
+            width: 200px;
+            height: 200px;
+            display: block;
+            filter: drop-shadow(0 0 8px #f9d976);
+            opacity: 0;
+            animation: logoPop 0.8s ease-out forwards 0.3s;
+            position: relative;
+            z-index: 2;
+            border-radius: 50%;
+        }
+        @keyframes logoPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        #loading-circle {
+            position: absolute;
+            top: 0; left: 0;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: 1;
+            animation: spin 1.6s linear infinite;
+            filter: drop-shadow(0 0 8px #f9d976);
+        }
+        #loading-circle.fade-out {
+            opacity: 0;
+        }
+        #loading-circle svg {
+            width: 200px;
+            height: 200px;
+            transform-origin: center;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        #loading-circle circle.base {
+            stroke: #333; stroke-width: 12; fill: none; opacity: 0.2;
+        }
+        #loading-circle circle.progress {
+            stroke: #f9d976; stroke-width: 12; fill: none;
+            stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.25s ease;
         }
 
-        /* General Content Section styles */
-        .content-section {
-            position: fixed; /* Fixed position relative to viewport */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 12, 26, 0.95); /* Darker, semi-transparent overlay */
-            color: #f9d976;
-            z-index: 2000; /* Above everything else */
+        /* Specific styles for Captain's Dashboard widgets to ensure they fit */
+        /* These were from the old structure, will be overridden by style.css */
+         .captain-dashboard {
             display: flex;
             flex-direction: column;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.95); /* Start slightly smaller */
-            transition: opacity 0.4s ease-out, visibility 0.4s ease-out, transform 0.4s ease-out;
-            box-sizing: border-box;
-            padding: 20px; /* Base padding */
-            overflow-y: auto; /* Enable scrolling for content within the section */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            pointer-events: none; /* No interaction until active */
-        }
-
-        .content-section.active {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1);
-            pointer-events: auto; /* Enable interaction when active */
-        }
-
-        .content-section-inner {
-            width: 100%;
-            max-width: 900px;
-            margin: auto; /* Center content vertically and horizontally */
-            padding: 40px 20px;
-            box-sizing: border-box;
-            background-color: rgba(0, 0, 0, 0.5); /* Slightly lighter background for inner content */
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            text-align: left; /* Align text within section */
-        }
-
-        .content-section h2 {
-            font-family: 'Sail', cursive;
-            font-size: 3em;
-            color: #f9d976;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .close-btn {
-            position: sticky; /* Make it stick to the top right */
-            top: 20px;
-            left: calc(100% - 20px); /* Position it relative to the section's right edge */
-            margin-left: -50px; /* Adjust for button width */
-            background: none;
-            border: 2px solid #f9d976;
-            color: #f9d976;
-            font-size: 2em;
-            cursor: pointer;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            z-index: 2001; /* Ensure it's above content */
-            float: right; /* Helps position in flow, but sticky is primary */
-        }
-
-        .close-btn:hover {
-            background-color: #f9d976;
-            color: #000c1a;
-        }
-
-        .content-section p, .content-section ul {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #e0e0e0;
-            margin-bottom: 15px;
-        }
-
-        .content-section ul {
-            list-style: disc;
-            margin-left: 20px;
-        }
-
-        .content-section a {
-            color: #aaddff; /* Lighter blue for links */
-            text-decoration: none;
-            border-bottom: 1px dotted #aaddff;
-            transition: color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .content-section a:hover {
-            color: #fff;
-            border-bottom-color: #fff;
-        }
-
-        /* About Us specific styles */
-        #about .about-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Single column by default */
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        #about .about-item {
-            background-color: rgba(0, 0, 0, 0.3);
+            gap: 20px; /* Space between widgets */
             padding: 25px;
-            border-radius: 8px;
-            text-align: center;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
             border: 1px solid rgba(249, 217, 118, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 40px; /* Add some space from content above */
         }
 
-        #about .about-item h3 {
-            font-family: 'Sail', cursive;
-            font-size: 1.8em;
-            color: #f9d976;
-            margin-bottom: 10px;
-        }
-
-        /* Dashboard grid (for Captain's Dashboard section) */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-top: 30px;
-        }
-
-        .widget {
-            background-color: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(249, 217, 118, 0.3);
+        .captain-widget {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
             border-radius: 10px;
-            padding: 20px;
+            border: 1px solid rgba(249, 217, 118, 0.1);
             text-align: center;
+            box-shadow: inset 0 0 5px rgba(249, 217, 118, 0.1);
+            color: #fff; /* Ensure text is visible */
+        }
+
+        .captain-widget h4 {
+            color: #f9d976;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        /* Specific styles for weather widget elements */
+        /* These were from the old structure, will be removed from style.css */
+        #weather-widget {
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Distribute space */
-            min-height: 280px; /* Ensure widgets have some height */
+            align-items: center;
+            gap: 10px;
         }
 
-        .widget-title {
-            font-family: 'Sail', cursive;
-            font-size: 1.5em;
-            color: #f9d976;
-            margin-bottom: 15px;
+        .weather-current {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
 
-        .widget p {
-            color: #e0e0e0;
+        .weather-icon {
+            width: 60px; /* Adjusted size */
+            height: 60px; /* Adjusted size */
+            filter: drop-shadow(0 0 5px rgba(249,217,118,0.5));
+        }
+
+        .weather-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text to the left */
+        }
+
+        .weather-temp {
+            font-size: 2.2em; /* Larger temp */
+            font-weight: 700;
+            color: #ffe57f;
+        }
+
+        .weather-description {
             font-size: 1em;
+            text-transform: capitalize;
+            color: #ccc;
+        }
+
+        .weather-location {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 10px;
+            color: #ccc;
+            font-size: 0.9em;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Sun & Moon Widget Styles (minimal, as per existing content) */
+        /* These were from the old structure, will be removed from style.css */
+        #sun-moon-widget {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        #sun-moon-widget .time-info {
+            font-size: 1.2em;
+            color: #ffe57f;
+            font-weight: 600;
+        }
+        #sun-moon-widget .phase-info {
+            font-size: 1em;
+            color: #ccc;
+        }
+        #sun-moon-widget .phase-icon {
+            font-size: 2em; /* Larger icon for visibility */
+            color: #f9d976;
             margin-bottom: 5px;
         }
 
-        .widget iframe {
-            width: 100%;
-            height: 100%; /* Take full height of parent flex item */
-            border: none;
-            background-color: rgba(255, 255, 255, 0.05); /* Slightly visible iframe background */
-            border-radius: 5px;
-            flex-grow: 1; /* Allow iframe to grow */
-        }
-
-        .widget > div[id] p strong, .widget > div[id] p[style*="font-size: 1.8em"] {
-            color: #f9d976;
-            font-weight: bold;
-        }
-
-        .widget .warning {
-            color: #ff8a80;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        /* Accommodation specific styles */
-        .accommodation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .accommodation-item {
-            background-color: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(249, 217, 118, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .accommodation-item img {
-            max-width: 100%;
-            height: 200px; /* Fixed height for images */
-            object-fit: cover; /* Cover the area, crop if necessary */
-            border-radius: 8px;
-            margin-bottom: 15px;
+        /* General glass-widget inherited styles */
+        .glass-widget {
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
             border: 1px solid rgba(249, 217, 118, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
         }
 
-        .accommodation-item h3 {
-            font-family: 'Sail', cursive;
-            font-size: 2em;
+        .widget-title {
             color: #f9d976;
+            font-size: 2.2em;
             margin-bottom: 10px;
+            font-weight: 700;
         }
 
-        .accommodation-item p {
-            font-size: 1em;
-            color: #e0e0e0;
-            margin-bottom: 15px;
-            flex-grow: 1; /* Allow text to grow and push button down */
-        }
-
-        .accommodation-item .book-btn {
-            background-color: #f9d976;
-            color: #000c1a;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+        .widget-description {
+            color: #ccc;
             font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .accommodation-item .book-btn:hover {
-            background-color: #fff;
-            color: #000c1a;
-        }
-
-        /* Gallery specific styles */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-            justify-content: center;
-        }
-
-        .gallery-item {
-            position: relative;
-            cursor: pointer;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-            border-radius: 8px;
-        }
-
-        /* Lightbox for gallery images */
-        .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            cursor: pointer;
-            padding: 20px; /* Padding for mobile */
-            box-sizing: border-box;
-        }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border: 5px solid #f9d976;
-            border-radius: 10px;
-        }
-
-        /* Contact Section Styles */
-        .contact-form-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 30px;
-            background-color: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            border: 1px solid rgba(249, 217, 118, 0.3);
-            box-sizing: border-box;
-        }
-
-        .contact-form label {
-            display: block;
-            margin-bottom: 8px;
-            color: #f9d976;
-            font-weight: bold;
-            text-align: left;
-        }
-
-        .contact-form input[type="text"],
-        .contact-form input[type="email"],
-        .contact-form textarea {
-            width: calc(100% - 20px); /* Adjust for padding */
-            padding: 10px;
             margin-bottom: 20px;
-            border: 1px solid #f9d976;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border-radius: 5px;
-            font-family: 'Playfair Display', serif;
-            font-size: 1em;
-            box-sizing: border-box; /* Include padding in width */
         }
-
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .contact-form button {
-            background-color: #f9d976;
-            color: #000c1a;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            width: 100%; /* Full width button */
-        }
-
-        .contact-form button:hover {
-            background-color: #fff;
-            color: #000c1a;
-        }
-
-        .form-success {
-            background-color: rgba(0, 255, 0, 0.2);
-            color: #90ee90;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            display: none; /* Hidden by default */
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-            text-align: center;
-        }
-
-        .form-success.visible {
-            display: block;
-            opacity: 1;
-        }
-
-        /* Footer styles */
-        .footer {
-            padding: 20px;
-            background-color: rgba(0, 12, 26, 0.8);
-            color: #f9d976;
-            font-size: 0.9em;
-            margin-top: 50px;
-            text-align: center;
-            position: relative; /* Relative to content wrapper */
-            width: 100%;
-            box-sizing: border-box;
-            flex-shrink: 0; /* Prevents footer from shrinking */
-        }
-
-        .footer p {
-            margin: 5px 0;
-        }
-
-        .footer a {
-            color: #f9d976;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: #fff;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 1024px) {
-            .home-title {
-                font-size: 4em;
-            }
-            .home-tagline {
-                font-size: 1.3em;
-            }
-            .nav-links {
-                margin-left: 0;
-            }
-            .nav-links li {
-                margin-left: 20px;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            .nav-links {
-                display: none; /* Hide traditional nav links */
-                flex-direction: column;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 12, 26, 0.98);
-                justify-content: center;
-                align-items: center;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.3s ease, visibility 0.3s ease;
-            }
-
-            .nav-links.open {
-                display: flex; /* Show mobile menu */
+        @keyframes fadeIn {
+            to {
                 opacity: 1;
-                visibility: visible;
-            }
-
-            .nav-links li {
-                margin: 20px 0;
-            }
-
-            .nav-link {
-                font-size: 1.8em;
-            }
-
-            .mobile-menu-btn {
-                display: block; /* Show hamburger icon */
-            }
-
-            .header .logo {
-                position: absolute; /* Position logo for mobile */
-                left: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-            }
-
-            .home-title {
-                font-size: 3.5em;
-            }
-            .home-tagline {
-                font-size: 1.1em;
-            }
-            .content-section-inner {
-                padding: 20px;
-            }
-            .content-section h2 {
-                font-size: 2.5em;
-            }
-            .close-btn {
-                top: 10px;
-                left: calc(100% - 10px);
-                margin-left: -40px;
-                width: 30px;
-                height: 30px;
-                font-size: 1.5em;
-            }
-            #about .about-grid, .dashboard, .accommodation-grid, .gallery-grid {
-                grid-template-columns: 1fr; /* Stack columns on small screens */
-            }
-            .widget, .accommodation-item {
-                min-height: auto; /* Allow height to adjust */
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .home-title {
-                font-size: 2.5em;
-            }
-            .home-tagline {
-                font-size: 1em;
-            }
-            .home-content {
-                padding: 0 10px;
-            }
-            .content-section-inner {
-                padding: 15px;
-            }
-            .content-section h2 {
-                font-size: 2em;
-            }
-            .contact-form-container {
-                padding: 20px 15px;
-            }
-            .footer {
-                padding: 15px;
             }
         }
     </style>
 </head>
-<body class="no-scroll"> <div id="loading-overlay">
-        <div class="spinner"></div>
-        <div id="loading-text">Loading... 0%</div>
-    </div>
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0"></script>
 
-    <div id="page-content">
-        <header class="header">
-            <div class="nav-container">
-                <div class="logo">
-                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" />
-                </div>
-                <nav>
-                    <ul class="nav-links">
-                        <li><a href="#home" class="nav-link active" aria-current="page">Home</a></li>
-                        <li><a href="#about" class="nav-link">About Us</a></li>
-                        <li><a href="#dashboard" class="nav-link">Captain's Dashboard</a></li>
-                        <li><a href="#accommodation" class="nav-link">Accommodation</a></li>
-                        <li><a href="#gallery" class="nav-link">Gallery</a></li>
-                        <li><a href="#contact" class="nav-link">Contact</a></li>
-                    </ul>
-                </nav>
-                <button class="mobile-menu-btn" aria-label="Open mobile menu" aria-expanded="false">
-                    &#9776; </button>
+    <div id="loading-overlay" role="alert" aria-live="polite" aria-busy="true">
+        <div id="loading-logo-circle-wrapper" aria-hidden="true">
+            <img id="loading-logo" src="logob.png" alt="Phuket Cruising Yacht Club Logo" />
+            <div id="loading-circle" aria-hidden="true">
+                <svg viewBox="0 0 100 100" role="img" aria-hidden="true" >
+                    <defs>
+                        <linearGradient id="loading-gradient" x1="1" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#f9d976"/>
+                            <stop offset="50%" stop-color="#ffe57f"/>
+                            <stop offset="100%" stop-color="#f9d976"/>
+                        </linearGradient>
+                    </defs>
+                    <circle class="base"    cx="50" cy="50" r="45" />
+                    <circle class="progress" cx="50" cy="50" r="45" stroke="url(#loading-gradient)"/>
+                </svg>
             </div>
-        </header>
-
-        <div id="main-scrollable-content-wrapper">
-            <section id="home" class="home-content visible" role="main">
-                <div id="particles-container"></div>
-                <h1 class="home-title">Phuket Cruising Yacht Club</h1>
-                <p class="home-tagline">
-                    Experience the ultimate yachting adventure in the pristine waters of Phuket, Thailand.
-                    Discover luxury, freedom, and the breathtaking beauty of the Andaman Sea.
-                </p>
-            </section>
-
-            <section id="about" class="content-section" aria-hidden="true">
-                <div class="content-section-inner">
-                    <button class="close-btn" data-target="about" aria-label="Close About Us section">&times;</button>
-                    <h2>About Us</h2>
-                    <p>
-                        The Phuket Cruising Yacht Club (PCYC) was founded with a passion for sailing and a vision to create a vibrant community for yachting enthusiasts in one of the world's most beautiful cruising grounds. Located on the stunning island of Phuket, Thailand, our club offers unparalleled access to the Andaman Sea, with its crystal-clear waters, secluded islands, and breathtaking natural beauty.
-                    </p>
-                    <p>
-                        Our mission is to foster a safe, enjoyable, and sustainable yachting experience for all members. Whether you are a seasoned sailor or new to the world of yachting, PCYC provides a welcoming environment, state-of-the-art facilities, and a diverse range of activities.
-                    </p>
-                    <div class="about-grid">
-                        <div class="about-item">
-                            <h3>Our Heritage</h3>
-                            <p>Established in 1995, PCYC has grown to become a cornerstone of the yachting community in Southeast Asia. Our rich history is built on a tradition of seamanship, camaraderie, and a deep respect for the marine environment.</p>
-                        </div>
-                        <div class="about-item">
-                            <h3>Facilities</h3>
-                            <p>We boast a modern marina with full-service berths, a well-equipped maintenance yard, a clubhouse with dining and lounge areas, and a comprehensive marine supply store. Everything you need for your yachting journey is at your fingertips.</p>
-                        </div>
-                        <div class="about-item">
-                            <h3>Community & Events</h3>
-                            <p>PCYC is more than just a marina; it's a thriving community. We organize regular regattas, social events, cruising rallies, and educational workshops, providing ample opportunities for members to connect, learn, and explore together.</p>
-                        </div>
-                    </div>
-                    <p>
-                        Join us at the Phuket Cruising Yacht Club and embark on your next unforgettable maritime adventure.
-                    </p>
-                </div>
-            </section>
-
-            <section id="dashboard" class="content-section" aria-hidden="true">
-                <div class="content-section-inner">
-                    <button class="close-btn" data-target="dashboard" aria-label="Close Captain's Dashboard section">&times;</button>
-                    <h2>Captain's Dashboard</h2>
-                    <p>
-                        Welcome to the Captain's Dashboard. Here you will find essential real-time information to aid your cruising and stay in Phuket.
-                    </p>
-                    <div class="dashboard">
-                        <div class="widget">
-                            <h3 class="widget-title">Local Time</h3>
-                            <div id="localTime">Loading...</div>
-                        </div>
-
-                        <div class="widget">
-                            <h3 class="widget-title">Weather Warnings</h3>
-                            <div id="weatherWarnings">
-                                <p>No active weather warnings. Clear skies!</p>
-                                <p style="font-size:0.9em; color:#aaa;">Last updated: 2025-05-24 12:00:00</p>
-                            </div>
-                        </div>
-
-                        <div class="widget">
-                            <h3 class="widget-title">UV Index (Phuket)</h3>
-                            <div id="uvIndex">
-                                <p>UV Index: <strong>Moderate (5)</strong></p>
-                                <p style="font-size:0.9em; color:#aaa;">Wear sunscreen.</p>
-                            </div>
-                        </div>
-
-                        <div class="widget">
-                            <h3 class="widget-title">Sunrise & Sunset</h3>
-                            <div id="sunriseSunset">
-                                <p>Sunrise: <strong>06:07 AM</strong></p>
-                                <p>Sunset: <strong>06:40 PM</strong></p>
-                            </div>
-                        </div>
-
-                        <div class="widget">
-                            <h3 class="widget-title">Sea Temperature</h3>
-                            <div id="seaTemp">
-                                <p>Current Sea Temp: <strong>29°C (84°F)</strong></p>
-                                <p style="font-size:0.9em; color:#aaa;">Perfect for swimming!</p>
-                            </div>
-                        </div>
-
-                        <div class="widget">
-                            <h3 class="widget-title">Moon Phase</h3>
-                            <div id="moonPhase">
-                                <p>New Moon</p>
-                                <p style="font-size:0.9em;">Moonrise: 05:30 AM</p>
-                                <p style="font-size:0.9em;">Moonset: 06:00 PM</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="accommodation" class="content-section" aria-hidden="true">
-                <div class="content-section-inner">
-                    <button class="close-btn" data-target="accommodation" aria-label="Close Accommodation section">&times;</button>
-                    <h2>Luxury Accommodation</h2>
-                    <p>
-                        The Phuket Cruising Yacht Club offers exclusive accommodation options designed for comfort and elegance, ensuring a perfect retreat after a day on the waters. Each option provides stunning views and world-class amenities.
-                    </p>
-                    <div class="accommodation-grid">
-                        <div class="accommodation-item">
-                            <img src="images/accommodation1.jpg" alt="Waterfront Villa" />
-                            <h3>Waterfront Villas</h3>
-                            <p>Spacious villas with private pools, direct ocean access, and panoramic views of the Andaman Sea.</p>
-                            <button class="book-btn">Inquire Now</button>
-                        </div>
-                        <div class="accommodation-item">
-                            <img src="images/accommodation2.jpg" alt="Seaview Suites" />
-                            <h3>Seaview Suites</h3>
-                            <p>Luxurious suites offering elegant design, modern comforts, and breathtaking seaview balconies.</p>
-                            <button class="book-btn">Inquire Now</button>
-                        </div>
-                        <div class="accommodation-item">
-                            <img src="images/accommodation3.jpg" alt="Clubhouse Rooms" />
-                            <h3>Clubhouse Rooms</h3>
-                            <p>Comfortable and convenient rooms located within the main clubhouse, ideal for shorter stays.</p>
-                            <button class="book-btn">Inquire Now</button>
-                        </div>
-                    </div>
-                    <p style="text-align: center; margin-top: 30px; font-style: italic; color: #aaa;">
-                        Contact us for custom packages and long-term stay options.
-                    </p>
-                </div>
-            </section>
-
-            <section id="gallery" class="content-section" aria-hidden="true">
-                <div class="content-section-inner">
-                    <button class="close-btn" data-target="gallery" aria-label="Close Gallery section">&times;</button>
-                    <h2>Gallery</h2>
-                    <p>
-                        Explore the beauty of Phuket and the vibrant life at the Phuket Cruising Yacht Club through our captivating photo gallery.
-                    </p>
-                    <div id="gallery-container" class="gallery-grid">
-                        </div>
-                </div>
-            </section>
-
-            <section id="contact" class="content-section" aria-hidden="true">
-                <div class="content-section-inner">
-                    <button class="close-btn" data-target="contact" aria-label="Close Contact section">&times;</button>
-                    <h2>Contact Us</h2>
-                    <p>
-                        We'd love to hear from you! Please fill out the form below or reach out to us directly.
-                    </p>
-                    <div class="contact-form-container">
-                        <form id="contact-form" class="contact-form">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" required placeholder="Your Name" aria-label="Your Name" />
-
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" required placeholder="your.email@example.com" aria-label="Your Email" />
-
-                            <label for="subject">Subject:</label>
-                            <input type="text" id="subject" name="subject" required placeholder="Subject of your inquiry" aria-label="Subject of your inquiry" />
-
-                            <label for="message">Message:</label>
-                            <textarea id="message" name="message" rows="6" required placeholder="Your message here..." aria-label="Your Message"></textarea>
-
-                            <button type="submit">Send Message</button>
-                        </form>
-                        <div class="form-success" role="alert" tabindex="-1">
-                            Thank you! Your message has been sent successfully.
-                        </div>
-                    </div>
-                    <p style="text-align: center; margin-top: 20px; font-style: italic; color: #aaa;">
-                        Alternatively, you can reach us at: <br/>
-                        Email: info@phuketyachtclub.com | Phone: +66 123 456 789
-                    </p>
-                </div>
-            </section>
-
-            <footer class="footer">
-                <p>&copy; 2025 Phuket Cruising Yacht Club. All rights reserved.</p>
-                <p>Designed and Maintained by perfectcell88</p>
-                <p>
-                    <a href="#privacy" aria-label="Privacy Policy">Privacy Policy</a> |
-                    <a href="#terms" aria-label="Terms of Service">Terms of Service</a>
-                </p>
-            </footer>
         </div>
     </div>
 
-    <script type="module" src="main.js"></script>
-    <script src="script.js"></script>
+    <div id="threejs-background"></div>
+
+    <div id="page-content" aria-hidden="true">
+        <div id="main-scrollable-content-wrapper">
+            <div class="home-content" id="home">
+                <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="main-logo">
+                <h1 class="home-title">Phuket Cruising Yacht Club</h1>
+                <div class="particles-container" id="particles-container"></div>
+                <p style="
+    font-family: 'Sail', cursive;
+    font-size: 32px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #004466, #00bcd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    margin-top: 40px;
+    animation: fadeIn 2s ease-in-out forwards;
+    opacity: 0;
+"> 
+    The Islands Premier Yacht Club
+                    <br>
+</p>
+                <div class="intro-text">
+                    <p>The fastest growing Yacht Club in Phuket - With a simple mission: to Inform & Entertain you.</p>
+                    <p>Enjoy Ice Cold Beer, Great Food & Atmosphere. Meet world cruisers & salty expats.</p>
+                    <p>Phuket Cruising Yacht Club - Where our Guests pay the same low prices as Members!</p>
+                </div>
+
+                <p><a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="event-link">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+                    Follow us to keep up to date with our Events & Community!
+                </a></p>
+                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+<div style="height: 80px;"></div>
+                <style>
+    .glass-box {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(6px);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 720px;
+        margin: 30px auto 15px auto;
+        text-align: center;
+    }
+
+    .captain-header {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #004466;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.40);
+        animation: float 2.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+        100% { transform: translateY(0); }
+    }
+
+    .wave-underline {
+        width: 200px;
+        height: 5px;
+        margin: 10px auto 20px;
+        background: linear-gradient(90deg, #0077b6, #00b4d8, #0077b6);
+        background-size: 300% 100%;
+        animation: wave 4s ease-in-out infinite;
+        border-radius: 3px;
+    }
+
+    @keyframes wave {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .captain-subtitle {
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 15px;
+        font-style: italic;
+    }
+
+    .live-pulse {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #c60000;
+        font-size: 1rem;
+        animation: pulseText 2s infinite;
+    }
+
+    .live-dot {
+        width: 12px;
+        height: 12px;
+        background-color: #ff0000;
+        border-radius: 50%;
+        box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+        animation: pulseDot 1.2s infinite;
+    }
+
+    @keyframes pulseDot {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.6; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulseText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+</style>
+
+<div class="glass-box">
+    <div class="captain-header">- Phuket Maritime Dashboard -</div>
+    <div class="wave-underline"></div>
+    <div class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</div>
+    <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
+</div>
+
+<div class="widget-grid">
+
+<div class="captain-widget">
+  <h4>🌬️ Wind Forecast (Phuket)</h4>
+  <iframe 
+    src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" 
+    frameborder="0" 
+    width="100%" 
+    height="250">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌤️ Weather Forecast (Phuket)</h4>
+  <iframe 
+    src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" 
+    frameborder="0" 
+    scrolling="no" 
+    width="100%" 
+    height="250">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌧️ Weather Radar (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.888&lon=98.392&zoom=7&overlay=radar&menu=&message=&marker=&calendar=now&type=map&location=coordinates"
+    frameborder="0"
+    width="100%"
+    height="250"
+    style="border:none; overflow:hidden;"
+    allowtransparency="true"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🔆 UV Index (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="300"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🚢 Live Ship Tracker</h4>
+  <iframe 
+    src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" 
+    frameborder="0" 
+    width="100%" 
+    height="300">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌡️ Sea Surface Temperature (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="300"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌊 Tide Info (Phuket)</h4>
+  <iframe 
+    src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark" 
+    style="background-color: #232629; border: none;" 
+    width="100%" 
+    height="300" 
+    allow="geolocation">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>⛽ Fuel Docks Around Phuket</h4>
+  <iframe 
+    src="https://www.google.com/maps/d/embed?mid=1TleOY4hTm89B9cThLBdIYN_ZXpvgaFg&ehbc=2E312F&noprof=1" 
+    width="100%" 
+    height="300" 
+    style="border:0;" 
+    allowfullscreen 
+    loading="lazy">
+  </iframe>
+</div>
+
+<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
+  <h4>🌕 Moon Phase</h4>
+  <a target="_blank" style="text-decoration:none;" href="https://moonphase.guide/">
+    <img 
+      src="https://moonphase.guide/module/MWE5MNnJyNWRtZlJlTTY1Uk9LQ2h0V1gydEVwbkRkS0QrLzBEaDRCeC9TbEhVUklsWVJlWHNEOG9uOGhINXhvc3Jid2FacjA4alVSL1ZlRWxVTzg4ZGc9PQ.png" 
+      alt="Moon Phase" 
+      style="width: 300px; height: 300px; object-fit: contain; display: block; margin: 0 auto;" 
+      border="0" 
+    />
+  </a>
+</div>
+
+
+            <section id="about" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="about"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
+                    <h2>About Us</h2>
+                    <p>The fastest growing Yacht Club. Our master plan: Inform & entertain you. It's your home base in Phuket - you're always welcome at the PHUKET CRUISING YACHT CLUB.</p>
+                    <p>We also enjoy Ice Cold Beer, Great Food & the opportunity to meet & chat with world cruisers, salty expats & enthusiasts.</p>
+                    <p>Here at the PCYC, our Guests pay the same low prices as our Members!</p>
+                    <p>The PCYC is the island's full service Yacht Club, providing a welcoming atmosphere for sailors and enthusiasts alike.</p>
+                </div>
+            </section>
+
+            <section id="services" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="services"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
+                    <h2>Our Services</h2>
+                    <p>At Phuket Cruising Yacht Club, we offer a comprehensive range of services to meet all your sailing needs:</p>
+                    <ul>
+                        <li>Thai Customs Visa Extensions</li>
+                        <li>Brokerage</li>
+                        <li>Charter</li>
+                        <li>Salvage</li>
+                        <li>Law Office</li>
+                        <li>Second Hand Boat Parts For Sale</li>
+                        <li>Boat Minding</li>
+                        <li>Rental of Cars, Bikes, RIBs</li>
+                        <li>Beach Bungalows</li>
+                        <li>Preferred Contractors</li>
+                        <li>Mooring Services</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="accommodation" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="accommodation"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
+                    <h2>Accommodation</h2>
+                    <p>Experience the beauty of Phuket with our comfortable beach bungalows, perfect for sailors and visitors alike.</p>
+
+                    <div class="accommodation-grid">
+                        <div class="bungalow-card">
+                            <img src="images/sailboat-414509_1280.jpg" alt="Standard Bungalow" class="bungalow-img">
+                            <div class="bungalow-info">
+                                <h3 class="bungalow-title">Standard Bungalow</h3>
+                                <p class="bungalow-price">From ฿1,500 per night</p>
+                                <p class="bungalow-desc">Comfortable beachfront bungalow with all essential amenities, perfect for couples or solo travelers.</p>
+                                <a href="#contact" class="book-btn">Inquire Now</a>
+                            </div>
+                        </div>
+
+                        <div class="bungalow-card">
+                            <img src="images/beautiful-woman-yacht-swimwear.jpg" alt="Deluxe Bungalow" class="bungalow-img">
+                            <div class="bungalow-info">
+                                <h3 class="bungalow-title">Deluxe Bungalow</h3>
+                                <p class="bungalow-price">From ฿2,500 per night</p>
+                                <p class="bungalow-desc">Spacious bungalow with premium amenities and stunning ocean views, ideal for extended stays.</p>
+                                <a href="#contact" class="book-btn">Inquire Now</a>
+                            </div>
+                        </div>
+
+                        <div class="bungalow-card">
+                            <img src="images/75380478_10156391073797175_4972174924367003648_n.jpg" alt="Family Bungalow" class="bungalow-img">
+                            <div class="bungalow-info">
+                                <h3 class="bungalow-title">Family Bungalow</h3>
+                                <p class="bungalow-price">From ฿3,500 per night</p>
+                                <p class="bungalow-desc">Large bungalow with multiple rooms, perfect for families or groups of friends enjoying Phuket together.</p>
+                                <a href="#contact" class="book-btn">Inquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gallery" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="gallery"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
+                    <h2>Gallery</h2>
+                    <p>Explore the beauty of our vibrant community & the Phuket Cruising Yacht Club through our gallery.</p>
+                    <div id="gallery-container" class="gallery-grid">
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="contact"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
+                    <h2>Contact Us</h2>
+                    <p>We'd love to hear from you! Whether you're interested in membership, have questions about our services, or just want to learn more about the Phuket Cruising Yacht Club.</p>
+
+                    <div class="contact-form">
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </form>
+                        <div class="form-success">Your message has been sent successfully! We'll get back to you soon.</div>
+                    </div>
+                    <p>Connect with us on <a href="https://www.facebook.com/groups/187918071231247" target="_blank" style="color: #f9d976; text-decoration: none;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+                        Facebook
+                    </a> or visit us in person at our club in Phuket.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+    <button class="mobile-menu-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <div class="nav-container">
+        <nav>
+            <img src="logob.png" alt="Phuket Cruising Yacht Club" class="nav-logo">
+            <div class="nav-links">
+                <a href="#home" class="nav-link">HOME</a>
+                <a href="#about" class="nav-link">ABOUT</a>
+                <a href="#services" class="nav-link">SERVICES</a>
+                <a href="#accommodation" class="nav-link">ACCOMMODATION</a>
+                <a href="#gallery" class="nav-link">GALLERY</a>
+                <a href="#contact" class="nav-link">CONTACT</a>
+            </div>
+            <a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="social-icon">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+            </a>
+        </nav>
+    </div>
+    <script type="module">
+        import * as THREE from './js/three.module.js';
+        import { OrbitControls } from './js/controls/OrbitControls.js';
+        import { Water } from './js/objects/Water.js';
+        import { Sky } from './js/objects/Sky.js';
+
+        const overlay = document.getElementById('loading-overlay');
+        const prog = document.querySelector('#loading-circle circle.progress');
+        const spinner = document.getElementById('loading-circle');
+        const pageContent = document.getElementById('page-content'); // This is now the scrollable wrapper
+        const mainScrollableContentWrapper = document.getElementById('main-scrollable-content-wrapper'); // New ID for content
+        const navContainer = document.querySelector('.nav-container');
+        const homeContent = document.querySelector('.home-content');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        // IMPORTANT: In your script.js you sent earlier, this variable was named navLinksContainer.
+        // I am correcting it here to match the variable name used throughout the script.js file.
+        const navLinksContainer = document.querySelector('.nav-links'); // Corrected variable name
+        let progress = 0;
+
+        // Mobile menu toggle
+        // Added checks for existence before adding event listener
+        if (mobileMenuBtn && navLinksContainer) { // Check if both elements exist
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('open');
+            });
+        }
+
+        // Handle navigation
+        const navLinkElements = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        navLinkElements.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+
+                if (navLinksContainer) { // Check if navLinksContainer exists
+                    navLinksContainer.classList.remove('open');
+                }
+
+                // If clicking HOME, show home content and hide all sections
+                if (targetId === 'home') {
+                    if (homeContent) { // Check if homeContent exists
+                        homeContent.classList.add('visible');
+                    }
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    if (mainScrollableContentWrapper) { // Check if mainScrollableContentWrapper exists
+                        mainScrollableContentWrapper.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                } else {
+                    // Update active link
+                    navLinkElements.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+
+                    // Show target section
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                    if (homeContent) { // Check if homeContent exists
+                        homeContent.classList.remove('visible');
+                    }
+
+                    const targetSectionElement = document.getElementById(targetId);
+                    if (targetSectionElement && mainScrollableContentWrapper) { // Check if both elements exist
+                        setTimeout(() => {
+                            const navHeight = navContainer ? navContainer.offsetHeight : 0; // Check if navContainer exists
+                            mainScrollableContentWrapper.scrollTo({
+                                top: targetSectionElement.offsetTop - navHeight,
+                                behavior: 'smooth'
+                            });
+                        }, 100);
+                    }
+                }
+            });
+        });
+
+        // Close button functionality
+        const closeButtons = document.querySelectorAll('.close-btn');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetSectionId = btn.getAttribute('data-target');
+                const targetSectionElement = document.getElementById(targetSectionId);
+
+                if (targetSectionElement) { // Check if targetSectionElement exists
+                    targetSectionElement.classList.remove('active');
+                }
+
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.add('visible');
+                }
+
+                navLinkElements.forEach(link => link.classList.remove('active'));
+
+                if (mainScrollableContentWrapper) { // Check if mainScrollableContentWrapper exists
+                    mainScrollableContentWrapper.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const formSuccess = document.querySelector('.form-success');
+
+        if (contactForm && formSuccess) { // Check if both elements exist
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formSuccess.classList.add('visible');
+                contactForm.reset();
+                setTimeout(() => {
+                    formSuccess.classList.remove('visible');
+                }, 5000);
+            });
+        }
+        // Create enhanced water particles effect specifically around the title text
+        function createWaterParticles() {
+            const particlesContainer = document.getElementById('particles-container');
+            const titleElement = document.querySelector('.home-title');
+
+            // Add checks for existence for these elements
+            if (!particlesContainer || !titleElement || !homeContent || !mainScrollableContentWrapper) {
+                console.warn("Missing elements for water particles. Aborting createWaterParticles.");
+                return;
+            }
+
+            // Clear existing particles
+            particlesContainer.innerHTML = '';
+
+            // Get title position and dimensions relative to the viewport
+            const titleRect = titleElement.getBoundingClientRect();
+
+            // Get the scroll position of the main-scrollable-content-wrapper
+            const wrapperScrollTop = mainScrollableContentWrapper.scrollTop;
+            const wrapperRect = mainScrollableContentWrapper.getBoundingClientRect();
+
+            // Create particles around title text (more concentrated)
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('water-particle');
+
+                // Calculate absolute position relative to the document
+                const absoluteX = titleRect.left + Math.random() * titleRect.width - 10;
+                const absoluteY = titleRect.top + Math.random() * titleRect.height - 5;
+
+                // Convert to position relative to the particles-container, accounting for its offset
+                // particles-container is inside home-content, which is inside main-scrollable-content-wrapper
+                // The particles-container is absolutely positioned within home-content
+                // So we need to calculate its position relative to the *home-content's* top-left,
+                // and home-content's top-left is relative to the *scrollable wrapper's* content area.
+                const homeContentRect = homeContent.getBoundingClientRect();
+
+                const relativeX = absoluteX - homeContentRect.left + (Math.random() * 40 - 20);
+                const relativeY = absoluteY - homeContentRect.top + (Math.random() * 20 - 10);
+
+
+                particle.style.left = `${relativeX}px`;
+                particle.style.top = `${relativeY}px`;
+
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+
+        // Make all "Inquire Now" buttons redirect to contact form
+        document.querySelectorAll('.book-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Hide all sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show contact section
+                const contactSection = document.getElementById('contact');
+                if (contactSection) { // Check if contactSection exists
+                    contactSection.classList.add('active');
+                }
+
+                // Hide home content
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.remove('visible');
+                }
+
+                // Update active nav link
+                navLinkElements.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#contact') {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Scroll to the contact section within the scrollable wrapper
+                const contactSectionElement = document.getElementById('contact');
+                if (contactSectionElement && mainScrollableContentWrapper && navContainer) { // Check if elements exist
+                    setTimeout(() => { // Small delay to allow element to become active/visible
+                        const navHeight = navContainer.offsetHeight; // Nav container should exist if nav bar is present
+                        mainScrollableContentWrapper.scrollTo({
+                            top: contactSectionElement.offsetTop - navHeight,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+
+                // Focus on subject field and pre-fill with "Accommodation Inquiry"
+                setTimeout(() => {
+                    const subjectField = document.getElementById('subject'); // Check if subjectField exists
+                    if (subjectField) {
+                        subjectField.value = "Accommodation Inquiry";
+                        subjectField.focus();
+                    }
+                }, 100);
+            });
+        });
+
+        function initScene() {
+            const threeJsBackground = document.getElementById('threejs-background'); // Get the container
+            if (!threeJsBackground) { // Check if container exists
+                console.warn("Three.js background container not found. Skipping scene initialization.");
+                return;
+            }
+            const container = document.createElement('div');
+            threeJsBackground.appendChild(container); // Append to the background div
+
+            const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 1, 20000);
+            camera.position.set(30, 30, 100);
+
+            const scene = new THREE.Scene();
+            const sun = new THREE.Vector3();
+
+            // Water
+            const waterGeom = new THREE.PlaneGeometry(10000, 10000);
+            const water = new Water(waterGeom, {
+                textureWidth: 512, textureHeight: 512,
+                waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', tex => {
+                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                }),
+                sunDirection: new THREE.Vector3(),
+                sunColor: 0xffcc66, waterColor: 0x226666,
+                distortionScale: 3.7, fog: false
+            });
+            water.rotation.x = -Math.PI/2;
+            scene.add(water);
+
+            // Sky
+            const sky = new Sky();
+            sky.scale.setScalar(10000);
+            scene.add(sky);
+            const uni = sky.material.uniforms;
+            uni.turbidity.value = 10;
+            uni.rayleigh.value = 2;
+            uni.mieCoefficient.value = 0.005;
+            uni.mieDirectionalG.value = 0.8;
+
+            const phi = THREE.MathUtils.degToRad(90), theta = THREE.MathUtils.degToRad(180);
+            sun.setFromSphericalCoords(1, phi, theta);
+            uni.sunPosition.value.copy(sun);
+            water.material.uniforms.sunDirection.value.copy(sun).normalize();
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.maxPolarAngle = Math.PI*0.495;
+            controls.minDistance = 40; controls.maxDistance = 200;
+            controls.target.copy(sun.clone().multiplyScalar(100));
+            controls.update();
+            // --- ADDED: Disable zoom controls ---
+            controls.enableZoom = false;
+            // ------------------------------------
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth/window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                // Re-create water particles on resize if home content is visible
+                if (homeContent && homeContent.classList.contains('visible')) { // Check if homeContent exists
+                    createWaterParticles();
+                }
+            });
+
+            // Animate
+            function animate() {
+                requestAnimationFrame(animate);
+                water.material.uniforms.time.value += 1/60;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Show navigation and home content after scene is initialized
+            setTimeout(() => {
+                if (navContainer) navContainer.classList.add('visible'); // Check if navContainer exists
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.add('visible'); // Keeps home-content visible by default
+                    createWaterParticles();
+                }
+            }, 1000);
+        }
+
+        // Simulate loading progress
+        const interval = setInterval(() => {
+            progress = Math.min(100, progress + Math.random() * 10 + 5);
+
+            const circumference = 2 * Math.PI * 45;
+            if (prog) prog.style.strokeDashoffset = circumference * (1 - progress / 100); // Check if prog exists
+
+            if (progress >= 100) {
+                clearInterval(interval);
+
+                // Fade out loading overlay
+                if (overlay) overlay.classList.add('fade-out'); // Check if overlay exists
+
+                setTimeout(() => {
+                    // Remove loading overlay from DOM
+                    if (overlay) overlay.remove(); // Check if overlay exists
+
+                    // Initialize Three.js scene
+                    initScene();
+
+                    // Reveal page content with fade-in for the *scrollable wrapper*
+                    if (pageContent) { // Check if pageContent exists
+                        pageContent.setAttribute('aria-hidden', 'false');
+                        pageContent.classList.add('visible'); // This now makes the content *wrapper* visible
+                    }
+                }, 1000); // Match the fade-out duration in CSS
+            }
+        }, 200);
+
+        // Gallery implementation
+        const galleryContainer = document.getElementById('gallery-container'); // Check if galleryContainer exists
+        if (galleryContainer) { // Added a check for galleryContainer existence
+            const galleryImages = [
+                { src: 'images/beautiful-woman-yacht-swimwear.jpg', alt: 'Woman on yacht in Phuket waters' },
+                { src: 'images/473599725_10160435212412175_501266893980304214_n.jpg', alt: 'Yacht sailing in Phuket' },
+                { src: 'images/148872788_3169037883196037883196094_849598998136454814_n.jpg', alt: 'Yacht Club gathering' },
+                { src: 'images/118274592_10157223767507175_1027198816200289080_n.jpg', alt: 'Sailing in Phuket' },
+                { src: 'images/75380478_10156391073797175_4972174924367003648_n.jpg', alt: 'Yacht sailing' },
+                { src: 'images/463398656_7798563456910157_6872878179612088792_n.jpg', alt: 'Seafood at the yacht club' },
+                { src: 'images/468066240_10102904678842276_3997282509366841665_n.jpg', alt: 'Yacht club members' },
+                { src: 'images/464508298_8693886117336396_5575655286860524176_n.jpg', alt: 'Sailing yacht' },
+                { src: 'images/sailboat-414509_1280.jpg', alt: 'Sailboat at sunset' }
+            ];
+
+            // Populate gallery
+            galleryImages.forEach(image => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.alt;
+
+                galleryItem.appendChild(img);
+                galleryContainer.appendChild(galleryItem);
+
+                // Lightbox functionality
+                galleryItem.addEventListener('click', () => {
+                    const lightbox = document.createElement('div');
+                    lightbox.className = 'lightbox';
+
+                    const lightboxImg = document.createElement('img');
+                    lightboxImg.src = image.src;
+                    lightboxImg.alt = image.alt;
+
+                    lightbox.appendChild(lightboxImg);
+                    document.body.appendChild(lightbox);
+
+                    // Close lightbox on click
+                    lightbox.addEventListener('click', () => {
+                        lightbox.remove();
+                    });
+                });
+            });
+        }
+
+        // 🕐 Live Local Time Script (Moved from dashboard snippet)
+        function updateLocalTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeString = now.toLocaleTimeString('en-GB', options);
+            const localTimeElement = document.getElementById('localTime');
+            if (localTimeElement) { // Ensure element exists before updating
+                localTimeElement.textContent = `Current Local Time: ${timeString}`;
+            }
+        }
+        setInterval(updateLocalTime, 1000);
+        updateLocalTime(); // Initial call
+
+        // 🔁 Auto-refresh all iframes every 15 minutes (Moved from dashboard snippet)
+        setInterval(() => {
+            document.querySelectorAll('.captain-widget iframe').forEach(iframe => { // Target only dashboard iframes
+                iframe.src = iframe.src;
+            });
+        }, 15 * 60 * 1000); // 15 minutes
+
+      </script>
 </body>
 </html>
