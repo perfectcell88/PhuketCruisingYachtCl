@@ -8,18 +8,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Sail&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <style>
+
+    <style>
         /* Inline fallback & critical styles */
 
         /* Reset & base styles */
         body, html {
             margin: 0; padding: 0; height: 100%; /* Keep full height */
-            background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321); background-size: 800% 800%;
+            /* REMOVED overflow: hidden; from here, it will be on the main-content-wrapper */
+            background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321);
+            background-size: 800% 800%;
             animation: gradientShift 40s ease infinite;
             font-family: 'Playfair Display', serif;
             color: #f9d976;
             user-select: none;
-            text-align: center; cursor: url('Anchor.cur'), auto;
+            text-align: center;
+            cursor: url('Anchor.cur'), auto;
         }
         @keyframes gradientShift {
             0%   { background-position: 0% 50%; }
@@ -29,22 +33,26 @@
 
         /* Loading overlay */
         #loading-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            pointer-events: all; background: rgba(0,12,26,0.85);
+            pointer-events: all;
+            background: rgba(0,12,26,0.85);
             opacity: 1;
             transition: opacity 1s ease;
         }
         #loading-overlay.fade-out {
-            opacity: 0; pointer-events: none;
+            opacity: 0;
+            pointer-events: none;
         }
 
         #loading-overlay::before {
-            content: ""; position: absolute;
+            content: "";
+            position: absolute;
             width: 200px; height: 200px;
             background: radial-gradient(circle, rgba(249,217,118,0.1), transparent 70%);
             border-radius: 50%;
@@ -52,23 +60,26 @@
             pointer-events: none;
         }
         @keyframes ripple {
-            0%   { transform: scale(1); opacity: 1; }
+            0%   { transform: scale(1);  opacity: 1; }
             100% { transform: scale(2.5); opacity: 0; }
         }
 
         /* Loading logo and spinner */
         #loading-logo-circle-wrapper {
-            position: relative; width: 200px;
+            position: relative;
+            width: 200px;
             height: 200px;
             margin-bottom: 20px;
         }
         #loading-logo {
-            width: 200px; height: 200px;
+            width: 200px;
+            height: 200px;
             display: block;
             filter: drop-shadow(0 0 8px #f9d976);
             opacity: 0;
             animation: logoPop 0.8s ease-out forwards 0.3s;
-            position: relative; z-index: 2;
+            position: relative;
+            z-index: 2;
             border-radius: 50%;
         }
         @keyframes logoPop {
@@ -76,18 +87,21 @@
             to   { opacity: 1; transform: scale(1); }
         }
         #loading-circle {
-            position: absolute; top: 0; left: 0;
+            position: absolute;
+            top: 0; left: 0;
             width: 200px;
             height: 200px;
             pointer-events: none;
             z-index: 1;
-            animation: spin 1.6s linear infinite; filter: drop-shadow(0 0 8px #f9d976);
+            animation: spin 1.6s linear infinite;
+            filter: drop-shadow(0 0 8px #f9d976);
         }
         #loading-circle.fade-out {
             opacity: 0;
         }
         #loading-circle svg {
-            width: 200px; height: 200px;
+            width: 200px;
+            height: 200px;
             transform-origin: center;
         }
         @keyframes spin {
@@ -101,8 +115,152 @@
             stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
             transition: stroke-dashoffset 0.25s ease;
         }
+
+        /* Specific styles for Captain's Dashboard widgets to ensure they fit */
+        /* These were from the old structure, will be overridden by style.css */
+         .captain-dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between widgets */
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
+            border: 1px solid rgba(249, 217, 118, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 40px; /* Add some space from content above */
+        }
+
+        .captain-widget {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(249, 217, 118, 0.1);
+            text-align: center;
+            box-shadow: inset 0 0 5px rgba(249, 217, 118, 0.1);
+            color: #fff; /* Ensure text is visible */
+        }
+
+        .captain-widget h4 {
+            color: #f9d976;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        /* Specific styles for weather widget elements */
+        /* These were from the old structure, will be removed from style.css */
+        #weather-widget {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weather-current {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .weather-icon {
+            width: 60px; /* Adjusted size */
+            height: 60px; /* Adjusted size */
+            filter: drop-shadow(0 0 5px rgba(249,217,118,0.5));
+        }
+
+        .weather-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text to the left */
+        }
+
+        .weather-temp {
+            font-size: 2.2em; /* Larger temp */
+            font-weight: 700;
+            color: #ffe57f;
+        }
+
+        .weather-description {
+            font-size: 1em;
+            text-transform: capitalize;
+            color: #ccc;
+        }
+
+        .weather-location {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 10px;
+            color: #ccc;
+            font-size: 0.9em;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Sun & Moon Widget Styles (minimal, as per existing content) */
+        /* These were from the old structure, will be removed from style.css */
+        #sun-moon-widget {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        #sun-moon-widget .time-info {
+            font-size: 1.2em;
+            color: #ffe57f;
+            font-weight: 600;
+        }
+        #sun-moon-widget .phase-info {
+            font-size: 1em;
+            color: #ccc;
+        }
+        #sun-moon-widget .phase-icon {
+            font-size: 2em; /* Larger icon for visibility */
+            color: #f9d976;
+            margin-bottom: 5px;
+        }
+
+        /* General glass-widget inherited styles */
+        .glass-widget {
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker for better contrast */
+            border: 1px solid rgba(249, 217, 118, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .widget-title {
+            color: #f9d976;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .widget-description {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
         @keyframes fadeIn {
-            to { opacity: 1; }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -114,7 +272,7 @@
         <div id="loading-logo-circle-wrapper" aria-hidden="true">
             <img id="loading-logo" src="logob.png" alt="Phuket Cruising Yacht Club Logo" />
             <div id="loading-circle" aria-hidden="true">
-                <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+                <svg viewBox="0 0 100 100" role="img" aria-hidden="true" >
                     <defs>
                         <linearGradient id="loading-gradient" x1="1" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#f9d976"/>
@@ -132,173 +290,303 @@
     <div id="threejs-background"></div>
 
     <div id="page-content" aria-hidden="true">
-        <div class="nav-container">
-            <nav>
-                <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="nav-logo">
-                <div class="nav-links">
-                    <a href="#home" class="nav-link active" data-target="home">Home</a>
-                    <a href="#about" class="nav-link" data-target="about">About Us</a>
-                    <a href="#services" class="nav-link" data-target="services">Services</a>
-                    <a href="#accommodation" class="nav-link" data-target="accommodation">Accommodation</a>
-                    <a href="#gallery" class="nav-link" data-target="gallery">Gallery</a>
-                    <a href="#contact" class="nav-link" data-target="contact">Contact</a>
-                </div>
-                <div class="social-icons">
-                    <a href="https://www.facebook.com/groups/187918071231247" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f social-icon"></i></a>
-                    <a href="#" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp social-icon"></i></a>
-                    <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram social-icon"></i></a>
-                </div>
-            </nav>
-        </div>
-
         <div id="main-scrollable-content-wrapper">
-
             <div class="home-content" id="home">
                 <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="main-logo">
                 <h1 class="home-title">Phuket Cruising Yacht Club</h1>
                 <div class="particles-container" id="particles-container"></div>
-                <p class="home-subtitle">The Islands Premier Yacht Club</p>
+                <p style="
+    font-family: 'Sail', cursive;
+    font-size: 32px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #004466, #00bcd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    margin-top: 40px;
+    animation: fadeIn 2s ease-in-out forwards;
+    opacity: 0;
+"> 
+    The Islands Premier Yacht Club
+                    <br>
+</p>
                 <div class="intro-text">
                     <p>The fastest growing Yacht Club in Phuket - With a simple mission: to Inform & Entertain you.</p>
                     <p>Enjoy Ice Cold Beer, Great Food & Atmosphere. Meet world cruisers & salty expats.</p>
                     <p>Phuket Cruising Yacht Club - Where our Guests pay the same low prices as Members!</p>
                 </div>
 
-                <div class="pcyc-section-block" id="about">
-                    <h2>Welcome to the PCYC</h2>
-                    <p>Nestled in the heart of Phuket's vibrant maritime scene, the Phuket Cruising Yacht Club (PCYC) is more than just a club; it's a thriving community for sailors, cruisers, and maritime enthusiasts. We pride ourselves on being the fastest-growing yacht club on the island, driven by a simple yet powerful mission: to Inform & Entertain you.</p>
-                    <p>Whether you're a seasoned world cruiser, a local expat, or just visiting, the PCYC offers a uniquely welcoming atmosphere. Step into our club and experience the camaraderie, enjoy ice-cold beers, and savor delicious food – all at the same low prices as our members! We believe in fostering a truly inclusive environment where everyone feels at home.</p>
-                    <p>Our roots are deeply embedded in the spirit of adventure and discovery that cruising embodies. We are passionate about promoting safe and enjoyable sailing experiences, sharing local knowledge, and connecting people who share a love for the sea. From lively social gatherings to essential maritime services, the PCYC is designed to support and enrich your life on the water.</p>
-                    <p>Join us at the Phuket Cruising Yacht Club – your premier destination for all things maritime in Phuket!</p>
-                </div>
+                <p><a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="event-link">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+                    Follow us to keep up to date with our Events & Community!
+                </a></p>
+                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+<div style="height: 80px;"></div>
+                <style>
+    .glass-box {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(6px);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 720px;
+        margin: 30px auto 15px auto;
+        text-align: center;
+    }
 
-                <div class="pcyc-section-block" id="services">
+    .captain-header {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #004466;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.40);
+        animation: float 2.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+        100% { transform: translateY(0); }
+    }
+
+    .wave-underline {
+        width: 200px;
+        height: 5px;
+        margin: 10px auto 20px;
+        background: linear-gradient(90deg, #0077b6, #00b4d8, #0077b6);
+        background-size: 300% 100%;
+        animation: wave 4s ease-in-out infinite;
+        border-radius: 3px;
+    }
+
+    @keyframes wave {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .captain-subtitle {
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 15px;
+        font-style: italic;
+    }
+
+    .live-pulse {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #c60000;
+        font-size: 1rem;
+        animation: pulseText 2s infinite;
+    }
+
+    .live-dot {
+        width: 12px;
+        height: 12px;
+        background-color: #ff0000;
+        border-radius: 50%;
+        box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+        animation: pulseDot 1.2s infinite;
+    }
+
+    @keyframes pulseDot {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.6; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulseText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+</style>
+
+<div class="glass-box">
+    <div class="captain-header">- Phuket Maritime Dashboard -</div>
+    <div class="wave-underline"></div>
+    <div class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</div>
+    <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
+</div>
+
+<div class="widget-grid">
+
+<div class="captain-widget">
+  <h4>🌬️ Wind Forecast (Phuket)</h4>
+  <iframe 
+    src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" 
+    frameborder="0" 
+    width="100%" 
+    height="250">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌤️ Weather Forecast (Phuket)</h4>
+  <iframe 
+    src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" 
+    frameborder="0" 
+    scrolling="no" 
+    width="100%" 
+    height="250">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌧️ Weather Radar (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.888&lon=98.392&zoom=7&overlay=radar&menu=&message=&marker=&calendar=now&type=map&location=coordinates"
+    frameborder="0"
+    width="100%"
+    height="250"
+    style="border:none; overflow:hidden;"
+    allowtransparency="true"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🔆 UV Index (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="300"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🚢 Live Ship Tracker</h4>
+  <iframe 
+    src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" 
+    frameborder="0" 
+    width="100%" 
+    height="300">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌡️ Sea Surface Temperature (Phuket)</h4>
+  <iframe
+    src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1"
+    width="100%"
+    height="300"
+    frameborder="0"
+    scrolling="no"
+    style="border:none; overflow:hidden;"
+  ></iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>🌊 Tide Info (Phuket)</h4>
+  <iframe 
+    src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark" 
+    style="background-color: #232629; border: none;" 
+    width="100%" 
+    height="300" 
+    allow="geolocation">
+  </iframe>
+</div>
+
+<div class="captain-widget">
+  <h4>⛽ Fuel Docks Around Phuket</h4>
+  <iframe 
+    src="https://www.google.com/maps/d/embed?mid=1TleOY4hTm89B9cThLBdIYN_ZXpvgaFg&ehbc=2E312F&noprof=1" 
+    width="100%" 
+    height="300" 
+    style="border:0;" 
+    allowfullscreen 
+    loading="lazy">
+  </iframe>
+</div>
+
+<div class="captain-widget" style="text-align:center; width: 300px; margin: 0 auto;">
+  <h4>🌕 Moon Phase</h4>
+  <a target="_blank" style="text-decoration:none;" href="https://moonphase.guide/">
+    <img 
+      src="https://moonphase.guide/module/MWE5MNnJyNWRtZlJlTTY1Uk9LQ2h0V1gydEVwbkRkS0QrLzBEaDRCeC9TbEhVUklsWVJlWHNEOG9uOGhINXhvc3Jid2FacjA4alVSL1ZlRWxVTzg4ZGc9PQ.png" 
+      alt="Moon Phase" 
+      style="width: 300px; height: 300px; object-fit: contain; display: block; margin: 0 auto;" 
+      border="0" 
+    />
+  </a>
+</div>
+
+
+            <section id="about" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="about"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
+                    <h2>About Us</h2>
+                    <p>The fastest growing Yacht Club. Our master plan: Inform & entertain you. It's your home base in Phuket - you're always welcome at the PHUKET CRUISING YACHT CLUB.</p>
+                    <p>We also enjoy Ice Cold Beer, Great Food & the opportunity to meet & chat with world cruisers, salty expats & enthusiasts.</p>
+                    <p>Here at the PCYC, our Guests pay the same low prices as our Members!</p>
+                    <p>The PCYC is the island's full service Yacht Club, providing a welcoming atmosphere for sailors and enthusiasts alike.</p>
+                </div>
+            </section>
+
+            <section id="services" class="content-section">
+                <div class="content-container">
+                    <div class="close-btn" data-target="services"></div>
+                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
                     <h2>Our Services</h2>
                     <p>At Phuket Cruising Yacht Club, we offer a comprehensive range of services to meet all your sailing needs:</p>
                     <ul>
-                        <li><i class="fas fa-file-invoice"></i> Thai Customs Visa Extensions</li>
-                        <li><i class="fas fa-ship"></i> Brokerage & Charter</li>
-                        <li><i class="fas fa-life-ring"></i> Salvage & Emergency Assistance</li>
-                        <li><i class="fas fa-gavel"></i> Legal Services & Advice</li>
-                        <li><i class="fas fa-wrench"></i> Second Hand Boat Parts & Repairs</li>
-                        <li><i class="fas fa-user-shield"></i> Boat Minding & Security</li>
-                        <li><i class="fas fa-car"></i> Rental of Cars, Bikes, RIBs</li>
-                        <li><i class="fas fa-umbrella-beach"></i> Beach Bungalow Accommodation</li>
-                        <li><i class="fas fa-handshake"></i> Preferred Contractors Network</li>
-                        <li><i class="fas fa-anchor"></i> Mooring & Berthing Services</li>
+                        <li>Thai Customs Visa Extensions</li>
+                        <li>Brokerage</li>
+                        <li>Charter</li>
+                        <li>Salvage</li>
+                        <li>Law Office</li>
+                        <li>Second Hand Boat Parts For Sale</li>
+                        <li>Boat Minding</li>
+                        <li>Rental of Cars, Bikes, RIBs</li>
+                        <li>Beach Bungalows</li>
+                        <li>Preferred Contractors</li>
+                        <li>Mooring Services</li>
                     </ul>
                 </div>
-
-                <div class="widgets-container">
-                    <div class="glass-box">
-                        <div class="captain-header">- Phuket Maritime Dashboard -</div>
-                        <div class="wave-underline"></div>
-                        <div class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</div>
-                        <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
-                    </div>
-                    <div class="widget-grid">
-                        <div class="widget" id="wind-widget">
-                            <h4>🌬️ Wind Forecast (Phuket)</h4>
-                            <iframe
-                                src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=%C2%B0C"
-                                frameborder="0"
-                                width="100%"
-                                height="250"
-                                loading="lazy"
-                            ></iframe>
-                            <p class="warning">Data provided by Windy.com, use for informational purposes only. Always check local conditions.</p>
-                        </div>
-
-                        <div class="widget" id="weather-widget">
-                            <h4>☀️ Local Weather (Phuket)</h4>
-                            <div class="weather-current">
-                                <img src="" alt="Weather Icon" class="weather-icon">
-                                <div class="weather-details">
-                                    <span class="weather-temp"></span>
-                                    <span class="weather-description"></span>
-                                </div>
-                            </div>
-                            <div class="weather-info">
-                                <span>Humidity: <span id="weather-humidity"></span>%</span>
-                                <span>Pressure: <span id="weather-pressure"></span> hPa</span>
-                            </div>
-                            <p class="error-message"></p>
-                        </div>
-
-                        <div class="widget" id="tide-widget">
-                            <h4>🌊 Tide Chart (Phuket)</h4>
-                            <iframe
-                                src="https://www.tide-forecast.com/locations/Phuket-Island-Thailand/tides/latest/mini?chart=true"
-                                frameborder="0"
-                                width="100%"
-                                height="250"
-                                loading="lazy"
-                            ></iframe>
-                            <p class="warning">Source: Tide-Forecast.com. Consult official navigation charts for critical operations.</p>
-                        </div>
-
-                        <div class="widget" id="uv-index-widget">
-                            <h4>🔆 UV Index (Phuket)</h4>
-                            <p class="uv-index-value"></p>
-                            <p class="uv-index-protection"></p>
-                            <p class="warning">Stay safe under the sun! High UV levels can cause rapid sunburn.</p>
-                        </div>
-
-                        <div class="widget" id="sun-moon-widget">
-                            <h4>🌕 Sun & Moon Times (Phuket)</h4>
-                            <p><span class="phase-icon"></span><span class="phase-info"></span></p>
-                            <p>Sunrise: <span id="sunrise-time" class="time-info"></span></p>
-                            <p>Sunset: <span id="sunset-time" class="time-info"></span></p>
-                            <p>Moonrise: <span id="moonrise-time" class="time-info"></span></p>
-                            <p>Moonset: <span id="moonset-time" class="time-info"></span></p>
-                        </div>
-
-                        <div class="widget" id="local-time-widget">
-                            <h4>⏰ Local Time</h4>
-                            <p id="localTime" style="font-size: 1.8em; font-weight: bold; color: #ffe57f;"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-            </div>
+            </section>
 
             <section id="accommodation" class="content-section">
                 <div class="content-container">
                     <div class="close-btn" data-target="accommodation"></div>
                     <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
                     <h2>Accommodation</h2>
-                    <p>Experience the beauty of Phuket with our comfortable beach bungalows, perfect for sailors and visitors alike. Nestled close to the club, our bungalows offer a tranquil retreat with easy access to all amenities.</p>
+                    <p>Experience the beauty of Phuket with our comfortable beach bungalows, perfect for sailors and visitors alike.</p>
+
                     <div class="accommodation-grid">
                         <div class="bungalow-card">
-                            <img src="images/bungalow1.jpg" alt="Standard Bungalow" class="bungalow-img">
+                            <img src="images/sailboat-414509_1280.jpg" alt="Standard Bungalow" class="bungalow-img">
                             <div class="bungalow-info">
                                 <h3 class="bungalow-title">Standard Bungalow</h3>
-                                <p>Cozy and comfortable, ideal for solo travelers or couples.</p>
-                                <p class="bungalow-price">฿800/night</p>
-                                <button class="book-btn">Inquire Now</button>
+                                <p class="bungalow-price">From ฿1,500 per night</p>
+                                <p class="bungalow-desc">Comfortable beachfront bungalow with all essential amenities, perfect for couples or solo travelers.</p>
+                                <a href="#contact" class="book-btn">Inquire Now</a>
                             </div>
                         </div>
+
                         <div class="bungalow-card">
-                            <img src="images/bungalow2.jpg" alt="Family Bungalow" class="bungalow-img">
-                            <div class="bungalow-info">
-                                <h3 class="bungalow-title">Family Bungalow</h3>
-                                <p>Spacious accommodation for families or small groups.</p>
-                                <p class="bungalow-price">฿1500/night</p>
-                                <button class="book-btn">Inquire Now</button>
-                            </div>
-                        </div>
-                        <div class="bungalow-card">
-                            <img src="images/bungalow3.jpg" alt="Deluxe Bungalow" class="bungalow-img">
+                            <img src="images/beautiful-woman-yacht-swimwear.jpg" alt="Deluxe Bungalow" class="bungalow-img">
                             <div class="bungalow-info">
                                 <h3 class="bungalow-title">Deluxe Bungalow</h3>
-                                <p>Premium comfort with enhanced amenities and views.</p>
-                                <p class="bungalow-price">฿2200/night</p>
-                                <button class="book-btn">Inquire Now</button>
+                                <p class="bungalow-price">From ฿2,500 per night</p>
+                                <p class="bungalow-desc">Spacious bungalow with premium amenities and stunning ocean views, ideal for extended stays.</p>
+                                <a href="#contact" class="book-btn">Inquire Now</a>
+                            </div>
+                        </div>
+
+                        <div class="bungalow-card">
+                            <img src="images/75380478_10156391073797175_4972174924367003648_n.jpg" alt="Family Bungalow" class="bungalow-img">
+                            <div class="bungalow-info">
+                                <h3 class="bungalow-title">Family Bungalow</h3>
+                                <p class="bungalow-price">From ฿3,500 per night</p>
+                                <p class="bungalow-desc">Large bungalow with multiple rooms, perfect for families or groups of friends enjoying Phuket together.</p>
+                                <a href="#contact" class="book-btn">Inquire Now</a>
                             </div>
                         </div>
                     </div>
-                    <p class="note">All bungalows include air conditioning, private bathroom, and Wi-Fi. Prices are indicative and subject to change based on season and availability.</p>
                 </div>
             </section>
 
@@ -307,26 +595,8 @@
                     <div class="close-btn" data-target="gallery"></div>
                     <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
                     <h2>Gallery</h2>
-                    <p>Explore the beauty of Phuket Cruising Yacht Club and the stunning maritime environment.</p>
-                    <div class="gallery-grid">
-                        <div class="gallery-item">
-                            <img src="images/sailboat-414509_1280.jpg" alt="Sailing in Phuket">
-                        </div>
-                        <div class="gallery-item">
-                            <img src="images/75380478_10156391073797175_4972174924367003648_n.jpg" alt="Yacht sailing">
-                        </div>
-                        <div class="gallery-item">
-                            <img src="images/463398656_779313620959143_2725459343753380064_n.jpg" alt="Clubhouse exterior">
-                        </div>
-                        <div class="gallery-item">
-                            <img src="images/463595567_779313600959145_2568603417724391605_n.jpg" alt="Clubhouse interior">
-                        </div>
-                         <div class="gallery-item">
-                            <img src="images/AdobeStock_634458514.jpeg" alt="Phuket Sunset">
-                        </div>
-                        <div class="gallery-item">
-                            <img src="images/AdobeStock_634458514.jpeg" alt="Phuket Beach">
-                        </div>
+                    <p>Explore the beauty of our vibrant community & the Phuket Cruising Yacht Club through our gallery.</p>
+                    <div id="gallery-container" class="gallery-grid">
                     </div>
                 </div>
             </section>
@@ -336,8 +606,9 @@
                     <div class="close-btn" data-target="contact"></div>
                     <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
                     <h2>Contact Us</h2>
-                    <p>We'd love to hear from you! Reach out to us for inquiries, bookings, or any assistance you may need.</p>
-                    <div class="contact-form-container">
+                    <p>We'd love to hear from you! Whether you're interested in membership, have questions about our services, or just want to learn more about the Phuket Cruising Yacht Club.</p>
+
+                    <div class="contact-form">
                         <form id="contact-form">
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -359,298 +630,414 @@
                         </form>
                         <div class="form-success">Your message has been sent successfully! We'll get back to you soon.</div>
                     </div>
-                    <p>Connect with us on <a href="https://www.facebook.com/groups/187918071231247" target="_blank" style="color: #f9d976; text-decoration: none;"> <i class="fab fa-facebook-f social-icon"></i> Facebook </a> or visit us in person at our club in Phuket.</p>
+                    <p>Connect with us on <a href="https://www.facebook.com/groups/187918071231247" target="_blank" style="color: #f9d976; text-decoration: none;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+                        Facebook
+                    </a> or visit us in person at our club in Phuket.</p>
                 </div>
             </section>
-
-        </div> </div> <button class="mobile-menu-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </div>
+    </div>
+    <button class="mobile-menu-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
     </button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/objects/Water.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/objects/Sky.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js"></script>
-    <script>
-        // DOM Elements
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const loadingLogo = document.getElementById('loading-logo');
-        const loadingCircleProgress = document.querySelector('#loading-circle .progress');
-        const loadingCircle = document.getElementById('loading-circle');
-        const pageContent = document.getElementById('page-content');
+    <div class="nav-container">
+        <nav>
+            <img src="logob.png" alt="Phuket Cruising Yacht Club" class="nav-logo">
+            <div class="nav-links">
+                <a href="#home" class="nav-link">HOME</a>
+                <a href="#about" class="nav-link">ABOUT</a>
+                <a href="#services" class="nav-link">SERVICES</a>
+                <a href="#accommodation" class="nav-link">ACCOMMODATION</a>
+                <a href="#gallery" class="nav-link">GALLERY</a>
+                <a href="#contact" class="nav-link">CONTACT</a>
+            </div>
+            <a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="social-icon">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
+            </a>
+        </nav>
+    </div>
+    <script type="module">
+        import * as THREE from './js/three.module.js';
+        import { OrbitControls } from './js/controls/OrbitControls.js';
+        import { Water } from './js/objects/Water.js';
+        import { Sky } from './js/objects/Sky.js';
+
+        const overlay = document.getElementById('loading-overlay');
+        const prog = document.querySelector('#loading-circle circle.progress');
+        const spinner = document.getElementById('loading-circle');
+        const pageContent = document.getElementById('page-content'); // This is now the scrollable wrapper
+        const mainScrollableContentWrapper = document.getElementById('main-scrollable-content-wrapper'); // New ID for content
         const navContainer = document.querySelector('.nav-container');
-        const navLinkElements = document.querySelectorAll('.nav-link');
+        const homeContent = document.querySelector('.home-content');
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const homeContent = document.querySelector('.home-content'); // Main scrollable home content
-        const contentSections = document.querySelectorAll('.content-section'); // Overlay sections
-        const mainScrollableContentWrapper = document.getElementById('main-scrollable-content-wrapper');
+        // IMPORTANT: In your script.js you sent earlier, this variable was named navLinksContainer.
+        // I am correcting it here to match the variable name used throughout the script.js file.
+        const navLinksContainer = document.querySelector('.nav-links'); // Corrected variable name
+        let progress = 0;
 
+        // Mobile menu toggle
+        // Added checks for existence before adding event listener
+        if (mobileMenuBtn && navLinksContainer) { // Check if both elements exist
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('open');
+            });
+        }
 
-        // --- Page Load Animation ---
-        window.addEventListener('load', () => {
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 5; // Increment by 5%
-                if (loadingCircleProgress) {
-                    loadingCircleProgress.style.strokeDashoffset = 283 - (283 * progress / 100);
-                }
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    if (loadingOverlay) {
-                        loadingOverlay.classList.add('fade-out');
-                    }
-                    if (loadingCircle) {
-                        loadingCircle.classList.add('fade-out');
-                    }
-                    if (loadingLogo) {
-                        loadingLogo.style.opacity = '0'; // Ensure logo fades out
-                    }
-                    // Show page content and nav after a delay
-                    setTimeout(() => {
-                        if (loadingOverlay) {
-                            loadingOverlay.style.display = 'none';
-                        }
-                        if (pageContent) {
-                            pageContent.classList.add('visible');
-                            pageContent.setAttribute('aria-hidden', 'false');
-                        }
-                        if (navContainer) {
-                            navContainer.classList.add('visible');
-                        }
-                        if (homeContent) {
-                            homeContent.classList.add('visible'); // Ensure home-content also becomes visible
-                        }
-                    }, 1000); // Wait for fade-out transition
-                }
-            }, 50); // Update every 50ms
-        });
+        // Handle navigation
+        const navLinkElements = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
 
-        // --- Navigation & Section Switching Logic ---
         navLinkElements.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetId = link.getAttribute('data-target');
+                const targetId = link.getAttribute('href').substring(1);
 
-                // Check if the target is within the scrollable home-content or an overlay section
-                const isHomeContentSection = ['home', 'about', 'services'].includes(targetId);
-                const targetElement = document.getElementById(targetId);
-
-                // Reset active class for all nav links
-                navLinkElements.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-
-                // Handle body overlay class
-                if (!isHomeContentSection) {
-                    document.body.classList.add('overlay-active');
-                    // Hide home content if an overlay is active
-                    if (homeContent) {
-                        homeContent.classList.remove('visible'); // This will trigger CSS opacity/visibility
-                    }
-                } else {
-                    document.body.classList.remove('overlay-active');
-                    // Show home content if navigating to a home-content section
-                    if (homeContent) {
-                        homeContent.classList.add('visible');
-                    }
+                if (navLinksContainer) { // Check if navLinksContainer exists
+                    navLinksContainer.classList.remove('open');
                 }
 
-                // Manage overlay sections visibility
-                contentSections.forEach(section => {
-                    if (section.id === targetId) {
-                        section.classList.add('active');
-                    } else {
-                        section.classList.remove('active');
+                // If clicking HOME, show home content and hide all sections
+                if (targetId === 'home') {
+                    if (homeContent) { // Check if homeContent exists
+                        homeContent.classList.add('visible');
                     }
-                });
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    if (mainScrollableContentWrapper) { // Check if mainScrollableContentWrapper exists
+                        mainScrollableContentWrapper.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                } else {
+                    // Update active link
+                    navLinkElements.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
 
-                // Scroll to target within main-scrollable-content-wrapper for home-content sections
-                if (isHomeContentSection && targetElement && mainScrollableContentWrapper) {
-                     // Hide other overlay sections first to ensure they don't interfere
-                    contentSections.forEach(section => section.classList.remove('active'));
-                    setTimeout(() => {
-                        const navHeight = navContainer ? navContainer.offsetHeight : 0;
-                        mainScrollableContentWrapper.scrollTo({ top: targetElement.offsetTop - navHeight, behavior: 'smooth' });
-                    }, 100); // Small delay to allow homeContent visibility change
-                } else if (!isHomeContentSection && targetElement && mainScrollableContentWrapper) {
-                    // For overlay sections, ensure main content is at top when overlay opens (optional, but good for consistency)
-                    mainScrollableContentWrapper.scrollTo({ top: 0, behavior: 'auto' });
+                    // Show target section
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                    if (homeContent) { // Check if homeContent exists
+                        homeContent.classList.remove('visible');
+                    }
+
+                    const targetSectionElement = document.getElementById(targetId);
+                    if (targetSectionElement && mainScrollableContentWrapper) { // Check if both elements exist
+                        setTimeout(() => {
+                            const navHeight = navContainer ? navContainer.offsetHeight : 0; // Check if navContainer exists
+                            mainScrollableContentWrapper.scrollTo({
+                                top: targetSectionElement.offsetTop - navHeight,
+                                behavior: 'smooth'
+                            });
+                        }, 100);
+                    }
                 }
             });
         });
 
-        // Close button functionality for overlay sections
+        // Close button functionality
         const closeButtons = document.querySelectorAll('.close-btn');
         closeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetSectionId = btn.getAttribute('data-target');
                 const targetSectionElement = document.getElementById(targetSectionId);
 
-                if (targetSectionElement) {
+                if (targetSectionElement) { // Check if targetSectionElement exists
                     targetSectionElement.classList.remove('active');
-                    document.body.classList.remove('overlay-active');
+                }
 
-                    // Activate the 'Home' link in the nav and show home content
-                    navLinkElements.forEach(l => l.classList.remove('active'));
-                    const homeLink = document.querySelector('.nav-link[data-target="home"]');
-                    if (homeLink) {
-                        homeLink.classList.add('active');
-                    }
-                    if (homeContent) {
-                        homeContent.classList.add('visible');
-                    }
-                    // Ensure the main scrollable wrapper is scrolled to top if desired
-                    if (mainScrollableContentWrapper) {
-                        mainScrollableContentWrapper.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.add('visible');
+                }
+
+                navLinkElements.forEach(link => link.classList.remove('active'));
+
+                if (mainScrollableContentWrapper) { // Check if mainScrollableContentWrapper exists
+                    mainScrollableContentWrapper.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
 
-        // Mobile Menu Toggle
-        mobileMenuBtn.addEventListener('click', () => {
-            if (navContainer) {
-                navContainer.classList.toggle('active');
-            }
-        });
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const formSuccess = document.querySelector('.form-success');
 
-        // Close mobile menu when a link is clicked
-        navLinkElements.forEach(link => {
-            link.addEventListener('click', () => {
-                if (navContainer && navContainer.classList.contains('active')) {
-                    navContainer.classList.remove('active');
+        if (contactForm && formSuccess) { // Check if both elements exist
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formSuccess.classList.add('visible');
+                contactForm.reset();
+                setTimeout(() => {
+                    formSuccess.classList.remove('visible');
+                }, 5000);
+            });
+        }
+        // Create enhanced water particles effect specifically around the title text
+        function createWaterParticles() {
+            const particlesContainer = document.getElementById('particles-container');
+            const titleElement = document.querySelector('.home-title');
+
+            // Add checks for existence for these elements
+            if (!particlesContainer || !titleElement || !homeContent || !mainScrollableContentWrapper) {
+                console.warn("Missing elements for water particles. Aborting createWaterParticles.");
+                return;
+            }
+
+            // Clear existing particles
+            particlesContainer.innerHTML = '';
+
+            // Get title position and dimensions relative to the viewport
+            const titleRect = titleElement.getBoundingClientRect();
+
+            // Get the scroll position of the main-scrollable-content-wrapper
+            const wrapperScrollTop = mainScrollableContentWrapper.scrollTop;
+            const wrapperRect = mainScrollableContentWrapper.getBoundingClientRect();
+
+            // Create particles around title text (more concentrated)
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('water-particle');
+
+                // Calculate absolute position relative to the document
+                const absoluteX = titleRect.left + Math.random() * titleRect.width - 10;
+                const absoluteY = titleRect.top + Math.random() * titleRect.height - 5;
+
+                // Convert to position relative to the particles-container, accounting for its offset
+                // particles-container is inside home-content, which is inside main-scrollable-content-wrapper
+                // The particles-container is absolutely positioned within home-content
+                // So we need to calculate its position relative to the *home-content's* top-left,
+                // and home-content's top-left is relative to the *scrollable wrapper's* content area.
+                const homeContentRect = homeContent.getBoundingClientRect();
+
+                const relativeX = absoluteX - homeContentRect.left + (Math.random() * 40 - 20);
+                const relativeY = absoluteY - homeContentRect.top + (Math.random() * 20 - 10);
+
+
+                particle.style.left = `${relativeX}px`;
+                particle.style.top = `${relativeY}px`;
+
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+
+        // Make all "Inquire Now" buttons redirect to contact form
+        document.querySelectorAll('.book-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Hide all sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show contact section
+                const contactSection = document.getElementById('contact');
+                if (contactSection) { // Check if contactSection exists
+                    contactSection.classList.add('active');
                 }
+
+                // Hide home content
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.remove('visible');
+                }
+
+                // Update active nav link
+                navLinkElements.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#contact') {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Scroll to the contact section within the scrollable wrapper
+                const contactSectionElement = document.getElementById('contact');
+                if (contactSectionElement && mainScrollableContentWrapper && navContainer) { // Check if elements exist
+                    setTimeout(() => { // Small delay to allow element to become active/visible
+                        const navHeight = navContainer.offsetHeight; // Nav container should exist if nav bar is present
+                        mainScrollableContentWrapper.scrollTo({
+                            top: contactSectionElement.offsetTop - navHeight,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+
+                // Focus on subject field and pre-fill with "Accommodation Inquiry"
+                setTimeout(() => {
+                    const subjectField = document.getElementById('subject'); // Check if subjectField exists
+                    if (subjectField) {
+                        subjectField.value = "Accommodation Inquiry";
+                        subjectField.focus();
+                    }
+                }, 100);
             });
         });
 
-        // --- Three.js Background ---
-        const container = document.getElementById('threejs-background');
-        if (container) {
-            let camera, scene, renderer, water, sun;
-            let currentRotation = 0; // To track camera rotation
-
-            function initThreeJS() {
-                // Camera
-                camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.5, 3000000);
-                camera.position.set(2000, 750, 2000); // Adjusted camera position for better view
-
-                // Scene
-                scene = new THREE.Scene();
-
-                // Sun
-                sun = new THREE.Vector3();
-
-                // Water
-                const waterGeometry = new THREE.PlaneGeometry(10000, 10000); // Larger plane
-
-                water = new THREE.Water(
-                    waterGeometry,
-                    {
-                        textureWidth: 512,
-                        textureHeight: 512,
-                        waterNormals: new THREE.TextureLoader().load('https://threejs.org/examples/textures/waternormals.jpg', function (texture) {
-                            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-                        }),
-                        alpha: 1.0,
-                        sunDirection: new THREE.Vector3(),
-                        sunColor: 0xffffff,
-                        waterColor: 0x001e0f, // Darker water color
-                        distortionScale: 3.7,
-                        fog: false
-                    }
-                );
-                water.rotation.x = -Math.PI / 2;
-                scene.add(water);
-
-                // Sky
-                const sky = new Sky();
-                sky.scale.setScalar(10000);
-                scene.add(sky);
-
-                const uni = sky.material.uniforms;
-                uni.turbidity.value = 10;
-                uni.rayleigh.value = 2;
-                uni.mieCoefficient.value = 0.005;
-                uni.mieDirectionalG.value = 0.8;
-
-                const phi = THREE.MathUtils.degToRad(90), theta = THREE.MathUtils.degToRad(180); // Adjusted sun position
-                sun.setFromSphericalCoords(1, phi, theta);
-                uni.sunPosition.value.copy(sun);
-                water.material.uniforms.sunDirection.value.copy(sun).normalize();
-
-                // Renderer
-                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // alpha: true for transparent background
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setClearColor(0x000000, 0); // Transparent clear color
-                container.appendChild(renderer.domElement);
-
-                // Controls (Optional, for debugging/testing)
-                // const controls = new OrbitControls(camera, renderer.domElement);
-                // controls.maxPolarAngle = Math.PI * 0.495;
-                // controls.target.set(0, 10, 0);
-                // controls.minDistance = 40.0;
-                // controls.maxDistance = 200.0;
-                // controls.update();
-
-                window.addEventListener('resize', onWindowResize);
+        function initScene() {
+            const threeJsBackground = document.getElementById('threejs-background'); // Get the container
+            if (!threeJsBackground) { // Check if container exists
+                console.warn("Three.js background container not found. Skipping scene initialization.");
+                return;
             }
+            const container = document.createElement('div');
+            threeJsBackground.appendChild(container); // Append to the background div
 
-            function onWindowResize() {
-                camera.aspect = window.innerWidth / window.innerHeight;
+            const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 1, 20000);
+            camera.position.set(30, 30, 100);
+
+            const scene = new THREE.Scene();
+            const sun = new THREE.Vector3();
+
+            // Water
+            const waterGeom = new THREE.PlaneGeometry(10000, 10000);
+            const water = new Water(waterGeom, {
+                textureWidth: 512, textureHeight: 512,
+                waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', tex => {
+                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                }),
+                sunDirection: new THREE.Vector3(),
+                sunColor: 0xffcc66, waterColor: 0x226666,
+                distortionScale: 3.7, fog: false
+            });
+            water.rotation.x = -Math.PI/2;
+            scene.add(water);
+
+            // Sky
+            const sky = new Sky();
+            sky.scale.setScalar(10000);
+            scene.add(sky);
+            const uni = sky.material.uniforms;
+            uni.turbidity.value = 10;
+            uni.rayleigh.value = 2;
+            uni.mieCoefficient.value = 0.005;
+            uni.mieDirectionalG.value = 0.8;
+
+            const phi = THREE.MathUtils.degToRad(90), theta = THREE.MathUtils.degToRad(180);
+            sun.setFromSphericalCoords(1, phi, theta);
+            uni.sunPosition.value.copy(sun);
+            water.material.uniforms.sunDirection.value.copy(sun).normalize();
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.maxPolarAngle = Math.PI*0.495;
+            controls.minDistance = 40; controls.maxDistance = 200;
+            controls.target.copy(sun.clone().multiplyScalar(100));
+            controls.update();
+            // --- ADDED: Disable zoom controls ---
+            controls.enableZoom = false;
+            // ------------------------------------
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth/window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
-            }
+                // Re-create water particles on resize if home content is visible
+                if (homeContent && homeContent.classList.contains('visible')) { // Check if homeContent exists
+                    createWaterParticles();
+                }
+            });
 
-            function animateThreeJS() {
-                requestAnimationFrame(animateThreeJS);
-
-                // Smoothly rotate the camera around the scene
-                currentRotation += 0.00005; // Control speed of rotation
-                const radius = 2000; // Distance from the center
-                camera.position.x = radius * Math.sin(currentRotation);
-                camera.position.z = radius * Math.cos(currentRotation);
-                camera.position.y = 750 + 50 * Math.sin(currentRotation * 0.5); // Subtle vertical bobbing
-
-                camera.lookAt(new THREE.Vector3(0, 0, 0)); // Always look at the center
-
-                water.material.uniforms['time'].value += 1.0 / 60.0;
+            // Animate
+            function animate() {
+                requestAnimationFrame(animate);
+                water.material.uniforms.time.value += 1/60;
                 renderer.render(scene, camera);
             }
+            animate();
 
-            initThreeJS();
-            animateThreeJS();
+            // Show navigation and home content after scene is initialized
+            setTimeout(() => {
+                if (navContainer) navContainer.classList.add('visible'); // Check if navContainer exists
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.add('visible'); // Keeps home-content visible by default
+                    createWaterParticles();
+                }
+            }, 1000);
         }
 
-        // --- Dynamic Particle Effect on Main Logo ---
-        const particlesContainer = document.getElementById('particles-container');
-        if (particlesContainer) {
-            const numParticles = 30; // Number of particles
+        // Simulate loading progress
+        const interval = setInterval(() => {
+            progress = Math.min(100, progress + Math.random() * 10 + 5);
 
-            for (let i = 0; i < numParticles; i++) {
-                createParticle();
+            const circumference = 2 * Math.PI * 45;
+            if (prog) prog.style.strokeDashoffset = circumference * (1 - progress / 100); // Check if prog exists
+
+            if (progress >= 100) {
+                clearInterval(interval);
+
+                // Fade out loading overlay
+                if (overlay) overlay.classList.add('fade-out'); // Check if overlay exists
+
+                setTimeout(() => {
+                    // Remove loading overlay from DOM
+                    if (overlay) overlay.remove(); // Check if overlay exists
+
+                    // Initialize Three.js scene
+                    initScene();
+
+                    // Reveal page content with fade-in for the *scrollable wrapper*
+                    if (pageContent) { // Check if pageContent exists
+                        pageContent.setAttribute('aria-hidden', 'false');
+                        pageContent.classList.add('visible'); // This now makes the content *wrapper* visible
+                    }
+                }, 1000); // Match the fade-out duration in CSS
             }
+        }, 200);
 
-            function createParticle() {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particlesContainer.appendChild(particle);
+        // Gallery implementation
+        const galleryContainer = document.getElementById('gallery-container'); // Check if galleryContainer exists
+        if (galleryContainer) { // Added a check for galleryContainer existence
+            const galleryImages = [
+                { src: 'images/beautiful-woman-yacht-swimwear.jpg', alt: 'Woman on yacht in Phuket waters' },
+                { src: 'images/473599725_10160435212412175_501266893980304214_n.jpg', alt: 'Yacht sailing in Phuket' },
+                { src: 'images/148872788_3169037883196037883196094_849598998136454814_n.jpg', alt: 'Yacht Club gathering' },
+                { src: 'images/118274592_10157223767507175_1027198816200289080_n.jpg', alt: 'Sailing in Phuket' },
+                { src: 'images/75380478_10156391073797175_4972174924367003648_n.jpg', alt: 'Yacht sailing' },
+                { src: 'images/463398656_7798563456910157_6872878179612088792_n.jpg', alt: 'Seafood at the yacht club' },
+                { src: 'images/468066240_10102904678842276_3997282509366841665_n.jpg', alt: 'Yacht club members' },
+                { src: 'images/464508298_8693886117336396_5575655286860524176_n.jpg', alt: 'Sailing yacht' },
+                { src: 'images/sailboat-414509_1280.jpg', alt: 'Sailboat at sunset' }
+            ];
 
-                // Random position within a wider area around the logo
-                const x = (Math.random() - 0.5) * 600; // -300 to 300
-                const y = (Math.random() - 0.5) * 400; // -200 to 200
+            // Populate gallery
+            galleryImages.forEach(image => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
 
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-                particle.style.animationDelay = `${Math.random() * 3}s`; // Random animation delay
-            }
-        }
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.alt;
 
-        // --- Gallery Lightbox ---
-        const galleryItems = document.querySelectorAll('.gallery-item img');
-        if (galleryItems.length > 0) { // Only add listener if gallery exists
-            galleryItems.forEach(image => {
-                image.addEventListener('click', () => {
+                galleryItem.appendChild(img);
+                galleryContainer.appendChild(galleryItem);
+
+                // Lightbox functionality
+                galleryItem.addEventListener('click', () => {
                     const lightbox = document.createElement('div');
-                    lightbox.classList.add('lightbox');
+                    lightbox.className = 'lightbox';
 
                     const lightboxImg = document.createElement('img');
                     lightboxImg.src = image.src;
@@ -667,185 +1054,13 @@
             });
         }
 
-        // --- Weather Widget Logic (using OpenWeatherMap API) ---
-        const WEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your actual API key
-        const weatherWidget = document.getElementById('weather-widget');
-        if (weatherWidget && WEATHER_API_KEY !== 'YOUR_OPENWEATHERMAP_API_KEY') {
-            const weatherIconElement = weatherWidget.querySelector('.weather-icon');
-            const weatherTempElement = weatherWidget.querySelector('.weather-temp');
-            const weatherDescriptionElement = weatherWidget.querySelector('.weather-description');
-            const weatherHumidityElement = document.getElementById('weather-humidity');
-            const weatherPressureElement = document.getElementById('weather-pressure');
-            const errorMessageElement = weatherWidget.querySelector('.error-message');
-
-            const fetchWeather = async () => {
-                try {
-                    // Coordinates for Phuket (e.g., Patong Beach)
-                    const lat = 7.89;
-                    const lon = 98.29;
-                    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`;
-                    const response = await fetch(url);
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        weatherIconElement.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-                        weatherTempElement.textContent = `${Math.round(data.main.temp)}°C`;
-                        weatherDescriptionElement.textContent = data.weather[0].description;
-                        weatherHumidityElement.textContent = data.main.humidity;
-                        weatherPressureElement.textContent = data.main.pressure;
-                        errorMessageElement.textContent = ''; // Clear any previous errors
-                    } else {
-                        errorMessageElement.textContent = `Error: ${data.message}`;
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch weather data:', error);
-                    errorMessageElement.textContent = 'Failed to load weather data. Please try again later.';
-                }
-            };
-            fetchWeather(); // Initial fetch
-            setInterval(fetchWeather, 60 * 60 * 1000); // Refresh every hour
-        } else if (weatherWidget && WEATHER_API_KEY === 'YOUR_OPENWEATHERMAP_API_KEY') {
-            weatherWidget.querySelector('.error-message').textContent = 'Please replace YOUR_OPENWEATHERMAP_API_KEY with a valid API key for weather data.';
-        }
-
-        // --- UV Index Widget Logic ---
-        const UV_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Re-using OpenWeatherMap API key for UV Index
-        const uvIndexWidget = document.getElementById('uv-index-widget');
-        if (uvIndexWidget && UV_API_KEY !== 'YOUR_OPENWEATHERMAP_API_KEY') {
-            const uvIndexValueElement = uvIndexWidget.querySelector('.uv-index-value');
-            const uvIndexProtectionElement = uvIndexWidget.querySelector('.uv-index-protection');
-
-            const fetchUVI = async () => {
-                try {
-                    // Coordinates for Phuket (e.g., Patong Beach)
-                    const lat = 7.89;
-                    const lon = 98.29;
-                    const url = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${UV_API_KEY}`;
-                    const response = await fetch(url);
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        const uvIndex = data.value;
-                        uvIndexValueElement.textContent = `UV Index: ${uvIndex}`;
-                        let protectionAdvice = '';
-                        if (uvIndex < 3) {
-                            protectionAdvice = 'Low exposure. Little protection needed.';
-                        } else if (uvIndex < 6) {
-                            protectionAdvice = 'Moderate exposure. Seek shade, wear hat and sunglasses.';
-                        } else if (uvIndex < 8) {
-                            protectionAdvice = 'High exposure. Apply sunscreen, wear protective clothing.';
-                        } else if (uvIndex < 11) {
-                            protectionAdvice = 'Very High exposure. Minimize sun exposure during midday hours.';
-                        } else {
-                            protectionAdvice = 'Extreme exposure. Take all precautions, avoid sun exposure.';
-                        }
-                        uvIndexProtectionElement.textContent = protectionAdvice;
-                    } else {
-                        uvIndexProtectionElement.textContent = `Error: ${data.message}`;
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch UV Index data:', error);
-                    uvIndexProtectionElement.textContent = 'Failed to load UV Index data.';
-                }
-            };
-            fetchUVI(); // Initial fetch
-            setInterval(fetchUVI, 60 * 60 * 1000 * 4); // Refresh every 4 hours
-        } else if (uvIndexWidget && UV_API_KEY === 'YOUR_OPENWEATHERMAP_API_KEY') {
-            uvIndexWidget.querySelector('.warning').textContent = 'Please replace YOUR_OPENWEATHERMAP_API_KEY with a valid API key for UV Index data.';
-        }
-
-        // --- Sun & Moon Widget Logic (using OpenWeatherMap One Call API for sunrise/sunset, and a simple lunar phase calculation) ---
-        const SUNMOON_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Re-using OpenWeatherMap API key
-        const sunMoonWidget = document.getElementById('sun-moon-widget');
-        if (sunMoonWidget && SUNMOON_API_KEY !== 'YOUR_OPENWEATHERMAP_API_KEY') {
-            const sunriseTimeElement = document.getElementById('sunrise-time');
-            const sunsetTimeElement = document.getElementById('sunset-time');
-            const moonriseTimeElement = document.getElementById('moonrise-time');
-            const moonsetTimeElement = document.getElementById('moonset-time');
-            const phaseIconElement = sunMoonWidget.querySelector('.phase-icon');
-            const phaseInfoElement = sunMoonWidget.querySelector('.phase-info');
-
-            const fetchSunMoonTimes = async () => {
-                try {
-                    const lat = 7.89; // Phuket latitude
-                    const lon = 98.29; // Phuket longitude
-                    // OpenWeatherMap One Call API for sunrise/sunset
-                    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${SUNMOON_API_KEY}&units=metric`;
-                    const response = await fetch(url);
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        const { current } = data;
-                        const sunrise = new Date(current.sunrise * 1000);
-                        const sunset = new Date(current.sunset * 1000);
-
-                        sunriseTimeElement.textContent = sunrise.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-                        sunsetTimeElement.textContent = sunset.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-
-                        // Moon times are not directly available in current One Call API. For more accurate, a dedicated API is needed.
-                        // Placeholder or simplified logic for moonrise/moonset if not using dedicated API:
-                        // For a simple illustration, we can just say "unavailable" or estimate if a dedicated API is not used.
-                        // For true accuracy, consider APIs like astronomical.alapi.net or timezonedb.com for moon times.
-                        moonriseTimeElement.textContent = 'N/A'; // Replace with actual data if available
-                        moonsetTimeElement.textContent = 'N/A';   // Replace with actual data if available
-
-                        // Simplified Moon Phase Calculation (very basic, for illustration)
-                        const now = new Date();
-                        const startEpoch = new Date('2000-01-06T18:15:00Z'); // New moon epoch (Jan 6, 2000)
-                        const msPerDay = 24 * 60 * 60 * 1000;
-                        const synodicMonth = 29.53058867; // Days for one full lunar cycle
-
-                        const daysSinceEpoch = (now.getTime() - startEpoch.getTime()) / msPerDay;
-                        const currentPhaseDays = daysSinceEpoch % synodicMonth;
-
-                        let phaseName = '';
-                        let phaseIcon = ''; // Font Awesome moon icon
-                        if (currentPhaseDays < 1.84566) {
-                            phaseName = 'New Moon'; phaseIcon = '🌑'; // Or specific FA icon
-                        } else if (currentPhaseDays < 5.53699) {
-                            phaseName = 'Waxing Crescent'; phaseIcon = '🌒';
-                        } else if (currentPhaseDays < 9.22831) {
-                            phaseName = 'First Quarter'; phaseIcon = '🌓';
-                        } else if (currentPhaseDays < 12.91963) {
-                            phaseName = 'Waxing Gibbous'; phaseIcon = '🌔';
-                        } else if (currentPhaseDays < 16.61096) {
-                            phaseName = 'Full Moon'; phaseIcon = '🌕';
-                        } else if (currentPhaseDays < 20.30228) {
-                            phaseName = 'Waning Gibbous'; phaseIcon = '🌖';
-                        } else if (currentPhaseDays < 23.99361) {
-                            phaseName = 'Last Quarter'; phaseIcon = '🌗';
-                        } else if (currentPhaseDays < 27.68493) {
-                            phaseName = 'Waning Crescent'; phaseIcon = '🌘';
-                        } else {
-                            phaseName = 'New Moon'; phaseIcon = '🌑';
-                        }
-                        phaseInfoElement.textContent = phaseName;
-                        phaseIconElement.textContent = phaseIcon; // Using emoji for simplicity, replace with FA if desired
-
-                    } else {
-                        console.error('Error fetching sun/moon data:', data.message);
-                        // Display error in relevant elements
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch sun/moon data:', error);
-                    // Display general error
-                }
-            };
-            fetchSunMoonTimes();
-            setInterval(fetchSunMoonTimes, 12 * 60 * 60 * 1000); // Refresh every 12 hours
-        } else if (sunMoonWidget && SUNMOON_API_KEY === 'YOUR_OPENWEATHERMAP_API_KEY') {
-            sunMoonWidget.querySelector('h4').textContent = 'Sun & Moon Times (API Key Missing)';
-            sunMoonWidget.querySelector('.phase-info').textContent = 'Please replace YOUR_OPENWEATHERMAP_API_KEY with a valid API key.';
-        }
-
-
         // 🕐 Live Local Time Script (Moved from dashboard snippet)
         function updateLocalTime() {
             const now = new Date();
             const options = { timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeString = now.toLocaleTimeString('en-GB', options);
             const localTimeElement = document.getElementById('localTime');
             if (localTimeElement) { // Ensure element exists before updating
-                const timeString = now.toLocaleTimeString('en-GB', options);
                 localTimeElement.textContent = `Current Local Time: ${timeString}`;
             }
         }
@@ -854,72 +1069,11 @@
 
         // 🔁 Auto-refresh all iframes every 15 minutes (Moved from dashboard snippet)
         setInterval(() => {
-            document.querySelectorAll('.widget iframe').forEach(iframe => { // Target only dashboard iframes
+            document.querySelectorAll('.captain-widget iframe').forEach(iframe => { // Target only dashboard iframes
                 iframe.src = iframe.src;
             });
         }, 15 * 60 * 1000); // 15 minutes
 
-
-        // Contact Form Submission (Basic)
-        const contactForm = document.getElementById('contact-form');
-        const formSuccess = document.querySelector('.form-success');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent default form submission
-
-                // In a real application, you would send this data to a server
-                // For demonstration, we just show a success message
-                formSuccess.style.display = 'block';
-                contactForm.reset(); // Clear the form
-
-                setTimeout(() => {
-                    formSuccess.style.display = 'none';
-                    // Optionally close the contact overlay after success
-                    const contactSection = document.getElementById('contact');
-                    if (contactSection) {
-                        contactSection.classList.remove('active');
-                        document.body.classList.remove('overlay-active');
-                        // Restore home link active state
-                        navLinkElements.forEach(l => l.classList.remove('active'));
-                        const homeLink = document.querySelector('.nav-link[data-target="home"]');
-                        if (homeLink) {
-                            homeLink.classList.add('active');
-                        }
-                        if (homeContent) {
-                            homeContent.classList.add('visible');
-                        }
-                    }
-                }, 3000); // Hide success message after 3 seconds
-            });
-        }
-
-        // Handle "Inquire Now" buttons to open Contact section
-        document.querySelectorAll('.book-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // Close all other overlay sections
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                });
-                // Open contact section
-                const contactSection = document.getElementById('contact');
-                if (contactSection) {
-                    contactSection.classList.add('active');
-                    document.body.classList.add('overlay-active');
-                }
-                // Hide home content
-                if (homeContent) {
-                    homeContent.classList.remove('visible');
-                }
-                // Update active nav link
-                navLinkElements.forEach(l => l.classList.remove('active'));
-                const contactLink = document.querySelector('.nav-link[data-target="contact"]');
-                if (contactLink) {
-                    contactLink.classList.add('active');
-                }
-            });
-        });
-
-    </script>
+      </script>
 </body>
 </html>
