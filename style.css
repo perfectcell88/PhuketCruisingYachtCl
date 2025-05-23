@@ -194,12 +194,7 @@ body.overlay-active .home-content {
     stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
     transition: stroke-dashoffset 0.25s var(--transition-ease);
 }
-.loading-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
-    color: var(--text-light);
-    text-shadow: 1px 1px 2px var(--shadow-dark);
-}
+/* Removed: .loading-text style as per user request */
 
 /* Enhanced text shadow for most text */
 .intro-text p,
@@ -1240,18 +1235,5 @@ textarea.form-control {
     }
     .widget .widget-title {
         font-size: 1.2em;
-    }
-    .pcyc-info-section {
-        padding: 15px;
-        margin: 15px auto 30px auto;
-    }
-    .pcyc-info-section .section-title {
-        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-    }
-    .info-block h3 {
-        font-size: clamp(0.9rem, 1.8vw, 1.2rem);
-    }
-    .info-block p, .info-block li {
-        font-size: clamp(0.8rem, 1.5vw, 0.95rem);
     }
 }
