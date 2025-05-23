@@ -602,6 +602,8 @@
             const loadingCircle = document.getElementById('loading-circle');
             const loadingLogo = document.getElementById('loading-logo');
             const pageContent = document.getElementById('page-content');
+            const navContainer = document.querySelector('.nav-container'); // Get the nav-container
+
             if (loadingOverlay) {
                 loadingOverlay.classList.add('fade-out');
                 loadingCircle.classList.add('fade-out');
@@ -610,8 +612,11 @@
                     loadingOverlay.style.display = 'none';
                     if (pageContent) {
                         pageContent.classList.add('visible');
-                        document.body.classList.remove('overlay-active'); // Ensure body scroll is re-enabled if it was fixed
                     }
+                    if (navContainer) { // Make nav-container visible
+                        navContainer.classList.add('visible');
+                    }
+                    document.body.classList.remove('overlay-active'); // Ensure body scroll is re-enabled if it was fixed
                 }, 1000); // Matches opacity transition duration
             }
         });
