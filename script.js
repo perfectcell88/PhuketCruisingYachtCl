@@ -110,7 +110,7 @@ function createWaterParticles() {
     }
 }
 
-document.querySelectorAll('.book-btn').forEach(btn => {
+document.querySelectorAll('.book-btn, .premium-button').forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
         contentSections.forEach(section => section.classList.remove('active'));
