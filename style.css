@@ -863,7 +863,7 @@ nav {
 }
 
 .facebook-icon {
-    margin-right: 0.6rem;
+    margin-right: 0.8rem;
 }
 
 .glass-button {
@@ -1362,8 +1362,8 @@ textarea.form-control {
 
 /* Facebook logo */
 .facebook-logo {
-    width: 24px;
-    height: 24px; vertical-align: middle;
+    width: 30px;
+    height: 30px; vertical-align: middle;
     margin-right: 5px;
 }
 
@@ -1687,7 +1687,7 @@ textarea.form-control {
           font-size: 0.95rem; } /* Base nav-link style will apply * / */
 
     h1.home-title {
-        font-size: 3.5rem; }
+        font-size: 3.2rem; }
 
     .home-subtitle {
         font-size: 1.6rem; }
@@ -1703,7 +1703,7 @@ textarea.form-control {
       }
 
     .content-container{
-        padding: 2.5rem; width: 95%;
+        padding: 2.2rem; width: 95%;
         margin-top: 0;
     }
 
