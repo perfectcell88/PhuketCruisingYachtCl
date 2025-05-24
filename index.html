@@ -3,675 +3,342 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Phuket Cruising Yacht Club</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&family=Marcellus+SC&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <title>Phuket Cruising Yacht Club - Elite Marine Experience</title> <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Marcellus+SC&family=Sail&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUA6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="logob.png" type="image/png"> <style>
+        /* --- CRITICAL INLINE STYLES --- */
+        /* Basic Reset & Body Fallback */
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Montserrat', sans-serif; background: #03080f; /* Darker fallback */ }
 
-    <style>
-        /* Inline fallback & critical styles - Minimized to essential overrides or truly critical paths */
-
-        /* Base styles are now primarily in style.css */
-        body, html { /* Basic reset in case style.css is slow */
-            margin: 0; padding: 0; height: 100%;
-            font-family: 'Montserrat', sans-serif; /* Fallback font */
-            background: #051422; /* Fallback background */
-        }
-
-        /* Loading overlay - Kept critical parts, colors will be themed from style.css if possible, or updated here */
+        /* Loading Overlay - STRICTLY ORIGINAL COLORS + NEW DOTS - Critical Path */
         #loading-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            background: rgba(0,12,26,0.9); /* Consistent with CSS */
-            opacity: 1;
-            transition: opacity 1s ease;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; background: rgba(0,10,20,0.97); /* Darker, more opaque */ opacity: 1;
+            transition: opacity 0.8s ease-out; /* Smoother fade */
         }
-        #loading-overlay.fade-out {
-            opacity: 0;
-            pointer-events: none;
+        #loading-overlay.fade-out { opacity: 0; pointer-events: none; }
+        #loading-overlay::before { /* Original Gold Ripple */
+            content: ""; position: absolute; width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(249,217,118,0.08), transparent 65%); /* Subtler ripple */
+            border-radius: 50%; animation: rippleInline 2.5s ease-out infinite; pointer-events: none;
         }
-
-        #loading-overlay::before {
-            content: "";
-            position: absolute;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(200,181,136,0.1), transparent 70%); /* UPDATED to muted gold */
-            border-radius: 50%;
-            animation: ripple 2.5s ease-out infinite;
-            pointer-events: none;
-        }
-        @keyframes ripple {
-            0%   { transform: scale(1);  opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
-
-        #loading-logo-circle-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 20px;
-        }
+        @keyframes rippleInline { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(2.8); opacity: 0; } }
+        #loading-logo-circle-wrapper { position: relative; width: 200px; height: 200px; margin-bottom: 15px; }
         #loading-logo {
-            width: 200px;
-            height: 200px;
-            display: block;
-            filter: drop-shadow(0 0 10px #C8B588); /* UPDATED to muted gold */
-            opacity: 0;
-            animation: logoPop 0.8s ease-out forwards 0.3s;
-            position: relative;
-            z-index: 2;
-            border-radius: 50%;
+            width: 200px; height: 200px; display: block;
+            filter: drop-shadow(0 0 8px #f9d976); /* ORIGINAL GOLD */
+            opacity: 0; animation: logoPopInline 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.3s;
+            position: relative; z-index: 2; border-radius: 50%;
         }
-        @keyframes logoPop {
-            from { opacity: 0; transform: scale(0.8); }
-            to   { opacity: 1; transform: scale(1); }
-        }
+        @keyframes logoPopInline { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
         #loading-circle {
-            position: absolute;
-            top: 0; left: 0;
-            width: 200px;
-            height: 200px;
-            pointer-events: none;
-            z-index: 1;
-            animation: spin 1.6s linear infinite;
-            filter: drop-shadow(0 0 10px #C8B588); /* UPDATED to muted gold */
+            position: absolute; top: 0; left: 0; width: 200px; height: 200px;
+            pointer-events: none; z-index: 1; animation: spinInline 1.6s linear infinite;
+            filter: drop-shadow(0 0 8px #f9d976); /* ORIGINAL GOLD */
         }
-        #loading-circle.fade-out {
-            opacity: 0;
+        #loading-circle svg { width: 200px; height: 200px; transform-origin: center; }
+        @keyframes spinInline { 100% { transform: rotate(360deg); } }
+        #loading-circle circle.base { stroke: rgba(249,217,118,0.2); stroke-width: 12; fill: none; } /* Original gold tinted base */
+        #loading-circle circle.progress { /* Stroke color via SVG gradient */
+            stroke-width: 12; fill: none; stroke-linecap: round;
+            stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 0.25s ease;
         }
-        #loading-circle svg {
-            width: 200px;
-            height: 200px;
-            transform-origin: center;
+        /* NEW Loading Dots - Inline for critical path */
+        #loading-dots { display: flex; justify-content: center; align-items: center; margin-top: 10px; }
+        #loading-dots .dot {
+            width: 9px; height: 9px; margin: 0 4px; background-color: #f9d976; /* ORIGINAL GOLD */
+            border-radius: 50%; animation: loadingDotAnimationInline 1.4s infinite ease-in-out;
         }
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
+        #loading-dots .dot:nth-child(1) { animation-delay: -0.32s; }
+        #loading-dots .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes loadingDotAnimationInline {
+            0%, 80%, 100% { transform: scale(0.4); opacity: 0.5; }
+            40% { transform: scale(1.0); opacity: 1; }
         }
-        #loading-circle circle.base {
-            stroke: #333; stroke-width: 12; fill: none; opacity: 0.2;
-        }
-        #loading-circle circle.progress {
-            /* stroke: #f9d976; OLD GOLD */
-            /* stroke: #C8B588; NEW MUTED GOLD - applied via gradient for better effect */
-            stroke-width: 12; fill: none;
-            stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283;
-            transition: stroke-dashoffset 0.25s ease;
-        }
+        /* End Loading Screen Critical Styles */
 
-        /* Styles for Captain's Dashboard - These are specific and should largely remain to preserve the "do not change" section's look */
-        /* Minimal changes here, mostly color to align if it doesn't break desired look */
-         .captain-dashboard { /* This class is not in the HTML, perhaps .widget-grid is intended? */
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.35); /* Slightly adjusted alpha */
-            border: 1px solid rgba(200, 181, 136, 0.25); /* Muted gold border */
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            margin-top: 40px;
+        /* Captain's Dashboard Intro Box - PRESERVED INLINE STYLES FROM ORIGINAL HTML */
+        .glass-box { /* Styles from original index.html for this specific box */
+            background: rgba(0, 68, 102, 0.7); /* Original: #004466 with alpha */
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+            max-width: 600px; margin: 30px auto; text-align: center;
         }
-
-        .captain-widget { /* This is the class used for iframe containers in HTML */
-            background: rgba(10, 47, 81, 0.4); /* Themed background - subtle change from original black */
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(200, 181, 136, 0.15); /* Muted gold border - subtle change */
-            text-align: center;
-            box-shadow: inset 0 0 5px rgba(200, 181, 136, 0.1); /* Muted gold inset */
-            color: #F0F4F8; /* Light text */
+        .captain-header { /* Original Styling Preserved */
+            font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: bold;
+            color: #f9d976; /* Original gold */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.50);
+            animation: floatCaptainHeader 3s ease-in-out infinite; /* Unique animation name */
         }
-
-        .captain-widget h4 { /* Titles for each iframe widget */
-            color: #C8B588; /* Muted gold */
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-family: 'Marcellus SC', serif; /* Nautical font */
-            font-size: 1.2em; /* Adjusted */
-            font-weight: normal; /* Marcellus is often better normal */
-            letter-spacing: 0.5px;
-        }
-
-        /* Weather Widget specific (if any direct styling was here) - now in style.css or inherited */
-        /* Sun & Moon Widget specific (if any direct styling was here) - now in style.css or inherited */
-        
-        /* Dashboard Intro Box ("Phuket Maritime Dashboard") - specific styling to be preserved */
-        .glass-box { /* This is the intro box for the dashboard */
-            background: rgba(255, 255, 255, 0.05); /* Very subtle light glass on dark */
-            backdrop-filter: blur(8px); /* Reduced blur slightly */
-            padding: 20px; /* Reduced padding */
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1); /* Light border */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 700px; /* Reduced max width */
-            margin: 25px auto 10px auto; /* Adjusted margin */
-            text-align: center;
-        }
-
-        .captain-header { /* "- Phuket Maritime Dashboard -" text */
-            font-family: 'Marcellus SC', serif; /* More thematic font */
-            font-size: 1.4rem; /* Adjusted size */
-            font-weight: normal;
-            color: #C8B588; /* Muted Gold */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.50);
-            animation: float 3s ease-in-out infinite; /* Increased duration for subtlety */
-        }
-
-        @keyframes float { /* Kept, but consider if needed with new font */
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-2px); } /* Reduced float amount */
-            100% { transform: translateY(0); }
-        }
-
-        .wave-underline { /* Underline for captain-header */
-            width: 180px; /* Reduced width */
-            height: 3px; /* Reduced height */
-            margin: 8px auto 15px; /* Adjusted margin */
-            background: linear-gradient(90deg, #5085A5, #87A9A8, #5085A5); /* Marine blues/seafoam gradient */
-            background-size: 250% 100%;
-            animation: wave 4.5s ease-in-out infinite; /* Increased duration */
+        @keyframes floatCaptainHeader { 0%{transform:translateY(0)} 50%{transform:translateY(-3px)} 100%{transform:translateY(0)} }
+        .wave-underline { /* Original Styling Preserved */
+            width: 200px; height: 4px; margin: 10px auto 20px;
+            background: linear-gradient(90deg, #00aaff, #00ffcc, #00aaff);
+            background-size: 300% 100%; animation: waveUnderlineAnim 5s ease-in-out infinite;
             border-radius: 2px;
         }
-
-        @keyframes wave { /* Kept */
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes waveUnderlineAnim { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .captain-subtitle { /* Original Styling Preserved */
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #eee;
+            margin-bottom: 15px; font-style: italic;
         }
-
-        .captain-subtitle { /* "Live Weather Alerts..." text */
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem; /* Adjusted */
-            color: #D0D8E0; /* Lighter, cool grey */
-            margin-bottom: 12px;
-            font-style: normal; /* Removed italic for cleaner look */
-            font-weight: 300;
+        .live-pulse { /* Original Styling Preserved */
+            display: inline-flex; align-items: center; gap: 8px;
+            font-weight: bold; color: #c60000; /* Original red */
         }
-
-        .live-pulse { /* "LIVE" text and dot */
-            display: inline-flex;
-            align-items: center;
-            gap: 7px; /* Adjusted */
-            font-weight: 500; /* Reduced weight */
-            color: #ff6b6b; /* Softer red */
-            font-size: 0.95rem; /* Adjusted */
-            animation: pulseText 2.2s infinite; /* Increased duration */
+        .live-dot { /* Original Styling Preserved */
+            width: 12px; height: 12px; background-color: #c60000; border-radius: 50%;
+            box-shadow: 0 0 8px rgba(198,0,0,0.7); animation: pulseDotLive 1.2s infinite;
         }
-
-        .live-dot { /* The actual dot */
-            width: 10px; /* Reduced size */
-            height: 10px; /* Reduced size */
-            background-color: #ff6b6b; /* Softer red */
-            border-radius: 50%;
-            box-shadow: 0 0 5px rgba(255, 107, 107, 0.5); /* Softer shadow */
-            animation: pulseDot 1.3s infinite; /* Increased duration */
-        }
-        /* Pulse animations kept as is */
-         @keyframes pulseDot {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.6; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes pulseText {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes fadeIn { /* General fade in, ensure used if needed */
-            to { opacity: 1; }
-        }
+        @keyframes pulseDotLive { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:.5} 100%{transform:scale(1);opacity:1} }
+        /* End Captain's Dashboard Critical Styles */
     </style>
 </head>
 <body>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0"></script>
-
-    <div id="loading-overlay" role="alert" aria-live="polite" aria-busy="true">
-        <div id="loading-logo-circle-wrapper" aria-hidden="true">
-            <img id="loading-logo" src="logob.png" alt="Phuket Cruising Yacht Club Logo" />
-            <div id="loading-circle" aria-hidden="true">
-                <svg viewBox="0 0 100 100" role="img" aria-hidden="true" >
-                    <defs>
-                        <linearGradient id="loading-gradient" x1="1" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#D4AF37"/> <stop offset="50%" stop-color="#C8B588"/> <stop offset="100%" stop-color="#D4AF37"/> </linearGradient>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0" nonce="YOUR_NONCE_HERE"></script> <div id="loading-overlay" role="status" aria-live="polite" aria-busy="true"> <div id="loading-logo-circle-wrapper" aria-hidden="true">
+            <img id="loading-logo" src="logob.png" alt="Phuket Cruising Yacht Club Emblem" /> <div id="loading-circle" aria-hidden="true">
+                <svg viewBox="0 0 100 100" role="img" aria-label="Loading progress indicator"> <defs>
+                        <linearGradient id="loading-gradient-original" x1="1" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#f9d976"/>
+                            <stop offset="50%" stop-color="#ffe57f"/>
+                            <stop offset="100%" stop-color="#f9d976"/>
+                        </linearGradient>
                     </defs>
                     <circle class="base"    cx="50" cy="50" r="45" />
-                    <circle class="progress" cx="50" cy="50" r="45" stroke="url(#loading-gradient)"/> </svg>
+                    <circle class="progress" cx="50" cy="50" r="45" stroke="url(#loading-gradient-original)"/>
+                </svg>
             </div>
+        </div>
+        <div id="loading-dots" aria-hidden="true">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
         </div>
     </div>
 
-    <div id="threejs-background"></div>
+    <div id="threejs-background" aria-hidden="true"></div> <div id="page-content" aria-hidden="true"> <header class="nav-container" role="banner"> <nav aria-label="Main navigation">
+                <a href="#home" class="nav-logo-link" aria-label="Phuket Cruising Yacht Club, Homepage"> <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="nav-logo">
+                </a>
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#accommodation" class="nav-link">Stay</a> <a href="#gallery" class="nav-link">Gallery</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <a href="https://www.facebook.com/groups/187918071231247" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Follow us on Facebook"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook Icon" class="facebook-logo" style="width:30px; height:30px;">
+                </a>
+            </nav>
+        </header>
+        <button class="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="main-nav-links"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="3" y1="12" x2="21" y2="12"></line> <line x1="3" y1="6" x2="21" y2="6"></line> <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
 
-    <div id="page-content" aria-hidden="true">
-        <div id="main-scrollable-content-wrapper">
-            <div class="home-content" id="home">
-                <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="main-logo">
-                <h1 class="home-title">Phuket Cruising Yacht Club</h1>
-                <div class="particles-container" id="particles-container"></div>
+        <main id="main-scrollable-content-wrapper">
+            <section class="home-content" id="home" aria-labelledby="main-home-title">
+                <img src="logob.png" alt="Phuket Cruising Yacht Club Emblem" class="main-logo">
+                <h1 class="home-title" id="main-home-title">Phuket Cruising Yacht Club</h1>
+                <div class="particles-container" id="particles-container" aria-hidden="true"></div>
                 
                 <div class="hero-welcome">
-                    <h1 class="hero-title">The Island's Premier Yacht Club</h1> <p class="hero-subtitle">Your Home Base In Phuket</p> </div>
+                    <h2 class="hero-title">The Island's Premier Yacht Club</h2> <p class="hero-subtitle">Your Tranquil Haven in the Andaman Sea</p> </div>
 
-                <script src="https://static.elfsight.com/platform/platform.js" async></script>
                 <div class="elfsight-app-b52fbf80-b063-430d-a25d-4b1d31113389" data-elfsight-app-lazy></div>
 
                 <div class="intro-text">
-                    <div class="welcome-section">
-                        <div class="amenities-grid">
+                    <article class="welcome-section" aria-labelledby="welcome-section-title"> <div class="amenities-grid">
                             <div class="amenity-card">
-                                <i class="amenity-icon fas fa-anchor"></i>
-                                <h3>Your Stay & Amenities</h3>
-                                <p>Experience hassle-free services including motorcycle, car, bungalow, RIB, tender outboard engines, and dinghy rentals. Your dinghy will be safe on our flood-lit dinghy lines. Enjoy open showers and ample charging outlets.</p>
+                                <i class="amenity-icon fas fa-anchor" aria-hidden="true"></i>
+                                <h3>Stay & Amenities</h3>
+                                <p>Discover seamless services: rentals for transport and leisure craft, secure dinghy mooring, open showers, and abundant charging stations for your convenience.</p>
                             </div>
-
                             <div class="amenity-card">
-                                <i class="amenity-icon fas fa-ship"></i>
-                                <h3>Port & Specialized Services</h3>
-                                <p>As an authorized port-entrance agent and Royal Thai Customs yacht visa extension service, we simplify your check-in/check-out with Immigration and handle customs accreditation.</p>
+                                <i class="amenity-icon fas fa-ship" aria-hidden="true"></i>
+                                <h3>Port & Maritime Services</h3>
+                                <p>As an authorized port-entrance agent and Royal Thai Customs visa extension provider, we ensure smooth sailing for your arrivals, departures, and accreditations.</p>
                             </div>
-
                             <div class="amenity-card">
-                                <i class="amenity-icon fas fa-glass-martini-alt"></i>
-                                <h3>Club Life & Dining</h3>
-                                <p>Our newly renovated clubhouse with beach decks is open from 8 am until late. Enjoy happy hour (5-7 pm), signature cocktails, and a wide selection of local and imported beers.</p>
+                                <i class="amenity-icon fas fa-glass-martini-alt" aria-hidden="true"></i>
+                                <h3>Clubhouse & Dining</h3>
+                                <p>Our renovated clubhouse and beach decks welcome you from morning till late. Indulge in happy hour, signature cocktails, and diverse international and local brews.</p>
                             </div>
                         </div>
-
                         <div class="visit-section">
                             <div class="business-details">
-                                <div class="detail-item">
-                                    <i class="time-icon fas fa-clock"></i>
-                                    <span>Open Daily: 12PM - Late</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="location-icon fas fa-map-marker-alt"></i>
-                                    <span>Soi Sukee, Tambon Chalong, Chalong, Phuket, Thailand</span>
-                                </div>
-                                <div class="announcement">
-                                    <i class="new-icon fas fa-star"></i>
-                                    <span>Join us for Taco Tuesday - Live Music, Drinks & T-shirt Lotto!</span>
-                                </div>
+                                <div class="detail-item"> <i class="time-icon fas fa-clock" aria-hidden="true"></i> <span>Open Daily: 12 PM - Late</span> </div>
+                                <div class="detail-item"> <i class="location-icon fas fa-map-marker-alt" aria-hidden="true"></i> <span>Soi Sukee, Chalong, Phuket, Thailand</span> </div>
+                                <div class="announcement"> <i class="new-icon fas fa-star" aria-hidden="true"></i> <span>Taco Tuesday: Live Music, Drinks & T-Shirt Lotto!</span> </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 </div>
 
-                <div class="services-showcase">
-                    <h3>Experience World-Class Services</h3>
-                    <div class="services-grid">
-                        <div class="service-highlight">
-                            <i class="icon fas fa-beer"></i>
-                            <h4>Social Hub</h4>
-                            <p>Happy Hour (5-7 PM) featuring signature Margaritas & craft beers</p>
-                        </div>
-                        <div class="service-highlight">
-                            <i class="icon fas fa-ship"></i>
-                            <h4>Maritime Education</h4>
-                            <p>AYS Accredited Sailing School with professional instruction</p>
-                        </div>
-                        <div class="service-highlight">
-                            <i class="icon fas fa-anchor"></i>
-                            <h4>Marine Services</h4>
-                            <p>Full-service brokerage, charters, and yacht management</p>
-                        </div>
-                        <div class="service-highlight">
-                            <i class="icon fas fa-water"></i>
-                            <h4>Premier Facilities</h4>
-                            <p>State-of-the-art docks, equipment, and beachfront amenities</p>
-                        </div>
+                <section class="services-showcase" aria-labelledby="showcase-title">
+                    <h3 id="showcase-title">World-Class Experiences Await</h3> <div class="services-grid">
+                        <div class="service-highlight"> <i class="icon fas fa-beer" aria-hidden="true"></i> <h4>Vibrant Social Hub</h4> <p>Happy Hour (5-7 PM), signature Margaritas & craft beers.</p> </div>
+                        <div class="service-highlight"> <i class="icon fas fa-user-graduate" aria-hidden="true"></i> <h4>Expert Instruction</h4> <p>AYS Accredited Sailing School for all skill levels.</p> </div> <div class="service-highlight"> <i class="icon fas fa-concierge-bell" aria-hidden="true"></i> <h4>Marine Concierge</h4> <p>Brokerage, charters, and comprehensive yacht management.</p> </div> <div class="service-highlight"> <i class="icon fas fa-water" aria-hidden="true"></i> <h4>Premier Facilities</h4> <p>Modern docks, quality equipment, and beachfront relaxation.</p> </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="membership-benefits">
-                    <h3 class="elegant-title">Exclusive Member Benefits</h3>
-                    <p class="benefits-intro">Join our prestigious community and enjoy substantial savings with your PCYC membership:</p>
-                    
+                <section class="membership-benefits" aria-labelledby="membership-title">
+                    <h3 class="elegant-title" id="membership-title">Exclusive Member Privileges</h3>
+                    <p class="benefits-intro">Join our esteemed community and unlock significant savings and unparalleled access with your PCYC membership.</p>
                     <div class="benefits-grid">
                         <div class="benefit-category">
                             <h4>Partner Discounts</h4>
                             <ul class="benefits-list">
-                                <li>15% off at Rolly Tasker (Exclusive Club Promotion)</li>
-                                <li>20% off haul-outs and hard-stand work at Ratanachai Shipyard</li>
-                                <li>20% discount on marina berths and F&B at Royal Langkawi Yacht Club</li>
-                                <li>Special discounts at major Phuket chandleries (AME Marine, Tops Marine, Surapol)</li>
-                                <li>Up to 20% off at Chao Fa East Auto Parts (oil-belts, filters, tools)</li>
-                                <li>15% off at Aqua Master Chalong</li>
+                                <li>15% off: Rolly Tasker (Exclusive Club Promo)</li>
+                                <li>20% off: Ratanachai Shipyard (Haul-outs & Hard-stand)</li>
+                                <li>20% off: Royal Langkawi Yacht Club (Berths & F&B)</li>
+                                <li>Discounts: Major Phuket Chandleries (AME, Tops, Surapol)</li>
+                                <li>Up to 20% off: Chao Fa East Auto Parts</li>
+                                <li>15% off: Aqua Master Chalong</li>
                             </ul>
                         </div>
-                        
                         <div class="benefit-category">
-                            <h4>Club Privileges</h4>
-                            <ul class="benefits-list">
+                            <h4>Club Amenities</h4> <ul class="benefits-list">
                                 <li>Member rates on all food & beverages</li>
-                                <li>Priority access to special events & gatherings</li>
-                                <li>Complimentary WiFi & device charging facilities</li>
-                                <li>Access to premium shower facilities</li>
-                                <li>Free use of clubhouse for events (up to 100 people)</li>
-                                <li>Exclusive access to member-only areas</li>
-                                <li>Complimentary welcome package</li>
+                                <li>Priority access to special events</li>
+                                <li>Complimentary high-speed WiFi</li>
+                                <li>Premium shower & changing facilities</li>
+                                <li>Event space for up to 100 guests (Clubhouse)</li>
+                                <li>Exclusive member-only lounge areas</li>
+                                <li>Welcome package & club regalia</li>
                             </ul>
                         </div>
-                        
                         <div class="benefit-category">
-                            <h4>Maritime Services</h4>
-                            <ul class="benefits-list">
-                                <li>Preferential rates on boat minding services</li>
+                            <h4>Maritime Support</h4> <ul class="benefits-list">
+                                <li>Preferred rates on boat minding</li>
                                 <li>Priority booking for marine services</li>
-                                <li>Special rates on equipment rentals</li>
+                                <li>Discounted equipment rentals</li>
                                 <li>Access to trusted contractor network</li>
-                                <li>Monthly maritime newsletter</li>
-                                <li>Professional marine consultation services</li>
-                                <li>24/7 emergency assistance</li>
+                                <li>Monthly maritime e-newsletter</li>
+                                <li>Professional marine consultations</li>
+                                <li>24/7 emergency assistance line</li>
                             </ul>
                         </div>
                     </div>
-                    
                     <div class="membership-cta">
-                        <p>Annual membership just ฿3,000 - Includes photo ID, club t-shirt, and sticker</p>
-                        <a href="#contact" class="premium-button">Become a Member</a>
+                        <p>Annual Membership: ฿3,000 (Includes Photo ID, Club T-Shirt & Sticker)</p>
+                        <a href="#contact" class="premium-button">Become a Valued Member</a>
                     </div>
-                </div>
+                </section>
             
-                <div style="margin: 2rem auto; text-align: center;">
-                    <a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="event-link">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo">
-                        Follow us for Events & Community Updates!
+                <div style="margin: var(--space-xl) auto; text-align: center;">
+                    <a href="https://www.facebook.com/groups/187918071231247" target="_blank" rel="noopener noreferrer" class="event-link">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook Icon" class="facebook-logo">
+                        Events & Community Updates
                     </a>
                 </div>
-                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" style="margin: 1rem auto 2rem;"></div>
+                <div class="fb-page" data-href="https://www.facebook.com/groups/187918071231247" data-tabs="timeline" data-width="360" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" style="margin: var(--space-lg) auto var(--space-xl);"></div>
 
-                <div class="glass-box">
-                    <div class="captain-header">- Phuket Maritime Dashboard -</div>
-                    <div class="wave-underline"></div>
-                    <div class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</div>
-                    <div class="live-pulse"><div class="live-dot"></div>LIVE</div>
-                </div>
+                <section class="glass-box" aria-labelledby="dashboard-intro-title"> <h3 class="captain-header" id="dashboard-intro-title">- Phuket Maritime Dashboard -</h3> <div class="wave-underline" aria-hidden="true"></div>
+                    <p class="captain-subtitle">Live Weather Alerts, Wind, Sea Conditions, Tides, UV Index & Moon Phases</p>
+                    <div class="live-pulse" aria-label="Live data indicator"><div class="live-dot" aria-hidden="true"></div>LIVE</div>
+                </section>
 
-                <div class="widget-grid">
-                    <div class="captain-widget">
-                      <h4>🌬️ Wind Forecast (Phuket)</h4>
-                      <iframe src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" frameborder="0"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>🌤️ Weather Forecast (Phuket)</h4>
-                      <iframe src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" frameborder="0" scrolling="no"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>🌧️ Weather Radar (Phuket)</h4>
-                      <iframe src="https://embed.windy.com/embed2.html?lat=7.888&lon=98.392&zoom=7&overlay=radar&menu=&message=&marker=&calendar=now&type=map&location=coordinates" frameborder="0" style="border:none; overflow:hidden;" allowtransparency="true"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>🔆 UV Index (Phuket)</h4>
-                      <iframe src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0" scrolling="no" style="border:none; overflow:hidden;"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>🚢 Live Ship Tracker</h4>
-                      <iframe src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" frameborder="0"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>🌡️ Sea Surface Temp (Phuket)</h4>
-                      <iframe src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0" scrolling="no" style="border:none; overflow:hidden;"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>🌊 Tide Info (Phuket)</h4>
-                      <iframe src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark" style="background-color: transparent; border: none;" allow="geolocation"></iframe>
-                    </div>
-                    <div class="captain-widget">
-                      <h4>⛽ Fuel Docks (Phuket)</h4>
-                      <iframe src="https://www.google.com/maps/d/embed?mid=1TleOY4hTm89B9cThLBdIYN_ZXpvgaFg&ehbc=2E312F&noprof=1" style="border:0;" allowfullscreen loading="lazy"></iframe>
-                    </div>
-                    <div class="captain-widget" style="width: 300px; margin: 0 auto;"> <h4>🌕 Moon Phase</h4>
-                      <a target="_blank" style="text-decoration:none;" href="https://moonphase.guide/">
-                        <img src="https://moonphase.guide/module/MWE5MNnJyNWRtZlJlTTY1Uk9LQ2h0V1gydEVwbkRkS0QrLzBEaDRCeC9TbEhVUklsWVJlWHNEOG9uOGhINXhvc3Jid2FacjA4alVSL1ZlRWxVTzg4ZGc9PQ.png" alt="Moon Phase" style="width: 100%; height: auto; max-width:260px; object-fit: contain; display: block; margin: 0 auto;" border="0" />
-                      </a>
-                    </div>
-                </div> <div style="height: 80px;"></div> </div> <section id="about" class="content-section">
+                <section class="widget-grid" aria-label="Maritime Information Widgets"> <div class="captain-widget"> <h4>🌬️ Wind Forecast (Phuket)</h4> <iframe title="Wind Forecast Widget for Phuket" src="https://embed.windy.com/embed2.html?lat=7.880&lon=98.389&zoom=9&level=surface&overlay=wind&menu=&message=&marker=&calendar=now&type=map&location=coordinates&metricWind=kt&metricTemp=°C" frameborder="0"></iframe> </div>
+                    <div class="captain-widget"> <h4>🌤️ Weather Forecast (Phuket)</h4> <iframe title="Weather Forecast Widget for Phuket" src="https://www.meteoblue.com/en/weather/widget/daily/phuket_thailand_1151254?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KNOT&layout=image" frameborder="0" scrolling="no"></iframe> </div>
+                    <div class="captain-widget"> <h4>🌧️ Weather Radar (Phuket)</h4> <iframe title="Weather Radar Widget for Phuket" src="https://embed.windy.com/embed2.html?lat=7.888&lon=98.392&zoom=7&overlay=radar&menu=&message=&marker=&calendar=now&type=map&location=coordinates" frameborder="0" style="border:none; overflow:hidden;" allowtransparency="true"></iframe> </div>
+                    <div class="captain-widget"> <h4>🔆 UV Index (Phuket)</h4> <iframe title="UV Index Widget for Phuket" src="https://embed.windy.com/embed2.html?lat=7.729&lon=98.138&zoom=9&level=surface&overlay=uvindex&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0" scrolling="no" style="border:none; overflow:hidden;"></iframe> </div>
+                    <div class="captain-widget"> <h4>🚢 Live Ship Tracker</h4> <iframe title="Live AIS Ship Tracker Widget" src="https://www.marinetraffic.com/en/ais/embed/zoom:10/centery:7.880/centerx:98.389/maptype:1/shownames:false/mmsi:0" frameborder="0"></iframe> </div>
+                    <div class="captain-widget"> <h4>🌡️ Sea Surface Temp (Phuket)</h4> <iframe title="Sea Surface Temperature Widget for Phuket" src="https://embed.windy.com/embed2.html?lat=7.582&lon=98.135&zoom=9&level=surface&overlay=sst&menu=&message=true&marker=&calendar=now&type=map&location=coordinates&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0" scrolling="no" style="border:none; overflow:hidden;"></iframe> </div>
+                    <div class="captain-widget"> <h4>🌊 Tide Info (Phuket)</h4> <iframe title="Tide Information Widget for Phuket" src="https://marea.ooo/en/widget/7.8465199/98.3344152?padding=m&components=text%2Cchart&background=transparent&theme=dark" style="background-color: transparent; border: none;" allow="geolocation"></iframe> </div>
+                    <div class="captain-widget"> <h4>⛽ Fuel Docks (Phuket)</h4> <iframe title="Fuel Docks Map near Phuket" src="https://www.google.com/maps/d/embed?mid=1TleOY4hTm89B9cThLBdIYN_ZXpvgaFg&ehbc=2E312F&noprof=1" style="border:0;" allowfullscreen loading="lazy"></iframe> </div> <div class="captain-widget" style="width: 300px; margin: 0 auto;"> <h4>🌕 Moon Phase</h4> <a target="_blank" rel="noopener noreferrer" style="text-decoration:none;" href="https://moonphase.guide/" aria-label="View current moon phase on moonphase.guide"> <img src="https://moonphase.guide/module/MWE5MNnJyNWRtZlJlTTY1Uk9LQ2h0V1gydEVwbkRkS0QrLzBEaDRCeC9TbEhVUklsWVJlWHNEOG9uOGhINXhvc3Jid2FacjA4alVSL1ZlRWxVTzg4ZGc9PQ.png" alt="Current Moon Phase" style="width: 100%; height: auto; max-width:260px; object-fit: contain; display: block; margin: 0 auto;" border="0" /> </a> </div>
+                </section>
+                <div style="height: var(--space-xl);"></div> </section>
+
+
+            <div id="about" class="content-section" role="dialog" aria-modal="true" aria-labelledby="about-title">
                 <div class="content-container">
-                    <div class="close-btn" data-target="about"></div>
-                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
-                    <h2>About Us</h2>
-                    <p>The fastest growing Yacht Club. Our master plan: Inform & entertain you. It's your home base in Phuket - you're always welcome at the PHUKET CRUISING YACHT CLUB.</p>
-                    <p>We also enjoy Ice Cold Beer, Great Food & the opportunity to meet & chat with world cruisers, salty expats & enthusiasts.</p>
-                    <p>Here at the PCYC, our Guests pay the same low prices as our Members!</p>
-                    <p>The PCYC is the island's full service Yacht Club, providing a welcoming atmosphere for sailors and enthusiasts alike.</p>
-                    
-                    <div class="reviews-section">
-                        <h3>What Our Members Say</h3>
-                        <script src="https://static.elfsight.com/platform/platform.js" async></script>
+                    <button class="close-btn" data-target="about" aria-label="Close About Us section"></button>
+                    <img src="logob.png" alt="" class="section-logo" aria-hidden="true">
+                    <h2 id="about-title">Our Story & Vision</h2> <p>Welcome to the Phuket Cruising Yacht Club – where maritime passion meets unparalleled hospitality. We are more than just a club; we are a vibrant community, a sanctuary for world cruisers, seasoned expatriates, and sailing enthusiasts alike.</p>
+                    <p>Our ethos is simple: to inform, entertain, and provide a distinguished home base in the heart of Phuket. Here, every guest is treated with the same warmth and afforded the same exceptional value as our esteemed members.</p>
+                    <p>Indulge in ice-cold refreshments, savor delectable cuisine, and forge lasting connections. The PCYC stands as Phuket's premier full-service yacht club, dedicated to creating memorable experiences on and off the water.</p>
+                    <div class="reviews-section" aria-labelledby="member-reviews-title">
+                        <h3 id="member-reviews-title">Hear From Our Community</h3>
+                        <script src="https://static.elfsight.com/platform/platform.js" async defer></script>
                         <div class="elfsight-app-b52fbf80-b063-430d-a25d-4b1d31113389" data-elfsight-app-lazy></div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="services" class="content-section">
-                <div class="content-container services-container"> <div class="close-btn" data-target="services"></div>
-                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
-                    <h2>World-Class Services</h2>
-                    <p class="services-intro">Experience excellence at Phuket Cruising Yacht Club, where every service is delivered with unparalleled expertise and attention to detail.</p>
-
+            <div id="services" class="content-section" role="dialog" aria-modal="true" aria-labelledby="services-title">
+                <div class="content-container services-container">
+                    <button class="close-btn" data-target="services" aria-label="Close Services section"></button>
+                    <img src="logob.png" alt="" class="section-logo" aria-hidden="true">
+                    <h2 id="services-title">Comprehensive Marine Services</h2> <p class="services-intro">At PCYC, excellence is our standard. We deliver a complete suite of maritime services with meticulous attention to detail and unwavering expertise, ensuring your every need is met.</p>
                     <div class="services-highlights">
-                        <div class="highlight-stat">
-                            <span class="stat-number">24/7</span>
-                            <span class="stat-label">Support Available</span>
-                        </div>
-                        <div class="highlight-stat">
-                            <span class="stat-number">15+</span>
-                            <span class="stat-label">Years Experience</span>
-                        </div>
-                        <div class="highlight-stat">
-                            <span class="stat-number">100+</span>
-                            <span class="stat-label">Happy Members</span>
-                        </div>
-                    </div>
-                    <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon">⚓</div>
-                        <h3>Port & Immigration</h3>
-                        <div class="service-details">
-                            <h4>Thai Customs Visa Extensions</h4>
-                            <p>Authorized port-entrance agent and Royal Thai Customs yacht visa extension service.</p>
-                            <h4>Check-in/Check-out Services</h4>
-                            <p>Simplified Immigration process and customs accreditation for your boat.</p>
-                            <h4>Extended Stay Management</h4>
-                            <p>Six-month stay arrangements with possible six-month extensions.</p>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <div class="service-icon">🛥️</div>
-                        <h3>Maritime Services</h3>
-                        <div class="service-details">
-                            <h4>Brokerage</h4>
-                            <p>Professional yacht and vessel brokerage services.</p>
-                            <h4>Charter Services</h4>
-                            <p>Comprehensive charter arrangements and management.</p>
-                            <h4>Salvage Operations</h4>
-                            <p>Professional marine salvage and recovery services.</p>
-                            <h4>Law Office</h4>
-                            <p>Specialized maritime legal services and consultation.</p>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <div class="service-icon">🔧</div>
-                        <h3>Equipment & Parts</h3>
-                        <div class="service-details">
-                            <h4>Second Hand Boat Parts</h4>
-                            <p>Quality used marine equipment and components.</p>
-                            <h4>Boat Minding</h4>
-                            <p>Professional vessel monitoring and maintenance services.</p>
-                            <h4>Equipment Rentals</h4>
-                            <p>RIBs, tender outboard engines, and dinghy rentals available.</p>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <div class="service-icon">🚗</div>
-                        <h3>Rentals & Accommodation</h3>
-                        <div class="service-details">
-                            <h4>Vehicle Rentals</h4>
-                            <p>Cars and motorcycles available for convenient transportation.</p>
-                            <h4>Beach Bungalows</h4>
-                            <p>Comfortable beachfront accommodation options.</p>
-                            <h4>Dinghy Services</h4>
-                            <p>Secure, flood-lit dinghy lines in front of the clubhouse.</p>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <div class="service-icon">⛵</div>
-                        <h3>Training & Education</h3>
-                        <div class="service-details">
-                            <h4>AYS Sailing School</h4>
-                            <p>Accredited sailing and powerboat seamanship training.</p>
-                            <h4>Maritime Courses</h4>
-                            <p>Professional development and certification programs.</p>
-                            <h4>Practical Training</h4>
-                            <p>Hands-on experience with experienced instructors.</p>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <div class="service-icon">🔌</div>
-                        <h3>Facilities & Amenities</h3>
-                        <div class="service-details">
-                            <h4>Shower Facilities</h4>
-                            <p>Clean, accessible showers open to all visitors.</p>
-                            <h4>Charging Stations</h4>
-                            <p>Multiple outlets available for device charging.</p>
-                            <h4>Contractor Access</h4>
-                            <p>Network of preferred marine service contractors.</p>
-                        </div>
-                    </div>
-                </div>
-
+                        <div class="highlight-stat"> <span class="stat-number">24/7</span> <span class="stat-label">Dedicated Support</span> </div>
+                        <div class="highlight-stat"> <span class="stat-number">15+</span> <span class="stat-label">Years of Expertise</span> </div>
+                        <div class="highlight-stat"> <span class="stat-number">500+</span> <span class="stat-label">Satisfied Seafarers</span> </div> </div>
+                    <div class="services-grid popup-grid"> <article class="service-card"> <div class="service-icon" aria-hidden="true">⚓</div> <h3>Port & Immigration</h3> <div class="service-details"> <h4>Thai Customs & Visa</h4><p>Authorized agent for port entrance and Royal Thai Customs yacht visa extensions.</p> <h4>Arrival & Departure</h4><p>Streamlined Immigration processes and customs accreditation for your vessel.</p> <h4>Extended Stays</h4><p>Facilitation of six-month stays with available extension options.</p> </div> </article>
+                        <article class="service-card"> <div class="service-icon" aria-hidden="true">🛥️</div> <h3>Full-Spectrum Maritime</h3> <div class="service-details"> <h4>Yacht Brokerage</h4><p>Professional brokerage for buying, selling, or upgrading your yacht.</p> <h4>Charter Management</h4><p>Bespoke charter arrangements and comprehensive management.</p> <h4>Salvage & Legal</h4><p>Expert marine salvage, recovery, and specialized maritime legal counsel.</p> </div> </article>
+                        <article class="service-card"> <div class="service-icon" aria-hidden="true">🔧</div> <h3>Equipment & Logistics</h3> <div class="service-details"> <h4>Marine Parts</h4><p>Sourcing for quality new and pre-owned marine equipment.</p> <h4>Vessel Care</h4><p>Diligent boat minding, monitoring, and maintenance programs.</p> <h4>Gear Rentals</h4><p>RIBs, tender outboards, dinghies, and other essential gear available.</p> </div> </article>
+                        <article class="service-card"> <div class="service-icon" aria-hidden="true">🏠</div> <h3>Shoreline Comforts</h3> <div class="service-details"> <h4>Transport Rentals</h4><p>Convenient car and motorcycle rentals for island exploration.</p> <h4>Beach Bungalows</h4><p>Charming beachfront accommodations for a restful stay.</p> <h4>Dinghy Security</h4><p>Secure, flood-lit dinghy lines directly in front of the clubhouse.</p> </div> </article> <article class="service-card"> <div class="service-icon" aria-hidden="true">⛵</div> <h3>Training & Development</h3> <div class="service-details"> <h4>AYS Sailing Academy</h4><p>Accredited sailing and powerboat seamanship courses for all levels.</p> <h4>Advanced Maritime</h4><p>Professional development programs and industry certifications.</p> <h4>Practical On-Water</h4><p>Hands-on training with highly experienced, certified instructors.</p> </div> </article>
+                        <article class="service-card"> <div class="service-icon" aria-hidden="true">🚿</div> <h3>Club Facilities</h3> <div class="service-details"> <h4>Refresh & Recharge</h4><p>Immaculate shower facilities open to all members and visitors.</p> <h4>Connectivity Hub</h4><p>Multiple charging stations and high-speed Wi-Fi access.</p> <h4>Trusted Network</h4><p>Access to our curated list of preferred marine service contractors.</p> </div> </article> </div>
                     <div class="service-cta">
-                        <p>Contact Captain Brent directly for personalized assistance</p>
-                        <a href="#contact" class="premium-button">Inquire Now</a>
+                        <p>Connect with Captain Brent for personalized maritime solutions.</p>
+                        <a href="#contact" class="premium-button">Inquire About Services</a>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="accommodation" class="content-section">
+            <div id="accommodation" class="content-section" role="dialog" aria-modal="true" aria-labelledby="accommodation-title">
                 <div class="content-container">
-                    <div class="close-btn" data-target="accommodation"></div>
-                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
-                    <h2>Accommodation</h2>
-                    <p style="text-align:center;">Experience the beauty of Phuket with our comfortable beach bungalows, perfect for sailors and visitors alike.</p>
-
+                    <button class="close-btn" data-target="accommodation" aria-label="Close Accommodation section"></button>
+                    <img src="logob.png" alt="" class="section-logo" aria-hidden="true">
+                    <h2 id="accommodation-title">Beachfront Bungalows</h2>
+                    <p style="text-align:center;">Retreat to comfort in our charming beach bungalows, perfectly positioned for sailors and island explorers seeking tranquility by the sea.</p>
                     <div class="accommodation-grid">
-                        <div class="bungalow-card">
-                            <img src="images/sailboat-414509_1280.jpg" alt="Standard Bungalow" class="bungalow-img">
-                            <div class="bungalow-info">
-                                <h3 class="bungalow-title">Standard Bungalow</h3>
-                                <p class="bungalow-price">From ฿1,500 per night</p>
-                                <p class="bungalow-desc">Comfortable beachfront bungalow with all essential amenities, perfect for couples or solo travelers.</p>
-                                <a href="#contact" class="book-btn">Inquire Now</a>
-                            </div>
-                        </div>
-
-                        <div class="bungalow-card">
-                            <img src="images/beautiful-woman-yacht-swimwear.jpg" alt="Deluxe Bungalow" class="bungalow-img">
-                            <div class="bungalow-info">
-                                <h3 class="bungalow-title">Deluxe Bungalow</h3>
-                                <p class="bungalow-price">From ฿2,500 per night</p>
-                                <p class="bungalow-desc">Spacious bungalow with premium amenities and stunning ocean views, ideal for extended stays.</p>
-                                <a href="#contact" class="book-btn">Inquire Now</a>
-                            </div>
-                        </div>
-
-                        <div class="bungalow-card">
-                            <img src="images/75380478_10156391073797175_4972174924367003648_n.jpg" alt="Family Bungalow" class="bungalow-img">
-                            <div class="bungalow-info">
-                                <h3 class="bungalow-title">Family Bungalow</h3>
-                                <p class="bungalow-price">From ฿3,500 per night</p>
-                                <p class="bungalow-desc">Large bungalow with multiple rooms, perfect for families or groups of friends enjoying Phuket together.</p>
-                                <a href="#contact" class="book-btn">Inquire Now</a>
-                            </div>
-                        </div>
+                        <article class="bungalow-card"> <img src="images/sailboat-414509_1280.jpg" alt="Serene Standard Bungalow with sea view" class="bungalow-img"> <div class="bungalow-info"> <h3 class="bungalow-title">Standard Bungalow</h3> <p class="bungalow-price">From ฿1,500 / night</p> <p class="bungalow-desc">Cozy beachfront comfort with essential amenities, ideal for solo adventurers or couples.</p> <a href="#contact" class="book-btn">Check Availability</a> </div> </article>
+                        <article class="bungalow-card"> <img src="images/beautiful-woman-yacht-swimwear.jpg" alt="Spacious Deluxe Bungalow with premium features" class="bungalow-img"> <div class="bungalow-info"> <h3 class="bungalow-title">Deluxe Bungalow</h3> <p class="bungalow-price">From ฿2,500 / night</p> <p class="bungalow-desc">Generous space, premium amenities, and stunning ocean vistas for an elevated stay.</p> <a href="#contact" class="book-btn">Check Availability</a> </div> </article>
+                        <article class="bungalow-card"> <img src="images/75380478_10156391073797175_4972174924367003648_n.jpg" alt="Large Family Bungalow suitable for groups" class="bungalow-img"> <div class="bungalow-info"> <h3 class="bungalow-title">Family Bungalow</h3> <p class="bungalow-price">From ฿3,500 / night</p> <p class="bungalow-desc">Multiple rooms offering ample space for families or groups creating Phuket memories.</p> <a href="#contact" class="book-btn">Check Availability</a> </div> </article>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="gallery" class="content-section">
+            <div id="gallery" class="content-section" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
                 <div class="content-container">
-                    <div class="close-btn" data-target="gallery"></div>
-                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
-                    <h2>Gallery</h2>
-                    <p style="text-align:center;">Explore the beauty of our vibrant community & the Phuket Cruising Yacht Club through our gallery.</p>
-                    <div id="gallery-container" class="gallery-grid">
-                    </div>
+                    <button class="close-btn" data-target="gallery" aria-label="Close Gallery section"></button>
+                    <img src="logob.png" alt="" class="section-logo" aria-hidden="true">
+                    <h2 id="gallery-title">Visual Journey</h2>
+                    <p style="text-align:center;">Immerse yourself in the vibrant life and scenic beauty of the Phuket Cruising Yacht Club and its surroundings through our curated gallery.</p>
+                    <div id="gallery-container" class="gallery-grid" aria-live="polite"> </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="contact" class="content-section">
+            <div id="contact" class="content-section" role="dialog" aria-modal="true" aria-labelledby="contact-title">
                 <div class="content-container">
-                    <div class="close-btn" data-target="contact"></div>
-                    <img src="logob.png" alt="Phuket Cruising Yacht Club Logo" class="section-logo">
-                    <h2>Contact Us</h2>
-                    <p style="text-align:center;">We'd love to hear from you! Whether you're interested in membership, have questions about our services, or just want to learn more about the Phuket Cruising Yacht Club.</p>
-
+                    <button class="close-btn" data-target="contact" aria-label="Close Contact Us section"></button>
+                    <img src="logob.png" alt="" class="section-logo" aria-hidden="true">
+                    <h2 id="contact-title">Get In Touch</h2>
+                    <p style="text-align:center;">We welcome your inquiries. Whether you're considering membership, have service questions, or wish to learn more about PCYC, our team is ready to assist.</p>
                     <div class="contact-form">
-                        <form id="contact-form">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" id="name" name="name" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <input type="text" id="subject" name="subject" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message</label>
-                                <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
-                            </div>
+                        <form id="contact-form" action="YOUR_FORM_SUBMISSION_URL" method="POST"> <div class="form-group"> <label for="name">Full Name</label> <input type="text" id="name" name="name" class="form-control" required autocomplete="name"> </div>
+                            <div class="form-group"> <label for="email">Email Address</label> <input type="email" id="email" name="email" class="form-control" required autocomplete="email"> </div>
+                            <div class="form-group"> <label for="subject">Subject</label> <input type="text" id="subject" name="subject" class="form-control" required> </div>
+                            <div class="form-group"> <label for="message">Your Message</label> <textarea id="message" name="message" class="form-control" rows="5" required></textarea> </div>
                             <button type="submit" class="submit-btn">Send Message</button>
                         </form>
-                        <div class="form-success">Your message has been sent successfully! We'll get back to you soon.</div>
+                        <div class="form-success" role="alert">Your message has been sent successfully! We'll be in touch shortly.</div>
                     </div>
-                     <p style="text-align:center; margin-top:1.5rem;">Connect with us on 
-                        <a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="event-link" style="display:inline-flex; background:transparent; border:none; padding:0.2rem 0.5rem; color: var(--muted-gold-highlight);">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo" style="filter:none; width:22px; height:22px;">
+                    <p style="text-align:center; margin-top:var(--space-lg);">Or connect with us directly:
+                        <a href="https://www.facebook.com/groups/187918071231247" target="_blank" rel="noopener noreferrer" class="event-link" style="display:inline-flex; background:transparent; border:none; padding:0.2rem 0.5rem; color: var(--muted-gold-highlight); vertical-align: middle;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook Icon" class="facebook-logo" style="filter:none; width:20px; height:20px;">
                             Facebook
-                        </a> or visit us in person.
+                        </a>
                     </p>
                 </div>
-            </section>
-        </div> </div> <button class="mobile-menu-btn" aria-label="Open Menu" aria-expanded="false">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
-
-    <div class="nav-container">
-        <nav>
-            <img src="logob.png" alt="Phuket Cruising Yacht Club" class="nav-logo">
-            <div class="nav-links">
-                <a href="#home" class="nav-link active">HOME</a> <a href="#about" class="nav-link">ABOUT</a>
-                <a href="#services" class="nav-link">SERVICES</a>
-                <a href="#accommodation" class="nav-link">ACCOMMODATION</a>
-                <a href="#gallery" class="nav-link">GALLERY</a>
-                <a href="#contact" class="nav-link">CONTACT</a>
             </div>
-            <a href="https://www.facebook.com/groups/187918071231247" target="_blank" class="social-icon" aria-label="PCYC Facebook Group">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/800px-2021_Facebook_icon.svg.png" alt="Facebook" class="facebook-logo" style="width:30px; height:30px;"> </a>
-        </nav>
+        </main>
     </div>
 
     <script type="module">
@@ -685,35 +352,24 @@
         const pageContent = document.getElementById('page-content');
         const mainScrollableContentWrapper = document.getElementById('main-scrollable-content-wrapper');
         const navContainer = document.querySelector('.nav-container');
-        const homeContent = document.querySelector('.home-content');
+        const homeContent = document.querySelector('.home-content'); // Used for particle positioning
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinksContainer = document.querySelector('.nav-links');
-        let progressVal = 0; // Renamed from progress to avoid conflict if THREE uses it
+        const navLinksContainer = document.querySelector('.nav-links'); // This is the ul/div holding the links
+        let progressVal = 0;
 
-        // Mobile menu toggle
+        // Mobile Menu Toggle
         if (mobileMenuBtn && navLinksContainer) {
             mobileMenuBtn.addEventListener('click', () => {
                 const isOpen = navLinksContainer.classList.toggle('open');
-                mobileMenuBtn.setAttribute('aria-expanded', isOpen);
-                // Optional: Change icon to X when open
-                if (isOpen) {
-                    mobileMenuBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>`;
-                } else {
-                    mobileMenuBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>`;
-                }
+                mobileMenuBtn.setAttribute('aria-expanded', isOpen.toString());
+                mobileMenuBtn.innerHTML = isOpen ?
+                    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><title>Close menu</title><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>` :
+                    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><title>Open menu</title><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+                // Toggle ARIA label on button
+                mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
             });
         }
 
-        // Handle navigation and section visibility
         const navLinkElements = document.querySelectorAll('.nav-link');
         const contentSections = document.querySelectorAll('.content-section');
 
@@ -724,304 +380,256 @@
         }
         
         function showSection(targetId) {
-            let sectionFound = false;
+            let sectionActivated = false;
             contentSections.forEach(section => {
-                if (section.id === targetId) {
-                    section.classList.add('active');
-                    document.body.classList.add('overlay-active'); // Control body scroll
-                    sectionFound = true;
+                const sectionElement = section; // Ensure it's an HTMLElement
+                if (sectionElement.id === targetId) {
+                    sectionElement.classList.add('active');
+                    sectionElement.setAttribute('aria-hidden', 'false');
+                    const focusable = sectionElement.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    if (focusable) focusable.focus(); // Focus first focusable element
+                    sectionActivated = true;
                 } else {
-                    section.classList.remove('active');
+                    sectionElement.classList.remove('active');
+                    sectionElement.setAttribute('aria-hidden', 'true');
                 }
             });
 
-            if (!sectionFound || targetId === 'home') { // If home or no specific section found
+            if (sectionActivated && targetId !== 'home') {
+                document.body.classList.add('overlay-active');
+            } else {
                 document.body.classList.remove('overlay-active');
+                if (homeContent) homeContent.classList.remove('hidden-for-overlay'); // Make sure home is visible
             }
-             // Update active link in nav
             updateActiveLink(targetId);
         }
-
 
         navLinkElements.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('href').substring(1);
-
-                if (navLinksContainer && navLinksContainer.classList.contains('open')) {
+                if (navLinksContainer && navLinksContainer.classList.contains('open')) { // Close mobile menu
                     navLinksContainer.classList.remove('open');
                     mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                     mobileMenuBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>`;
+                    mobileMenuBtn.setAttribute('aria-label', 'Open navigation menu');
+                    mobileMenuBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><title>Open menu</title><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
                 }
-                
                 showSection(targetId);
-
                 if (targetId === 'home' && mainScrollableContentWrapper) {
                     mainScrollableContentWrapper.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-                // Scrolling to section within main wrapper is not needed if sections are fixed overlays
             });
         });
-
-        // Close button functionality for content sections
-        closeButtons = document.querySelectorAll('.close-btn'); // Ensure closeButtons is defined
+        
+        // JS Error Fix: Correctly declare closeButtons with const
+        const closeButtons = document.querySelectorAll('.close-btn');
         closeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetSectionId = btn.getAttribute('data-target');
                 const targetSectionElement = document.getElementById(targetSectionId);
-
                 if (targetSectionElement) {
-                    targetSectionElement.classList.remove('active');
+                     targetSectionElement.classList.remove('active');
+                     targetSectionElement.setAttribute('aria-hidden', 'true');
                 }
                 document.body.classList.remove('overlay-active');
-                updateActiveLink('home'); // Set home as active when closing a section
+                if (homeContent) homeContent.classList.remove('hidden-for-overlay');
+                updateActiveLink('home'); // Default to home active
+                 if (mainScrollableContentWrapper) {
+                    mainScrollableContentWrapper.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             });
         });
         
-        // Default to home section active on load
-        // updateActiveLink('home'); // Already set in HTML
-
-        // Contact form submission
+        // Contact Form (Placeholder for actual submission)
         const contactForm = document.getElementById('contact-form');
         const formSuccess = document.querySelector('.form-success');
-
         if (contactForm && formSuccess) {
             contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                // In a real scenario, you'd send the data via fetch/AJAX here
+                e.preventDefault(); // Prevent actual submission for now
+                // Simulate form submission
                 formSuccess.classList.add('visible');
+                formSuccess.setAttribute('aria-hidden', 'false');
                 contactForm.reset();
                 setTimeout(() => {
                     formSuccess.classList.remove('visible');
-                }, 5000);
+                    formSuccess.setAttribute('aria-hidden', 'true');
+                }, 6000); // Display success for 6 seconds
             });
         }
 
-        // Create enhanced water particles (Function definition kept from original)
+        // Water Particles (Visual flair, kept from original logic)
         function createWaterParticles() {
             const particlesContainer = document.getElementById('particles-container');
             const titleElement = document.querySelector('.home-title');
-
             if (!particlesContainer || !titleElement || !homeContent || !mainScrollableContentWrapper) {
-                // console.warn("Missing elements for water particles. Aborting.");
+                // console.warn("Water particle elements missing.");
                 return;
             }
-            particlesContainer.innerHTML = '';
+            particlesContainer.innerHTML = ''; // Clear existing
             const titleRect = titleElement.getBoundingClientRect();
-            const homeContentRect = homeContent.getBoundingClientRect();
-
-            for (let i = 0; i < 10; i++) { // Reduced particle count for subtlety
-                const particle = document.createElement('div');
-                particle.classList.add('water-particle');
+            const homeContentRect = homeContent.getBoundingClientRect(); // Ensure homeContent is defined
+            for (let i = 0; i < 12; i++) { // Slightly more particles for effect
+                const particle = document.createElement('div'); particle.classList.add('water-particle');
                 const relativeX = (titleRect.left - homeContentRect.left) + Math.random() * titleRect.width - 10 + (Math.random() * 30 - 15);
                 const relativeY = (titleRect.top - homeContentRect.top) + Math.random() * titleRect.height - 5 + (Math.random() * 15 - 7);
-                particle.style.left = `${relativeX}px`;
-                particle.style.top = `${relativeY}px`;
-                particle.style.animationDelay = `${Math.random() * 2.5}s`; // Adjusted delay
+                particle.style.left = `${relativeX}px`; particle.style.top = `${relativeY}px`;
+                particle.style.animationDelay = `${Math.random() * 3}s`; // Varied delay
                 particlesContainer.appendChild(particle);
             }
         }
         
-        // Make all "Inquire Now" buttons redirect to contact form & prefill subject
+        // Inquiry Button Logic (Prefill contact form subject)
         document.querySelectorAll('.book-btn, .premium-button[href="#contact"], .service-cta .premium-button').forEach(btn => {
-            if (btn.getAttribute('href') === '#contact') { // Ensure it's a contact redirect
+            if (btn.getAttribute('href') === '#contact') {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    
-                    // Close mobile nav if open
-                    if (navLinksContainer && navLinksContainer.classList.contains('open')) {
-                        navLinksContainer.classList.remove('open');
-                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                         mobileMenuBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>`;
+                    if (navLinksContainer && navLinksContainer.classList.contains('open')) { // Close mobile nav
+                        navLinksContainer.classList.remove('open'); mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                        mobileMenuBtn.setAttribute('aria-label', 'Open navigation menu');
+                        mobileMenuBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><title>Open menu</title><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
                     }
-
-                    showSection('contact');
-                    
-                    setTimeout(() => {
+                    showSection('contact'); // Show contact popup
+                    setTimeout(() => { // Delay to ensure section is visible before focusing
                         const subjectField = document.getElementById('subject');
                         if (subjectField) {
-                            if (btn.closest('.bungalow-card')) {
-                                const bungalowTitle = btn.closest('.bungalow-card').querySelector('.bungalow-title').textContent;
-                                subjectField.value = `Inquiry: ${bungalowTitle}`;
-                            } else if (btn.closest('.membership-cta')) {
-                                subjectField.value = "Membership Inquiry";
-                            } else if (btn.closest('.service-cta')) {
-                                subjectField.value = "Service Inquiry";
-                            } else {
-                                subjectField.value = "General Inquiry";
-                            }
-                            subjectField.focus();
+                            let inquirySubject = "General Inquiry"; // Default
+                            const bungalowCard = btn.closest('.bungalow-card');
+                            const membershipCTA = btn.closest('.membership-cta');
+                            const serviceCTA = btn.closest('.service-cta');
+
+                            if (bungalowCard) {
+                                const bungalowTitle = bungalowCard.querySelector('.bungalow-title')?.textContent;
+                                inquirySubject = bungalowTitle ? `Inquiry: ${bungalowTitle}` : "Bungalow Inquiry";
+                            } else if (membershipCTA) { inquirySubject = "Membership Inquiry";
+                            } else if (serviceCTA) { inquirySubject = "Service Inquiry"; }
+                            
+                            subjectField.value = inquirySubject;
+                            subjectField.focus(); // Focus subject field
                         }
-                    }, 150); // Slight delay for section to open
+                    }, 200); // Slightly longer delay for smoother transition
                 });
             }
         });
 
-
+        // Three.js Scene Initialization (WebGL Background)
         function initScene() {
             const threeJsBackground = document.getElementById('threejs-background');
-            if (!threeJsBackground) {
-                // console.warn("Three.js background container not found.");
-                return;
-            }
-            const container = document.createElement('div');
-            threeJsBackground.appendChild(container);
-
+            if (!threeJsBackground) { /* console.warn("Three.js container not found.");*/ return; }
+            const container = document.createElement('div'); threeJsBackground.appendChild(container);
             const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 1, 20000);
-            camera.position.set(30, 30, 100);
-
-            const scene = new THREE.Scene();
-            const sun = new THREE.Vector3();
-
+            camera.position.set(30, 25, 100); // Adjusted camera slightly
+            const scene = new THREE.Scene(); const sun = new THREE.Vector3();
             const waterGeom = new THREE.PlaneGeometry(10000, 10000);
             const water = new Water(waterGeom, {
                 textureWidth: 512, textureHeight: 512,
-                waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', tex => {
-                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-                }),
-                sunDirection: new THREE.Vector3(),
-                sunColor: 0xffcc66, // Kept original sun color for water reflections
-                waterColor: 0x1A4D6F, // Deepened water color
-                distortionScale: 3.2, // Slightly reduced distortion
-                fog: scene.fog !== undefined // Use scene fog if defined
+                waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', tex => { tex.wrapS = tex.wrapT = THREE.RepeatWrapping; }),
+                sunDirection: new THREE.Vector3(), sunColor: 0xffcc66, /* Original warm sun */ waterColor: 0x001e3f, /* Deeper, richer blue */
+                distortionScale: 3.0, /* Slightly less distortion */ fog: scene.fog !== undefined
             });
-            water.rotation.x = -Math.PI/2;
-            scene.add(water);
-
-            const sky = new Sky();
-            sky.scale.setScalar(10000);
-            scene.add(sky);
+            water.rotation.x = -Math.PI/2; scene.add(water);
+            const sky = new Sky(); sky.scale.setScalar(10000); scene.add(sky);
             const uni = sky.material.uniforms;
-            uni.turbidity.value = 8; // Slightly less turbidity
-            uni.rayleigh.value = 1.5; // Adjusted Rayleigh
-            uni.mieCoefficient.value = 0.004;
-            uni.mieDirectionalG.value = 0.75;
-
-            const phi = THREE.MathUtils.degToRad(88); // Sun slightly lower
-            const theta = THREE.MathUtils.degToRad(175); // Sun position
+            uni.turbidity.value = 7; /* Slightly clearer sky */ uni.rayleigh.value = 1.2; /* Adjusted atmospheric scattering */
+            uni.mieCoefficient.value = 0.003; uni.mieDirectionalG.value = 0.7;
+            const phi = THREE.MathUtils.degToRad(88.5); /* Sun slightly higher for brighter feel */ const theta = THREE.MathUtils.degToRad(170);
             sun.setFromSphericalCoords(1, phi, theta);
-            uni.sunPosition.value.copy(sun);
-            water.material.uniforms.sunDirection.value.copy(sun).normalize();
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // Added alpha for potential blending
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.toneMapping = THREE.ACESFilmicToneMapping; // Improved tone mapping
+            uni.sunPosition.value.copy(sun); water.material.uniforms.sunDirection.value.copy(sun).normalize();
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio); renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.6; /* Adjusted exposure */
             container.appendChild(renderer.domElement);
-
             const controls = new OrbitControls(camera, renderer.domElement);
-            controls.maxPolarAngle = Math.PI*0.49;
-            controls.minDistance = 40; controls.maxDistance = 200;
-            // controls.target.set(0, 10, 0); // Adjusted target slightly
-            controls.enableZoom = false; // Zoom disabled as requested
-            controls.enablePan = false; // Disable panning for a more static background feel
-            controls.autoRotate = true; // Subtle auto-rotation
-            controls.autoRotateSpeed = 0.15; // Slow rotation speed
+            controls.maxPolarAngle = Math.PI*0.48; controls.minDistance = 35; controls.maxDistance = 180;
+            controls.enableZoom = false; controls.enablePan = false;
+            controls.autoRotate = true; controls.autoRotateSpeed = 0.12; /* Slower, graceful rotation */
+            controls.target.set(0, 5, 0); // Look slightly lower
             controls.update();
-
             window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth/window.innerHeight;
-                camera.updateProjectionMatrix();
+                camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
-                if (homeContent && !document.body.classList.contains('overlay-active')) {
+                // Recreate particles only if home is active and not an overlay situation
+                if (homeContent && !document.body.classList.contains('overlay-active') && !contentSections.some(s => s.classList.contains('active'))) {
                     createWaterParticles();
                 }
             });
-
             function animate() {
-                requestAnimationFrame(animate);
-                water.material.uniforms.time.value += 1/60;
-                controls.update(); // Required if autoRotate is enabled
-                renderer.render(scene, camera);
+                requestAnimationFrame(animate); water.material.uniforms.time.value += 1/75; // Slower water ripple
+                controls.update(); renderer.render(scene, camera);
             }
             animate();
-
+            // Delayed appearance of nav and home content for smoother loading perception
             setTimeout(() => {
                 if (navContainer) navContainer.classList.add('visible');
-                if (homeContent) {
-                    // homeContent.classList.add('visible'); // Home content is visible by default unless section is shown
-                    createWaterParticles();
+                if (homeContent && !document.body.classList.contains('overlay-active') && !contentSections.some(s => s.classList.contains('active'))) {
+                    createWaterParticles(); // Create initial particles
                 }
-            }, 1000);
+            }, 800); // Slightly shorter delay
         }
 
-        // Simulate loading progress
-        const interval = setInterval(() => {
-            progressVal = Math.min(100, progressVal + Math.random() * 10 + 5);
+        // Loading Simulation & Scene Initialization
+        const loadingInterval = setInterval(() => { // Renamed to avoid conflict
+            progressVal = Math.min(100, progressVal + Math.random() * 8 + 4); // Adjusted speed
             const circumference = 2 * Math.PI * 45;
             if (prog) prog.style.strokeDashoffset = circumference * (1 - progressVal / 100);
-
             if (progressVal >= 100) {
-                clearInterval(interval);
+                clearInterval(loadingInterval);
                 if (overlay) overlay.classList.add('fade-out');
                 setTimeout(() => {
                     if (overlay) overlay.remove();
-                    initScene();
+                    initScene(); // Initialize Three.js scene after loading
                     if (pageContent) {
                         pageContent.setAttribute('aria-hidden', 'false');
                         pageContent.classList.add('visible');
                     }
-                }, 1000);
+                }, 700); // Delay after fade-out before showing content
             }
-        }, 200);
+        }, 180); // Slightly faster interval
 
-        // Gallery implementation
+        // Gallery Image Loading
         const galleryContainer = document.getElementById('gallery-container');
         if (galleryContainer) {
-            const galleryImages = [
-                { src: 'images/beautiful-woman-yacht-swimwear.jpg', alt: 'Woman on yacht in Phuket waters' },
-                { src: 'images/473599725_10160435212412175_501266893980304214_n.jpg', alt: 'Yacht sailing in Phuket' },
-                { src: 'images/148872788_3169037883196094_849598998136454814_n.jpg', alt: 'Yacht Club gathering' },
-                { src: 'images/118274592_10157223767507175_1027198816200289080_n.jpg', alt: 'Sailing in Phuket' },
-                { src: 'images/75380478_10156391073797175_4972174924367003648_n.jpg', alt: 'Yacht sailing' },
-                { src: 'images/463398656_7798563456910157_6872878179612088792_n.jpg', alt: 'Seafood at the yacht club' },
-                { src: 'images/468066240_10102904678842276_3997282509366841665_n.jpg', alt: 'Yacht club members' },
-                { src: 'images/464508298_8693886117336396_5575655286860524176_n.jpg', alt: 'Sailing yacht' },
-                { src: 'images/sailboat-414509_1280.jpg', alt: 'Sailboat at sunset' }
-            ];
-
+            const galleryImages = [ /* Original images */
+                { src: 'images/beautiful-woman-yacht-swimwear.jpg', alt: 'Elegant woman enjoying the sundeck of a luxury yacht in Phuket\'s azure waters.' }, { src: 'images/473599725_10160435212412175_501266893980304214_n.jpg', alt: 'A majestic yacht sailing gracefully across the open sea near Phuket.' }, { src: 'images/148872788_3169037883196094_849598998136454814_n.jpg', alt: 'Members and guests enjoying a social gathering at the Phuket Cruising Yacht Club.' }, { src: 'images/118274592_10157223767507175_1027198816200289080_n.jpg', alt: 'Dynamic shot of a sailboat cutting through the waves during a Phuket regatta.' }, { src: 'images/75380478_10156391073797175_4972174924367003648_n.jpg', alt: 'Aerial view of a pristine white yacht anchored in a secluded Phuket bay.' }, { src: 'images/463398656_7798563456910157_6872878179612088792_n.jpg', alt: 'Deliciously prepared fresh seafood platter served at the Yacht Club restaurant.' }, { src: 'images/468066240_10102904678842276_3997282509366841665_n.jpg', alt: 'Group of smiling yacht club members posing for a photo during an event.' }, { src: 'images/464508298_8693886117336396_5575655286860524176_n.jpg', alt: 'Close-up of a modern sailing yacht with its sails perfectly trimmed.' }, { src: 'images/sailboat-414509_1280.jpg', alt: 'Silhouette of a sailboat against a breathtaking Phuket sunset over the Andaman Sea.' } ];
             galleryImages.forEach(image => {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'gallery-item';
-                const img = document.createElement('img');
-                img.src = image.src; img.alt = image.alt; img.loading = 'lazy'; // Add lazy loading
-                galleryItem.appendChild(img);
-                galleryContainer.appendChild(galleryItem);
-
+                const galleryItem = document.createElement('div'); galleryItem.className = 'gallery-item';
+                const img = document.createElement('img'); img.src = image.src; img.alt = image.alt; img.loading = 'lazy';
+                galleryItem.appendChild(img); galleryContainer.appendChild(galleryItem);
                 galleryItem.addEventListener('click', () => {
-                    const lightbox = document.createElement('div');
-                    lightbox.className = 'lightbox';
-                    const lightboxImg = document.createElement('img');
-                    lightboxImg.src = image.src; lightboxImg.alt = image.alt;
-                    lightbox.appendChild(lightboxImg);
-                    document.body.appendChild(lightbox);
+                    const lightbox = document.createElement('div'); lightbox.className = 'lightbox';
+                    const lightboxImg = document.createElement('img'); lightboxImg.src = image.src; lightboxImg.alt = image.alt;
+                    lightbox.appendChild(lightboxImg); document.body.appendChild(lightbox);
+                    // Close lightbox on click anywhere on the lightbox overlay
                     lightbox.addEventListener('click', () => { lightbox.remove(); });
                 });
             });
         }
         
-        // Auto-refresh captain-widget iframes every 15 minutes
+        // Auto-refresh Maritime Dashboard iframes (Kept from original functionality)
+        // Your original script had this, so it's preserved.
+        const localTimeElement = document.getElementById('localTime'); // Check if this element exists from your original HTML. If not, remove this block.
+        if (localTimeElement) {
+             function updateLocalTime() {
+                const now = new Date();
+                const options = { timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+                localTimeElement.textContent = `Current Local Time: ${now.toLocaleTimeString('en-GB', options)}`;
+            }
+            setInterval(updateLocalTime, 1000);
+            updateLocalTime(); // Initial call
+        }
+
         setInterval(() => {
-            document.querySelectorAll('.captain-widget iframe').forEach(iframe => {
-                try {
-                    iframe.src = iframe.src; // Standard way to refresh
-                } catch (e) {
-                    // console.warn("Error refreshing iframe:", e);
-                    // Fallback for cross-origin iframes if src refresh fails (less likely to work)
-                    // iframe.contentWindow.location.reload(); // This will likely fail due to security
-                }
+            document.querySelectorAll('.captain-widget iframe').forEach(iframe => { // Targets only dashboard iframes
+                try { iframe.src = iframe.src; } catch (e) { /* console.warn("Error refreshing iframe:", e); */ }
             });
-        }, 15 * 60 * 1000);
+        }, 15 * 60 * 1000); // 15 minutes
+
+        // Ensure home is active on initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateActiveLink('home');
+            if (pageContent.classList.contains('visible') && homeContent && !document.body.classList.contains('overlay-active') && !contentSections.some(s => s.classList.contains('active'))) {
+                 // This might be too early if Three.js scene isn't ready, handled by loading sequence.
+            }
+        });
 
     </script>
 </body>
