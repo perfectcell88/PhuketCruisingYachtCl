@@ -1849,11 +1849,16 @@ textarea.form-control {
         display: none;
     }
 
-    /* Hide original nav logo when mobile menu is open - User's original rule, kept for now. */
-    /* If the logo in the nav bar is disappearing on mobile and it shouldn't, this rule might be the cause. */
-    /* My new nav design intends for the .nav-logo to be visible with the .mobile-menu-btn. */
+    /* Updated nav logo styles to ensure visibility */
     .nav-container nav .nav-logo {
-           display: none; /* Original rule from user. */
+        display: block;
+        height: 35px;
+        margin: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-container nav .nav-logo:hover {
+        transform: scale(1.05);
     }
 }
 
