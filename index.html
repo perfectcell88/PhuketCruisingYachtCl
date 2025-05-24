@@ -512,58 +512,91 @@
         });
 
         // Three.js Scene Initialization (WebGL Background)
-        function initScene() {
-            const threeJsBackground = document.getElementById('threejs-background');
-            if (!threeJsBackground) { /* console.warn("Three.js container not found.");*/ return; }
-            const container = document.createElement('div'); threeJsBackground.appendChild(container);
+           function initScene() {
+            const threeJsBackground = document.getElementById('threejs-background'); // Get the container
+            if (!threeJsBackground) { // Check if container exists
+                console.warn("Three.js background container not found. Skipping scene initialization.");
+                return;
+            }
+            const container = document.createElement('div');
+            threeJsBackground.appendChild(container); // Append to the background div
+
             const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 1, 20000);
-            camera.position.set(30, 25, 100); // Adjusted camera slightly
-            const scene = new THREE.Scene(); const sun = new THREE.Vector3();
+            camera.position.set(30, 30, 100);
+
+            const scene = new THREE.Scene();
+            const sun = new THREE.Vector3();
+
+            // Water
             const waterGeom = new THREE.PlaneGeometry(10000, 10000);
             const water = new Water(waterGeom, {
                 textureWidth: 512, textureHeight: 512,
-                waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', tex => { tex.wrapS = tex.wrapT = THREE.RepeatWrapping; }),
-                sunDirection: new THREE.Vector3(), sunColor: 0xffcc66, /* Original warm sun */ waterColor: 0x001e3f, /* Deeper, richer blue */
-                distortionScale: 3.0, /* Slightly less distortion */ fog: scene.fog !== undefined
+                waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', tex => {
+                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                }),
+                sunDirection: new THREE.Vector3(),
+                sunColor: 0xffcc66, waterColor: 0x226666,
+                distortionScale: 3.7, fog: false
             });
-            water.rotation.x = -Math.PI/2; scene.add(water);
-            const sky = new Sky(); sky.scale.setScalar(10000); scene.add(sky);
+            water.rotation.x = -Math.PI/2;
+            scene.add(water);
+
+            // Sky
+            const sky = new Sky();
+            sky.scale.setScalar(10000);
+            scene.add(sky);
             const uni = sky.material.uniforms;
-            uni.turbidity.value = 7; /* Slightly clearer sky */ uni.rayleigh.value = 1.2; /* Adjusted atmospheric scattering */
-            uni.mieCoefficient.value = 0.003; uni.mieDirectionalG.value = 0.7;
-            const phi = THREE.MathUtils.degToRad(88.5); /* Sun slightly higher for brighter feel */ const theta = THREE.MathUtils.degToRad(170);
+            uni.turbidity.value = 10;
+            uni.rayleigh.value = 2;
+            uni.mieCoefficient.value = 0.005;
+            uni.mieDirectionalG.value = 0.8;
+
+            const phi = THREE.MathUtils.degToRad(90), theta = THREE.MathUtils.degToRad(180);
             sun.setFromSphericalCoords(1, phi, theta);
-            uni.sunPosition.value.copy(sun); water.material.uniforms.sunDirection.value.copy(sun).normalize();
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setPixelRatio(window.devicePixelRatio); renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.6; /* Adjusted exposure */
+            uni.sunPosition.value.copy(sun);
+            water.material.uniforms.sunDirection.value.copy(sun).normalize();
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
+
+            // Controls
             const controls = new OrbitControls(camera, renderer.domElement);
-            controls.maxPolarAngle = Math.PI*0.48; controls.minDistance = 35; controls.maxDistance = 180;
-            controls.enableZoom = false; controls.enablePan = false;
-            controls.autoRotate = true; controls.autoRotateSpeed = 0.12; /* Slower, graceful rotation */
-            controls.target.set(0, 5, 0); // Look slightly lower
+            controls.maxPolarAngle = Math.PI*0.495;
+            controls.minDistance = 40; controls.maxDistance = 200;
+            controls.target.copy(sun.clone().multiplyScalar(100));
             controls.update();
+            // --- ADDED: Disable zoom controls ---
+            controls.enableZoom = false;
+            // ------------------------------------
+
             window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
+                camera.aspect = window.innerWidth/window.innerHeight;
+                camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
-                // Recreate particles only if home is active and not an overlay situation
-                if (homeContent && !document.body.classList.contains('overlay-active') && !contentSections.some(s => s.classList.contains('active'))) {
+                // Re-create water particles on resize if home content is visible
+                if (homeContent && homeContent.classList.contains('visible')) { // Check if homeContent exists
                     createWaterParticles();
                 }
             });
+
+            // Animate
             function animate() {
-                requestAnimationFrame(animate); water.material.uniforms.time.value += 1/75; // Slower water ripple
-                controls.update(); renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+                water.material.uniforms.time.value += 1/60;
+                renderer.render(scene, camera);
             }
             animate();
-            // Delayed appearance of nav and home content for smoother loading perception
+
+            // Show navigation and home content after scene is initialized
             setTimeout(() => {
-                if (navContainer) navContainer.classList.add('visible');
-                if (homeContent && !document.body.classList.contains('overlay-active') && !contentSections.some(s => s.classList.contains('active'))) {
-                    createWaterParticles(); // Create initial particles
+                if (navContainer) navContainer.classList.add('visible'); // Check if navContainer exists
+                if (homeContent) { // Check if homeContent exists
+                    homeContent.classList.add('visible'); // Keeps home-content visible by default
+                    createWaterParticles();
                 }
-            }, 800); // Slightly shorter delay
+            }, 1000);
         }
 
         // Loading Simulation & Scene Initialization
