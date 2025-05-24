@@ -1,1555 +1,904 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap'); /* Consolidated Montserrat weights */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap'); /* Added Playfair if still needed, though Cormorant is prioritized */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap'); /* ADDED for cleaner nav font & body */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap'); /* For elegant headings */
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap'); /* For nautical/card titles */
+/* Playfair Display is in the HTML import, can be used as fallback or specific cases if needed */
 
-/* Enhanced styles for Phuket Cruising Yacht Club - Marine Theme */
+/* Enhanced styles for Phuket Cruising Yacht Club - Elite Marine Theme */
 
 :root {
     --primary-dark-blue: #0A2F51;
-    --secondary-accent-blue: #5085A5;
-    --primary-light-text: #F0F4F8;
-    --muted-gold-highlight: #C8B588; /* Softer gold */
+    --secondary-accent-blue: #5085A5; /* Slightly desaturated, sophisticated blue */
+    --primary-light-text: #E8EFF5; /* Off-white with a hint of cool blue */
+    --muted-gold-highlight: #C8B588; /* Refined, less bright gold */
+    --original-gold-highlight: #f9d976; /* STRICTLY for loading screen & user-specified preserved elements */
     --subtle-seafoam-accent: #87A9A8;
-    --card-bg-color: rgba(10, 47, 81, 0.65); /* Primary dark blue with alpha */
-    --card-border-color: rgba(200, 181, 136, 0.2); /* Muted gold with alpha */
-    --link-hover-color: #E0D8C0; /* Lighter beige for hover */
+    --text-shadow-strong: 0 2px 4px rgba(0,0,0,0.6); /* For prominent text */
+    --text-shadow-soft: 0 1px 2px rgba(0,0,0,0.5);   /* For general text */
+
+    /* Glassmorphism Defaults */
+    --glass-bg-base: rgba(10, 47, 81, 0.35); /* Base for most glass elements */
+    --glass-bg-popup: rgba(10, 47, 81, 0.65); /* More opaque for main popups */
+    --glass-bg-nav: rgba(10, 47, 81, 0.6);   /* Nav background */
+    --glass-blur-amount: 10px; /* Consistent blur */
+    --glass-border-light: rgba(220, 230, 240, 0.15); /* Softer light border */
+    --glass-border-gold-accent: rgba(200, 181, 136, 0.25); /* Muted gold accent border */
 
     --font-body: 'Montserrat', sans-serif;
     --font-heading-main: 'Cormorant Garamond', serif;
-    --font-heading-section: 'Cormorant Garamond', serif;
+    --font-heading-section: 'Cormorant Garamond', serif; /* Consistent with main headings */
     --font-heading-card: 'Marcellus SC', serif;
     --font-nav: 'Montserrat', sans-serif;
+
+    /* Spacing variables - for consistency - can be expanded */
+    --space-xs: 0.5rem;   /* 8px */
+    --space-sm: 0.75rem;  /* 12px */
+    --space-md: 1.25rem;  /* 20px */
+    --space-lg: 2rem;     /* 32px */
+    --space-xl: 3rem;     /* 48px */
 }
 
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321); /* Existing gradient, still works well */
+    background: linear-gradient(270deg, #000c1a, #051422, #1a1f36, #0d1321);
     background-size: 800% 800%;
     animation: gradientShift 40s ease infinite;
-    font-family: var(--font-body);
+    font-family: var(--font-body); /* UPDATED default font */
     color: var(--primary-light-text); /* UPDATED default text color */
     user-select: none;
     text-align: center;
     cursor: url('Anchor.cur'), auto;
+    font-size: 16px; /* Base font size for rem calculations */
+    line-height: 1.6; /* Improved base line-height */
 }
 
 #threejs-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
     z-index: 1;
 }
 
 #page-content {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    z-index: 5;
-    opacity: 0;
+    position: relative; top: 0; left: 0;
+    width: 100%; min-height: 100%;
+    z-index: 5; opacity: 0;
     transition: opacity 1.2s ease;
 }
-
-#page-content.visible {
-    opacity: 1;
-}
+#page-content.visible { opacity: 1; }
 
 #main-scrollable-content-wrapper {
-    position: relative;
-    min-height: 100vh;
-    padding-top: 100px; /* Adjust if nav height changes */
-    padding-bottom: 50px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 100vh;
-    width: 100%;
+    position: relative; min-height: 100vh;
+    padding-top: 90px; /* Adjusted for nav height */
+    padding-bottom: var(--space-xl);
+    box-sizing: border-box; overflow-y: auto; overflow-x: hidden;
+    height: 100vh; width: 100%;
 }
 
-/* Scrollbar styling for the main content wrapper */
-#main-scrollable-content-wrapper::-webkit-scrollbar {
-    width: 10px;
-}
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-track {
-    background: rgba(10, 47, 81, 0.2); /* Dark blue track */
-}
-
+#main-scrollable-content-wrapper::-webkit-scrollbar { width: 10px; }
+#main-scrollable-content-wrapper::-webkit-scrollbar-track { background: rgba(10, 47, 81, 0.2); }
 #main-scrollable-content-wrapper::-webkit-scrollbar-thumb {
-    background: var(--secondary-accent-blue); /* Accent blue thumb */
-    border-radius: 5px;
-    border: 2px solid transparent;
+    background: var(--secondary-accent-blue);
+    border-radius: 5px; border: 2px solid transparent;
     background-clip: content-box;
 }
-
-#main-scrollable-content-wrapper::-webkit-scrollbar-thumb:hover {
-    background: var(--muted-gold-highlight);
-}
-
+#main-scrollable-content-wrapper::-webkit-scrollbar-thumb:hover { background: var(--muted-gold-highlight); }
 
 body.overlay-active {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    overflow: hidden; position: fixed;
+    width: 100%; height: 100%; top: 0; left: 0;
 }
-
 body.overlay-active .home-content {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
+    opacity: 0; pointer-events: none; visibility: hidden;
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
+/* Loading Screen - STRICTLY ORIGINAL COLORS + NEW DOTS */
 #loading-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    pointer-events: all;
-    background: rgba(0,12,26,0.9); /* Slightly more opaque */
-    opacity: 1;
-    transition: opacity 1s ease;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    z-index: 9999; pointer-events: all; background: rgba(0,12,26,0.95); /* Slightly more opaque from original */
+    opacity: 1; transition: opacity 1s ease-out; /* Smoother fade */
 }
-
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+#loading-overlay::before { /* Original Gold Ripple from user's file */
+    content: ""; position: absolute; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(249,217,118,0.1), transparent 70%);
+    border-radius: 50%; animation: ripple 2.5s ease-out infinite; pointer-events: none;
 }
-
-/* Enhanced text shadow for better readability on varied backgrounds */
-.home-subtitle, .intro-text p, .content-container p, .content-container li,
-.amenity-card p, .service-details p, .bungalow-desc, .benefits-list li {
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Softer, more diffused shadow */
-    color: var(--primary-light-text); /* Ensure consistent light text */
-    font-weight: 300; /* Lighter weight for body text */
-    line-height: 1.7; /* Improved line height */
+#loading-logo-circle-wrapper { position: relative; width: 200px; height: 200px; margin-bottom: var(--space-md); }
+#loading-logo {
+    width: 200px; height: 200px; display: block;
+    filter: drop-shadow(0 0 8px var(--original-gold-highlight)); /* Original gold */
+    opacity: 0; animation: logoPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.3s; /* Springy pop */
+    position: relative; z-index: 2; border-radius: 50%;
 }
+#loading-circle {
+    position: absolute; top: 0; left: 0; width: 200px; height: 200px;
+    pointer-events: none; z-index: 1; animation: spin 1.6s linear infinite;
+    filter: drop-shadow(0 0 8px var(--original-gold-highlight)); /* Original gold */
+}
+/* NEW Loading Dots - Styled with original gold */
+#loading-dots { display: flex; justify-content: center; align-items: center; margin-top: var(--space-sm); }
+#loading-dots .dot {
+    width: 10px; height: 10px; margin: 0 var(--space-xs);
+    background-color: var(--original-gold-highlight); /* Original gold */
+    border-radius: 50%;
+    animation: loadingDotAnimation 1.4s infinite ease-in-out;
+}
+#loading-dots .dot:nth-child(1) { animation-delay: -0.32s; }
+#loading-dots .dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes loadingDotAnimation {
+    0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; }
+    40% { transform: scale(1.0); opacity: 1; }
+}
+/* End Loading Screen Styles */
 
-/* --- NAVIGATION STYLES --- */
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes logoPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes ripple { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+
+/* --- TYPOGRAPHY & GENERAL TEXT STYLING --- */
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: var(--space-md); /* Consistent bottom margin for headings */
+    line-height: 1.3; /* Tighter line height for headings */
+    font-weight: 600; /* Default weight, can be overridden */
+}
+p { margin-bottom: var(--space-md); font-weight: 300; text-shadow: var(--text-shadow-soft); }
+a { color: var(--secondary-accent-blue); text-decoration: none; transition: color 0.3s ease, opacity 0.3s ease; }
+a:hover { color: var(--muted-gold-highlight); opacity: 0.85; }
+
+/* --- NAVIGATION STYLES - Refined Glassmorphism & Spacing --- */
 .nav-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    padding: 0;
-    z-index: 100;
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 1s ease, transform 1s ease;
-    pointer-events: none;
-    visibility: hidden;
+    position: fixed; top: 0; left: 0; right: 0; width: 100%; padding: 0;
+    z-index: 100; opacity: 0; transform: translateY(-100%); /* Start off-screen */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Smoother transition */
+    pointer-events: none; visibility: hidden;
 }
-
-.nav-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-    visibility: visible;
-}
-
+.nav-container.visible { opacity: 1; transform: translateY(0); pointer-events: all; visibility: visible; }
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 3rem; /* Adjusted padding */
-    background: linear-gradient(to right, rgba(10, 47, 81, 0.85), rgba(13, 32, 50, 0.85)); /* Dark blue gradient */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--card-border-color); /* Muted gold border */
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    box-sizing: border-box;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: var(--space-sm) var(--space-lg); /* Use spacing vars */
+    background: var(--glass-bg-nav);
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border-bottom: 1px solid var(--glass-border-light); /* Softer border */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Refined shadow */
+    width: 100%; box-sizing: border-box; height: 70px; /* Fixed height */
 }
-
 .nav-logo {
-    height: 45px; /* Slightly adjusted */
-    width: auto;
-    filter: drop-shadow(0 0 10px var(--muted-gold-highlight)) brightness(1.1);
-    margin-left: 1.5rem; /* Adjusted */
-    transition: all 0.4s ease;
+    height: 40px; /* Slightly smaller for sleekness */ width: auto;
+    filter: drop-shadow(0 0 8px var(--muted-gold-highlight)) brightness(1.05); /* Subtler glow */
+    margin-left: var(--space-md); transition: transform 0.3s ease, filter 0.3s ease;
 }
-
-.nav-logo:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 12px var(--muted-gold-highlight)) brightness(1.15);
-}
-
-.nav-links {
-    display: flex;
-    gap: 1.2rem; /* Adjusted gap */
-    justify-content: center;
-    flex-grow: 1;
-}
-
+.nav-logo:hover { transform: scale(1.03); filter: drop-shadow(0 0 10px var(--muted-gold-highlight)) brightness(1.1); }
+.nav-links { display: flex; gap: var(--space-sm); justify-content: center; flex-grow: 1; }
 .nav-link {
-    font-family: var(--font-nav);
-    color: var(--primary-light-text);
-    text-decoration: none;
-    font-size: 0.95rem; /* Slightly adjusted */
-    font-weight: 500;
-    letter-spacing: 1.2px; /* Adjusted */
-    text-transform: uppercase;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    padding: 0.7rem 1.1rem; /* Adjusted */
-    margin: 0 0.2rem; /* Adjusted */
-    border: none;
-    background: transparent;
-    border-radius: 4px;
+    font-family: var(--font-nav); color: var(--primary-light-text);
+    font-size: 0.9rem; /* Adjusted for sleekness */ font-weight: 500; letter-spacing: 1px; /* More spacing */
+    text-transform: uppercase; transition: all 0.25s ease-in-out; /* Faster transition */
+    position: relative; padding: var(--space-xs) var(--space-md); /* Use spacing vars */
+    border-radius: 4px; /* Subtle radius */
 }
-
-.nav-link:hover,
-.nav-link.active {
+.nav-link:hover, .nav-link.active {
     color: var(--muted-gold-highlight);
-    text-shadow: 0 0 10px rgba(200, 181, 136, 0.5); /* Muted gold shadow */
-    background: linear-gradient(120deg, rgba(200, 181, 136, 0.08), rgba(200, 181, 136, 0.12));
-    transform: translateY(-1px);
+    text-shadow: 0 0 10px rgba(200, 181, 136, 0.4);
+    background: rgba(200, 181, 136, 0.07); /* Very subtle gold tint */
 }
+.nav-link::after { /* Underline effect */
+    content: ''; position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 2px; background: var(--muted-gold-highlight);
+    opacity: 0; transition: width 0.3s ease, opacity 0.3s ease; border-radius: 1px;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 60%; opacity: 1; }
+.social-icon {
+    margin-right: var(--space-md); display: flex; align-items: center;
+}
+.social-icon img.facebook-logo {
+    width: 26px; height: 26px; /* Slightly adjusted */
+    filter: grayscale(80%) brightness(1.3) contrast(1.5) opacity(0.8); /* Softer monochrome */
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+.social-icon:hover img.facebook-logo { filter: none; opacity: 1; }
+.social-icon:hover { transform: scale(1.05); }
 
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--muted-gold-highlight), transparent);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-    width: 70%; /* Adjusted */
-    opacity: 1;
-}
-
-.social-icon { /* This styles the <a> tag container for the Facebook logo in nav */
-    color: var(--primary-light-text); /* Fallback if image fails, though image is used */
-    font-size: 1.4rem; /* Slightly adjusted */
-    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
-    margin-right: 1.5rem; /* Adjusted */
-    display: flex; /* To align image properly */
-    align-items: center;
-}
-.social-icon img.facebook-logo { /* Style for the actual image */
-    filter: grayscale(100%) brightness(1.5) contrast(3); /* Make it monochrome light */
-    transition: filter 0.3s ease;
-}
-
-.social-icon:hover img.facebook-logo {
-    filter: none; /* Show original color on hover */
-}
-.social-icon:hover {
-    transform: scale(1.1);
-}
-
-
-/* Home content */
+/* --- HOME CONTENT - Refined Sizing & Typography --- */
 .home-content {
-    text-align: center;
-    position: relative;
-    width: 100%;
-    min-height: calc(100vh - 100px); /* Adjust if nav height changes */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1s ease;
-    z-index: 10;
-    padding: 0 20px;
-    margin-top: 0; /* Adjusted to ensure it's below nav */
-    box-sizing: border-box;
+    text-align: center; position: relative; width: 100%;
+    min-height: calc(100vh - 90px); /* Adjusted for nav height */
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: opacity 1s ease-out; z-index: 10;
+    padding: var(--space-lg) var(--space-md); box-sizing: border-box;
 }
-
-.home-content.visible {
-    opacity: 1;
-}
-
 .main-logo {
-    width: 200px; /* Adjusted size */
-    height: 200px; /* Adjusted size */
-    display: block;
-    margin: 3rem auto 1.5rem; /* Adjusted top margin */
-    filter: drop-shadow(0 0 15px var(--muted-gold-highlight)); /* Muted gold shadow */
+    width: 180px; height: 180px; /* Sleeker size */ display: block;
+    margin: var(--space-lg) auto var(--space-md);
+    filter: drop-shadow(0 0 12px var(--muted-gold-highlight));
     border-radius: 50%;
 }
-
-.home-title {
-    font-family: var(--font-heading-main);
-    font-size: 2.8rem; /* Adjusted */
-    color: var(--muted-gold-highlight); /* Muted gold */
-    margin-bottom: 1rem; /* Adjusted */
-    text-shadow: 0 0 25px rgba(200, 181, 136, 0.8), /* Muted gold glow */
-                 0 4px 10px rgba(0, 0, 0, 0.7),
-                 -1px -1px 5px rgba(240, 244, 248, 0.3); /* Light subtle highlight */
-    font-weight: 700; /* Ensure good weight */
-    letter-spacing: 1px;
-    position: relative;
-    animation: textWave 8s ease-in-out infinite;
+.home-title { /* Main Page Title */
+    font-family: var(--font-heading-main); font-size: 2.6rem; /* Adjusted size */
+    color: var(--muted-gold-highlight); margin-bottom: var(--space-sm);
+    text-shadow: var(--text-shadow-strong); font-weight: 700; letter-spacing: 1.5px; /* Increased spacing */
+    position: relative; animation: textWave 8s ease-in-out infinite;
 }
-
-@keyframes textWave { /* Kept as is, subtle enough */
-    0%, 100% { transform: translateY(0); }
-    25% { transform: translateY(-4px); }
-    50% { transform: translateY(0); }
-    75% { transform: translateY(4px); }
+@keyframes textWave { 0%,100%{transform:translateY(0)} 25%{transform:translateY(-3px)} 50%{transform:translateY(0)} 75%{transform:translateY(3px)} } /* Subtler wave */
+.home-title::before { /* Kept particle glow, ensure it's subtle */
+    content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:150%;height:120%;
+    pointer-events:none;z-index:-1;opacity:0.2;
+    background:radial-gradient(circle at center, rgba(200,181,136,0.1), transparent 70%);
+    filter:blur(10px);animation:glowShift 10s ease-in-out infinite alternate; /* Slower, alternate */
 }
-
-.home-title::before { /* Particle glow, adjusted colors */
-    content: '';
-    position: absolute;
-    top: 5px; left: -30px; right: auto; bottom: auto;
-    width: 160%; height: 130%;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.3;
-    background: radial-gradient(circle at 30% 70%, rgba(200, 181, 136, 0.15), transparent 75%); /* Muted gold */
-    filter: blur(12px);
-    animation: glowShift 8s ease-in-out infinite;
-}
-
-@keyframes glowShift { /* Kept as is */
-    0% { transform: translate(0, 0); opacity: 0.3; }
-    50% { transform: translate(12px, 8px); opacity: 0.5; }
-    100% { transform: translate(0, 0); opacity: 0.3; }
-}
-
+@keyframes glowShift { 0%{opacity:0.2;transform:translateX(-50%) scale(1)} 100%{opacity:0.3;transform:translateX(-50%) scale(1.1)} }
 .home-subtitle {
-    font-family: var(--font-body);
-    font-size: 1.5rem; /* Adjusted */
-    color: var(--primary-light-text);
-    margin-bottom: 1rem; /* Adjusted */
-    font-weight: 400;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-.hero-welcome { /* MODIFIED CONTAINER SIZE */
-    text-align: center;
-    margin: 2rem auto 3rem; /* Adjusted margin */
-    padding: 2rem 1rem; /* Adjusted padding */
-    background: linear-gradient(135deg, rgba(200, 181, 136, 0.1), var(--card-bg-color)); /* Muted gold hint and dark blue */
-    border-radius: 15px; /* Softened radius */
-    max-width: 900px; /* SIGNIFICANTLY REDUCED as requested */
-    border: 1px solid var(--card-border-color);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.hero-title {
-    font-family: var(--font-heading-main);
-    font-size: 2.5rem; /* Adjusted for smaller container */
-    font-weight: 600;
-    color: var(--primary-light-text); /* Changed from white to main light text */
-    margin-bottom: 1rem;
-    letter-spacing: 2px; /* Reduced */
-    text-shadow: 0 0 20px rgba(240, 244, 248, 0.2), /* Light subtle glow */
-                 0 3px 10px rgba(0, 0, 0, 0.5);
-    animation: textWave 8s ease-in-out infinite 1s; /* Slight delay */
-}
-
-.hero-subtitle {
-    font-family: var(--font-body);
-    font-size: 1.3rem; /* Adjusted */
-    color: var(--primary-light-text);
-    font-weight: 300;
-    letter-spacing: 0.5px; /* Reduced */
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
-}
-
-.intro-text {
-    max-width: 1200px; /* Can be a bit wider than hero-welcome */
-    margin: 0 auto 3rem; /* Adjusted margin */
-    color: var(--primary-light-text);
-    line-height: 1.7; /* Adjusted */
-    padding: 0 1.5rem; /* Adjusted */
-}
-
-.welcome-section {
-    background: transparent; /* Let intro-text handle background or keep slightly different */
-    /* background: rgba(10, 47, 81, 0.3); */ /* Example if a subtle box is still desired */
-    border-radius: 15px;
-    /* border: 1px solid var(--card-border-color); */ /* Optional border */
-    /* backdrop-filter: blur(5px); */ /* Optional blur */
-    padding: 2rem 1rem; /* Adjusted */
-}
-
-.amenities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min */
-    gap: 1.5rem; /* Reduced gap */
-    margin-bottom: 2.5rem; /* Adjusted */
-}
-
-.amenity-card { /* MODIFIED CONTAINER SIZE */
-    background: var(--card-bg-color);
-    border: 1px solid var(--card-border-color);
-    border-radius: 12px; /* Softer */
-    padding: 1.5rem; /* REDUCED PADDING */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.amenity-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    background: rgba(10, 47, 81, 0.75); /* Slightly lighten on hover */
-}
-
-.amenity-icon {
-    font-size: 2.2rem; /* Adjusted */
-    margin-bottom: 1rem; /* Adjusted */
-    display: block;
-    color: var(--muted-gold-highlight); /* Muted gold */
-    text-shadow: 0 0 15px rgba(200, 181, 136, 0.4);
-}
-
-.amenity-card h3 {
-    font-family: var(--font-heading-card);
-    font-size: 1.5rem; /* REDUCED FONT SIZE */
-    color: var(--muted-gold-highlight);
-    margin-bottom: 0.8rem; /* Adjusted */
-    font-weight: 600; /* Marcellus SC is thinner, so ensure weight or use normal */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.amenity-card p {
-    font-family: var(--font-body);
-    font-size: 0.95rem; /* REDUCED FONT SIZE */
-    color: var(--primary-light-text);
-    line-height: 1.6;
-    font-weight: 300;
-}
-
-.visit-section {
-    margin-top: 2.5rem; /* Adjusted */
-    padding-top: 1.5rem; /* Adjusted */
-    border-top: 1px solid var(--card-border-color);
-}
-
-.business-details { /* This uses grid in original CSS, then flex in another definition. Consolidating. */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem; /* Adjusted */
-    padding: 1.5rem; /* Adjusted */
-    background: rgba(10, 47, 81, 0.2); /* Subtle background */
-    border-radius: 12px;
-}
-
-.detail-item {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem; /* Adjusted */
-    padding: 0.8rem; /* Adjusted */
-    background: transparent; /* Will inherit from parent or can be subtly darker */
-    /* background: rgba(10, 47, 81, 0.4); */
-    border-radius: 8px;
-    border: 1px solid transparent; /* No border by default, or var(--card-border-color) */
-}
-
-.detail-item i {
-    font-size: 1.4rem; /* Adjusted */
-    color: var(--secondary-accent-blue); /* Accent blue */
-    filter: none;
-    text-shadow: 0 0 5px rgba(80, 133, 165, 0.3);
-}
-
-.detail-item span {
-    font-family: var(--font-body);
-    font-size: 1rem; /* Adjusted */
-    color: var(--primary-light-text);
-}
-
-.announcement { /* Appears twice, ensure consistent styling */
-    grid-column: 1 / -1; /* From original for grid layout */
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-top: 1rem; /* From later definition */
-    padding: 1rem 1.5rem; /* Combined from definitions */
-    background: rgba(200, 181, 136, 0.1); /* Muted gold tint */
-    border-radius: 10px; /* From original */
-    border: 1px solid rgba(200, 181, 136, 0.2); /* Muted gold border */
-    color: var(--muted-gold-highlight); /* Text color from later definition */
-}
-
-.announcement i {
-    font-size: 1.6rem; /* Adjusted */
-    color: var(--muted-gold-highlight);
-    animation: pulse 2s infinite;
-}
-
-.announcement span {
-    font-family: var(--font-body);
-    font-size: 1.1rem; /* Adjusted */
-    color: var(--muted-gold-highlight);
-    font-weight: 500;
-}
-
-@keyframes pulse { /* Kept as is */
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-
-/* Services Showcase */
-.services-showcase {
-    margin: 2.5rem 0;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, var(--primary-dark-blue), rgba(10, 47, 81, 0.3));
-    border-radius: 12px;
-    border: 1px solid var(--card-border-color);
-}
-
-.services-showcase h3 {
-    text-align: center;
-    color: var(--primary-light-text);
-    font-family: var(--font-heading-section);
-    font-size: 1.8rem; /* Adjusted */
-    margin-bottom: 1.5rem; /* Adjusted */
-    text-transform: uppercase;
-    letter-spacing: 1.5px; /* Adjusted */
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-.services-grid { /* This class is used in multiple contexts, ensure this targets the showcase one */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* Adjusted */
-    gap: 1.5rem; /* Adjusted */
-    /* padding: 1rem; /* Added by user, check context for premium services too */
-}
-
-.service-highlight {
-    padding: 1.2rem; /* Adjusted */
-    background: var(--card-bg-color);
-    border-radius: 10px;
-    border: 1px solid var(--card-border-color);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.service-highlight:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.service-highlight .icon { /* Ensure this class is used in HTML, or target 'i' */
-    font-size: 2.2rem; /* Adjusted */
-    margin-bottom: 0.8rem; /* Adjusted */
-    display: block;
-    color: var(--secondary-accent-blue); /* Accent blue */
-}
-
-.service-highlight h4 {
-    color: var(--muted-gold-highlight);
-    font-family: var(--font-heading-card);
-    font-size: 1.2rem; /* Adjusted */
-    margin-bottom: 0.8rem; /* Adjusted */
-    font-weight: 500;
-}
-.service-highlight p {
-    font-size: 0.9rem;
-    color: var(--primary-light-text);
-    font-weight: 300;
-    line-height: 1.5;
-}
-
-/* Membership Benefits */
-.membership-benefits {
-    padding: 2.5rem; /* Adjusted */
-    background: var(--card-bg-color);
-    border-radius: 15px;
-    border: 1px solid var(--card-border-color);
-    margin: 3rem auto; /* Adjusted */
-    max-width: 1300px; /* Adjusted */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-.membership-benefits .elegant-title {
-    font-family: var(--font-heading-section);
-    color: var(--muted-gold-highlight);
-    font-size: 2.2rem; /* Adjusted */
-    margin-bottom: 1.2rem; /* Adjusted */
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.5px; /* Adjusted */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.benefits-intro {
-    color: var(--primary-light-text);
-    font-size: 1.1rem; /* Adjusted */
-    text-align: center;
-    margin-bottom: 2rem; /* Adjusted */
-    font-family: var(--font-body);
-    font-weight: 300;
-    max-width: 750px; /* Adjusted */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Keep 3 columns for desktop */
-    gap: 1.5rem; /* Adjusted */
-    margin-bottom: 2.5rem; /* Adjusted */
-}
-
-.benefit-category {
-    background: rgba(10, 47, 81, 0.4); /* Slightly different from main card bg */
-    border: 1px solid var(--card-border-color);
-    border-radius: 10px; /* Adjusted */
-    padding: 1.5rem; /* Adjusted */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: auto; /* Was 450px, let content define or set a smaller min-height */
-}
-
-.benefit-category h4 {
-    color: var(--secondary-accent-blue); /* Accent blue for these titles */
-    font-size: 1.3rem; /* Adjusted */
-    margin-bottom: 1.2rem; /* Adjusted */
-    text-align: center;
-    font-family: var(--font-heading-card); /* Using card heading font */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    font-weight: 500;
-}
-
-.benefit-category h4::after {
-    content: '';
-    position: absolute;
-    bottom: -8px; /* Adjusted */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px; /* Adjusted */
-    height: 2px;
-    background: var(--secondary-accent-blue); /* Match title color */
-    opacity: 0.5;
-}
-
-.benefits-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.benefits-list li {
-    padding: 0.7rem; /* Adjusted */
-    margin-bottom: 0.7rem; /* Adjusted */
-    background: rgba(10, 47, 81, 0.6); /* Darker blue item background */
-    border-radius: 6px; /* Adjusted */
-    border: 1px solid rgba(80, 133, 165, 0.2); /* Accent blue border */
-    text-align: left;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    color: var(--primary-light-text);
-    font-family: var(--font-body);
-    font-size: 0.9rem; /* Adjusted */
-    font-weight: 300;
-}
-
-.benefits-list li:hover {
-    transform: translateX(5px);
-    background: rgba(80, 133, 165, 0.2); /* Accent blue tint on hover */
-}
-
-.membership-cta {
-    text-align: center;
-    margin-top: 2.5rem; /* Adjusted */
-    padding: 1.5rem; /* Adjusted */
-    background: rgba(200, 181, 136, 0.1); /* Muted gold tint */
-    border-radius: 10px;
-}
-
-.membership-cta p {
-    color: var(--muted-gold-highlight);
-    font-size: 1.2rem; /* Adjusted */
-    margin-bottom: 1.2rem; /* Adjusted */
-    font-family: var(--font-body);
-    font-weight: 400;
-}
-
-.premium-button { /* Also used in service-cta */
-    display: inline-block;
-    padding: 0.9rem 2.2rem; /* Adjusted */
-    background: linear-gradient(45deg, var(--muted-gold-highlight), #D8BB8E); /* Muted gold gradient */
-    border: 1px solid rgba(200, 181, 136, 0.5);
-    border-radius: 30px;
-    color: var(--primary-dark-blue); /* Dark text on gold button */
-    text-decoration: none;
-    font-size: 1rem; /* Adjusted */
-    font-weight: 600; /* Bolder for CTA */
-    transition: all 0.3s ease;
-    text-shadow: none; /* Or a very subtle one: 0 1px 1px rgba(0,0,0,0.1) */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.premium-button:hover {
-    background: linear-gradient(45deg, #D8BB8E, var(--muted-gold-highlight)); /* Reverse gradient */
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 10px rgba(200, 181, 136, 0.3);
-    color: #000; /* Ensure dark text on hover */
-}
-
-/* Facebook Link Button (general use) */
-.event-link {
-    color: var(--secondary-accent-blue); text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease; display: inline-flex;
-    align-items: center;
-    gap: 0.6rem; /* Adjusted */
-    padding: 0.6rem 1.2rem; /* Adjusted */
-    border-radius: 8px;
-    background: var(--card-bg-color);
-    border: 1px solid var(--card-border-color);
-    font-size: 0.95rem;
-}
-
-.event-link:hover {
-    color: var(--muted-gold-highlight);
-    text-shadow: 0 0 8px rgba(200, 181, 136, 0.4);
-    background: rgba(10, 47, 81, 0.8); /* Slightly darken */
-    border-color: rgba(200, 181, 136, 0.4);
-    transform: translateY(-1px);
-}
-
-.facebook-logo { /* Used in event-link and contact section */
-    width: 20px; /* Adjusted size for inline button */
-    height: 20px; /* Adjusted size */
-    vertical-align: middle;
-    margin-right: 0; /* Gap is handled by flex */
-    filter: grayscale(100%) brightness(2) contrast(0.5) invert(1); /* Attempt to make it white/light to fit dark themes */
-}
-.event-link:hover .facebook-logo {
-    filter: none; /* Show color on hover */
-}
-
-
-/* Content Sections (Popups) */
-.content-section {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    z-index: 50;
-    padding: 20px; /* Padding for the overlay itself */
-    box-sizing: border-box;
-    background-color: rgba(5, 20, 34, 0.9); /* Darker, more opaque overlay */
-}
-
-.content-section.active {
-    opacity: 1;
-    pointer-events: all;
-    visibility: visible;
-}
-
-.content-container {
-    max-width: 1100px; /* Adjusted */
-    width: 90%;
-    padding: 2.5rem; /* Adjusted */
-    border-radius: 12px; /* Softened */
-    background: var(--primary-dark-blue); /* Solid dark blue background for popups */
-    backdrop-filter: blur(10px); /* Keep blur if desired, though solid bg might make it less noticeable */
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border-color);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px var(--card-border-color);
-    color: var(--primary-light-text);
-    max-height: 85vh; /* Increased slightly */
-    overflow-y: auto;
-    position: relative;
-    margin: auto;
-    box-sizing: border-box;
-}
-
-/* Scrollbar styling for the content container */
-.content-container::-webkit-scrollbar {
-    width: 10px;
-}
-.content-container::-webkit-scrollbar-track {
-    background: rgba(240, 244, 248, 0.08); /* Light track inside dark popup */
-    border-radius: 5px;
-}
-.content-container::-webkit-scrollbar-thumb {
-    background: var(--secondary-accent-blue);
-    border-radius: 5px;
-    border: 2px solid var(--primary-dark-blue); /* Match container background */
-    background-clip: content-box;
-}
-.content-container::-webkit-scrollbar-thumb:hover {
-    background: var(--muted-gold-highlight);
-}
-
-.section-logo {
-    width: 80px; /* Adjusted */
-    height: 80px; /* Adjusted */
-    position: absolute;
-    top: -40px; /* Adjusted */
-    left: 50%;
-    transform: translateX(-50%);
-    filter: drop-shadow(0 0 10px var(--muted-gold-highlight));
-    border-radius: 50%;
-    border: 2px solid var(--primary-dark-blue); /* Border to help lift from container */
-    z-index: 2;
-    background-color: var(--primary-dark-blue); /* Match content container bg */
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px; /* Adjusted */
-    right: 20px; /* Adjusted */
-    width: 32px; /* Adjusted */
-    height: 32px; /* Adjusted */
-    background: rgba(240, 244, 248, 0.1); /* Light bg for button on dark header */
-    border-radius: 50%;
-    border: 1px solid var(--card-border-color);
-    display: flex;
-    justify-content: center;
-    align-items: center; cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.close-btn:hover {
-    background: var(--muted-gold-highlight);
-    border-color: var(--muted-gold-highlight);
-}
-.close-btn:hover::before, .close-btn:hover::after {
-    background: var(--primary-dark-blue); /* Dark X on gold hover */
-}
-
-.close-btn::before, .close-btn::after {
-    content: '';
-    position: absolute;
-    width: 16px; /* Adjusted */
-    height: 2px;
-    background: var(--muted-gold-highlight); /* Gold X */
-}
-.close-btn::before { transform: rotate(45deg); }
-.close-btn::after { transform: rotate(-45deg); }
-
-
-.content-container h2 {
-    font-family: var(--font-heading-section);
-    font-size: 2.2rem; /* Adjusted */
-    color: var(--muted-gold-highlight);
-    margin-top: 20px; /* Space for logo */
-    margin-bottom: 1.2rem; /* Adjusted */
-    font-weight: 700;
+    font-family: var(--font-body); font-size: 1.3rem; /* Adjusted */
+    color: var(--primary-light-text); margin-bottom: var(--space-lg);
+    font-weight: 300; /* Lighter for subtitle */ text-shadow: var(--text-shadow-soft);
     letter-spacing: 0.5px;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-.content-container p { /* Paragraphs within popup sections */
-    line-height: 1.7;
-    margin-bottom: 1.2rem; /* Adjusted */
-    font-weight: 300;
-    text-align: left; /* Better for readability in info sections */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-    letter-spacing: 0.2px;
-    padding: 0.8rem 1rem; /* Adjusted */
-    border-radius: 8px;
-    background: rgba(10, 47, 81, 0.5); /* Subtle dark blue background for contrast */
-    border: 1px solid rgba(80, 133, 165, 0.2); /* Subtle accent blue border */
-    font-size: 0.95rem;
+/* --- HERO WELCOME (Below main title) - Sizing & Glassmorphism --- */
+.hero-welcome {
+    text-align: center; margin: 0 auto var(--space-xl); padding: var(--space-lg) var(--space-md);
+    background: var(--glass-bg-base);
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border-radius: 15px; max-width: 900px; /* MODIFIED SIZE */
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.15); /* Refined shadow */
 }
-.content-container p.services-intro, .content-container p.benefits-intro {
-    text-align: center; /* Keep intro paragraphs centered */
-    font-size: 1.1rem;
-    background: transparent;
-    border: none;
-    padding: 0;
+.hero-title { /* "Island's Premier Yacht Club" */
+    font-family: var(--font-heading-main); font-size: 2.2rem; /* Adjusted for container */
+    font-weight: 600; color: var(--primary-light-text);
+    margin-bottom: var(--space-sm); letter-spacing: 1px; /* Refined spacing */
+    text-shadow: var(--text-shadow-strong);
 }
-
-
-.reviews-section {
-    margin-top: 2.5rem;
-    padding: 1.5rem;
-    background: rgba(10, 47, 81, 0.4); /* Darker blue for this section */
-    border-radius: 10px;
-    border: 1px solid var(--card-border-color);
-    width: 100%;
-    box-sizing: border-box;
+.hero-subtitle { /* "Your Home Base..." */
+    font-family: var(--font-body); font-size: 1.15rem; /* Adjusted */
+    color: var(--primary-light-text); font-weight: 300; letter-spacing: 0.3px;
+    text-shadow: var(--text-shadow-soft); margin-bottom: 0; /* Remove bottom margin if it's the last element */
 }
 
-.reviews-section h3 {
-    color: var(--secondary-accent-blue); /* Accent blue */
-    font-family: var(--font-heading-section);
-    font-size: 1.6rem; /* Adjusted */
-    margin-bottom: 1.5rem;
-    text-align: center;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+/* --- INTRO TEXT & AMENITIES - Layout, Sizing, Glassmorphism --- */
+.intro-text {
+    max-width: 1100px; /* Slightly narrower for better readability */
+    margin: 0 auto var(--space-xl); color: var(--primary-light-text);
+    padding: 0 var(--space-md);
 }
-
-
-/* Premium Services Styling (within Services popup) */
-.services-container { /* Assuming this is .content-container for services */
-    max-width: 1200px !important; /* Max width for services popup */
-    padding: 3rem !important; /* Larger padding for services section */
+.welcome-section { background: transparent; border-radius: 15px; padding: var(--space-lg) 0; /* Simplified padding */ }
+.amenities-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); /* Slightly smaller min */
+    gap: var(--space-lg); /* Consistent gap */ margin-bottom: var(--space-xl);
 }
-
-.services-highlights { /* Stats like 24/7 support */
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 2.5rem; /* Adjusted */
-    margin: 1.5rem 0 3rem; /* Adjusted */
+.amenity-card {
+    background: var(--glass-bg-base);
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border: 1px solid var(--glass-border-gold-accent);
+    border-radius: 12px; padding: var(--space-lg); /* MODIFIED PADDING */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; /* Added background transition */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* Softer shadow */
+    display: flex; flex-direction: column; /* For better content alignment */
 }
-
-.highlight-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem; /* Adjusted */
+.amenity-card:hover {
+    transform: translateY(-5px) scale(1.01); /* Subtler hover */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    background: rgba(10, 47, 81, 0.45); /* Slightly darker on hover */
 }
-
-.stat-number {
-    font-family: var(--font-heading-main); /* Use main heading font for impact */
-    font-size: 2.2rem; /* Adjusted */
-    color: var(--muted-gold-highlight);
-    font-weight: 700;
-    text-shadow: 0 0 12px rgba(200, 181, 136, 0.5);
+.amenity-icon {
+    font-size: 2rem; /* Adjusted */ margin-bottom: var(--space-md); display: block;
+    color: var(--muted-gold-highlight); text-shadow: 0 0 12px rgba(200,181,136,0.3);
 }
-
-.stat-label {
-    font-family: var(--font-body);
-    font-size: 1rem; /* Adjusted */
-    color: var(--primary-light-text);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 400;
+.amenity-card h3 {
+    font-family: var(--font-heading-card); font-size: 1.4rem; /* MODIFIED SIZE */
+    color: var(--muted-gold-highlight); margin-bottom: var(--space-sm);
+    font-weight: normal; /* Marcellus SC looks good normal */
+    text-shadow: var(--text-shadow-soft);
 }
+.amenity-card p { font-size: 0.9rem; /* MODIFIED SIZE */ line-height: 1.65; margin-bottom: 0; } /* No bottom margin for last p */
 
-.services-intro { /* Paragraph directly under "World-Class Services" title */
-    font-size: 1.2rem; /* Adjusted */
-    color: var(--primary-light-text); /* Use primary light text */
-    max-width: 750px; /* Adjusted */
-    margin: 0 auto 2.5rem; /* Adjusted */
-    line-height: 1.7;
-    font-weight: 300;
-    text-align: center;
-}
-
-.services-grid { /* Grid for individual service cards in the popup */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjusted minmax */
-    gap: 2rem; /* Adjusted */
-    margin: 2.5rem 0; /* Adjusted */
-    padding: 0; /* Remove extra padding here if .content-container has enough */
-}
-
-.service-card { /* Individual service card in the popup */
-    background: var(--card-bg-color);
-    border: 1px solid var(--card-border-color);
-    border-radius: 12px; /* Adjusted */
-    padding: 2rem; /* Adjusted */
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-    min-height: auto; /* Was 320px, let content define */
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.service-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(200, 181, 136, 0.4); /* Brighter gold border on hover */
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    background: rgba(10, 47, 81, 0.75); /* Slightly lighter on hover */
-}
-
-.service-icon { /* Icon for each service card, e.g., anchor, boat */
-    font-family: 'Arial', sans-serif; /* Using text character, ensure good fallback */
-    font-size: 2.5rem; /* Adjusted */
-    margin-bottom: 1.2rem; /* Adjusted */
-    color: var(--secondary-accent-blue); /* Accent blue */
-    text-shadow: 0 0 15px rgba(80, 133, 165, 0.4);
-}
-
-.service-card h3 { /* Title of the service card like "Port & Immigration" */
-    color: var(--muted-gold-highlight);
-    font-family: var(--font-heading-card);
-    font-size: 1.6rem; /* Adjusted */
-    margin-bottom: 1rem; /* Adjusted */
-    font-weight: 600; /* Marcellus needs weight */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-
-.service-details h4 { /* Sub-titles within a service card, e.g., "Thai Customs Visa" */
-    color: var(--secondary-accent-blue); /* Accent blue */
-    font-family: var(--font-body); /* Regular body font for these */
-    font-size: 1.05rem; /* Adjusted */
-    margin: 1rem 0 0.5rem; /* Adjusted */
-    font-weight: 600; /* Bolder for sub-titles */
-}
-
-.service-details p { /* Description for each sub-service */
-    color: var(--primary-light-text);
-    font-size: 0.9rem; /* Adjusted */
-    line-height: 1.6;
-    margin-bottom: 0.8rem; /* Adjusted */
-    font-weight: 300;
-    background: none;
-    border: none;
-    padding: 0; /* Remove card-like styling from these inner paragraphs */
-    text-align: left;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
-.service-cta { /* Container for "Contact Captain Brent" button */
-    text-align: center;
-    margin-top: 3rem; /* Adjusted */
-    padding: 1.5rem;
-    background: rgba(200, 181, 136, 0.1); /* Muted gold tint */
+.visit-section { margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--glass-border-gold-accent); }
+.business-details {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjusted */
+    gap: var(--space-md); padding: var(--space-lg);
+    background: rgba(10, 47, 81, 0.1); /* Very subtle glass */
+    backdrop-filter: calc(var(--glass-blur-amount) - 6px); -webkit-backdrop-filter: calc(var(--glass-blur-amount) - 6px);
     border-radius: 12px;
 }
-
-.service-cta p {
-    font-size: 1.1rem; /* Adjusted */
+.detail-item { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm); border-radius: 8px; }
+.detail-item i { font-size: 1.3rem; color: var(--secondary-accent-blue); }
+.detail-item span { font-family: var(--font-body); font-size: 0.95rem; color: var(--primary-light-text); }
+.announcement {
+    grid-column: 1 / -1; display: flex; align-items: center; gap: var(--space-sm);
+    margin-top: var(--space-md); padding: var(--space-md);
+    background: rgba(200, 181, 136, 0.08); /* Muted gold tint */
+    border-radius: 10px; border: 1px solid var(--glass-border-gold-accent);
     color: var(--muted-gold-highlight);
-    margin-bottom: 1.2rem;
-    font-family: var(--font-body);
-    font-weight: 400;
-    background: none; border: none; padding: 0; text-align: center;
 }
+.announcement i { font-size: 1.5rem; color: var(--muted-gold-highlight); animation: pulseStar 2.5s infinite ease-in-out; }
+@keyframes pulseStar { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.15);opacity:0.7} } /* Star specific pulse */
+.announcement span { font-family: var(--font-body); font-size: 1.05rem; color: var(--muted-gold-highlight); font-weight: 500; }
 
-/* Gallery styles */
-.gallery-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted minmax */
-    gap: 0.8rem; /* Adjusted */
+/* --- SERVICES SHOWCASE (Homepage) - Refined --- */
+.services-showcase {
+    margin: var(--space-xl) 0; padding: var(--space-lg);
+    background: linear-gradient(135deg, rgba(10, 47, 81, 0.25), rgba(10, 47, 81, 0.1));
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border-radius: 12px; border: 1px solid var(--glass-border-gold-accent);
 }
+.services-showcase h3 { /* Section title, e.g., "Experience World-Class Services" */
+    text-align: center; color: var(--primary-light-text); font-family: var(--font-heading-section);
+    font-size: 1.7rem; /* Adjusted */ margin-bottom: var(--space-lg); text-transform: uppercase;
+    letter-spacing: 2px; /* More spacing for uppercase */ text-shadow: var(--text-shadow-soft);
+}
+.services-grid { /* Grid for service highlights on homepage */
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjusted min size */
+    gap: var(--space-lg);
+}
+.service-highlight { /* Individual highlight box */
+    padding: var(--space-md); background: var(--glass-bg-base);
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border-radius: 10px; border: 1px solid var(--glass-border-gold-accent);
+    text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-highlight:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+.service-highlight .icon { font-size: 2rem; margin-bottom: var(--space-sm); display: block; color: var(--secondary-accent-blue); }
+.service-highlight h4 { /* Title of highlight */
+    color: var(--muted-gold-highlight); font-family: var(--font-heading-card);
+    font-size: 1.1rem; /* Adjusted */ margin-bottom: var(--space-xs); font-weight: normal;
+}
+.service-highlight p { font-size: 0.85rem; color: var(--primary-light-text); font-weight: 300; line-height: 1.5; margin-bottom: 0; }
 
-.gallery-item {
-    border-radius: 8px; /* Softer */
-    overflow: hidden;
-    aspect-ratio: 1/1;
-    cursor: pointer;
-    border: 1px solid var(--card-border-color);
+/* --- MEMBERSHIP BENEFITS (Homepage) - Refined --- */
+.membership-benefits {
+    padding: var(--space-xl); background: var(--glass-bg-base);
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border-radius: 15px; border: 1px solid var(--glass-border-gold-accent);
+    margin: var(--space-xl) auto; max-width: 1200px; /* Adjusted max-width */
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for prominent section */
+}
+.membership-benefits .elegant-title { /* "Exclusive Member Benefits" */
+    font-family: var(--font-heading-section); color: var(--muted-gold-highlight);
+    font-size: 2rem; /* Adjusted */ margin-bottom: var(--space-md); text-align: center;
+    text-transform: uppercase; letter-spacing: 2.5px; text-shadow: var(--text-shadow-strong);
+}
+.benefits-intro { /* p tag specifically */
+    color: var(--primary-light-text); font-size: 1.05rem; text-align: center;
+    margin: 0 auto var(--space-lg); /* Centered */ font-family: var(--font-body); font-weight: 300;
+    max-width: 700px; /* Optimal reading width */
+    background: transparent !important; border: none !important; padding: 0 !important; /* Override general p styles */
+}
+.benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl); }
+.benefit-category { /* Each of the 3 category boxes */
+    background: rgba(10, 47, 81, 0.2); /* Darker, subtler glass for inner cards */
+    backdrop-filter: calc(var(--glass-blur-amount) - 5px); -webkit-backdrop-filter: calc(var(--glass-blur-amount) - 5px);
+    border: 1px solid var(--glass-border-light); /* Light border for these */
+    border-radius: 10px; padding: var(--space-lg);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; flex-direction: column;
 }
-.gallery-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+.benefit-category h4 { /* "Partner Discounts", "Club Privileges", etc. */
+    color: var(--secondary-accent-blue); font-size: 1.25rem; margin-bottom: var(--space-md);
+    text-align: center; font-family: var(--font-heading-card); font-weight: normal;
+    text-shadow: var(--text-shadow-soft); position: relative;
 }
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease-out;
+.benefit-category h4::after {
+    content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 2px; background: var(--secondary-accent-blue); opacity: 0.4;
 }
-
-.gallery-item:hover img {
-    transform: scale(1.1); /* Slightly larger zoom on image */
+.benefits-list { list-style: none; padding: 0; margin: 0; }
+.benefits-list li {
+    padding: var(--space-sm); margin-bottom: var(--space-sm);
+    background: rgba(10, 47, 81, 0.25); /* Even subtler background for list items */
+    border-radius: 6px; border-left: 3px solid var(--secondary-accent-blue); /* Accent border on left */
+    text-align: left; transition: transform 0.2s ease, background-color 0.2s ease;
+    font-size: 0.85rem; font-weight: 300; padding-left: var(--space-md);
 }
-
-/* Lightbox */
-.lightbox {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(5, 20, 34, 0.95); /* Darker overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
+.benefits-list li:hover { transform: translateX(3px); background: rgba(80, 133, 165, 0.15); }
+.membership-cta {
+    text-align: center; margin-top: var(--space-xl); padding: var(--space-lg);
+    background: rgba(200, 181, 136, 0.05); /* Very subtle gold tint */
+    border-radius: 10px; border-top: 1px solid var(--glass-border-gold-accent);
 }
-
-.lightbox img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border: 2px solid var(--card-border-color); /* Muted gold border */
-    border-radius: 8px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+.membership-cta p { /* Paragraph in CTA */
+    color: var(--muted-gold-highlight); font-size: 1.1rem; margin-bottom: var(--space-md);
+    font-family: var(--font-body); font-weight: 400;
+    background: transparent !important; border: none !important; padding: 0 !important; text-align: center !important;
 }
-
-/* Contact form */
-.contact-form {
-    background: transparent; /* Form within .content-container which has bg */
-    /* background: rgba(10, 47, 81, 0.3); */ /* Or a very subtle inner bg */
-    padding: 1.5rem; /* Adjusted */
-    border-radius: 10px;
-    /* border: 1px solid var(--card-border-color); */
-    margin-top: 1.5rem; /* Adjusted */
+.premium-button { /* Main CTA button */
+    display: inline-block; padding: var(--space-sm) var(--space-xl); /* Generous padding */
+    background: linear-gradient(45deg, var(--muted-gold-highlight), #D1B683); /* Slightly adjusted gradient */
+    border: none; /* Remove border for cleaner look */
+    border-radius: 50px; /* Pill shape */
+    color: var(--primary-dark-blue); text-decoration: none;
+    font-size: 1rem; font-weight: 600; letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth physical transition */
+    text-shadow: none; box-shadow: 0 3px 8px rgba(0,0,0,0.15), inset 0 -2px 0px rgba(0,0,0,0.1); /* Subtle 3D effect */
+}
+.premium-button:hover {
+    background: linear-gradient(45deg, #D1B683, var(--muted-gold-highlight));
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 5px 15px rgba(200, 181, 136, 0.3), inset 0 -1px 0px rgba(0,0,0,0.05);
+    color: #072338; /* Darker text on hover */
 }
 
-.form-group {
-    margin-bottom: 1.2rem; /* Adjusted */
-    text-align: left;
+/* Event Link (Facebook Button on Home) */
+.event-link {
+    color: var(--secondary-accent-blue); text-decoration: none; font-weight: 500;
+    transition: all 0.3s ease; display: inline-flex; align-items: center;
+    gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-radius: 8px;
+    background: var(--glass-bg-base);
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border: 1px solid var(--glass-border-gold-accent); font-size: 0.9rem;
 }
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.4rem; /* Adjusted */
-    color: var(--secondary-accent-blue); /* Accent blue for labels */
-    font-weight: 500;
-    font-size: 0.9rem;
-    text-shadow: none;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.9rem; /* Adjusted */
-    border-radius: 6px; /* Adjusted */
-    border: 1px solid var(--card-border-color);
-    background: rgba(10, 47, 81, 0.7); /* Dark blue input field */
-    color: var(--primary-light-text);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--muted-gold-highlight);
-    box-shadow: 0 0 0 2px rgba(200, 181, 136, 0.3);
-}
-
-textarea.form-control {
-    min-height: 110px; /* Adjusted */
-    resize: vertical;
-}
-
-.submit-btn { /* This is a general button, distinct from premium-button */
-    background: var(--secondary-accent-blue);
-    color: var(--primary-light-text);
-    border: 1px solid var(--secondary-accent-blue);
-    padding: 0.9rem 2rem; /* Adjusted */
-    border-radius: 6px; /* Adjusted */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: var(--font-nav); /* Nav font for buttons */
-    font-weight: 600;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    font-size: 0.95rem;
-}
-
-.submit-btn:hover {
-    background: var(--muted-gold-highlight);
-    color: var(--primary-dark-blue);
-    border-color: var(--muted-gold-highlight);
+.event-link:hover {
+    color: var(--muted-gold-highlight); text-shadow: 0 0 8px rgba(200, 181, 136, 0.3);
+    background: rgba(10, 47, 81, 0.45); border-color: rgba(200, 181, 136, 0.35);
     transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+/* Ensure .facebook-logo class is styled correctly for this button if different from nav */
+.event-link .facebook-logo { filter: grayscale(80%) brightness(1.5) opacity(0.8); width: 18px; height: 18px; }
+.event-link:hover .facebook-logo { filter: none; opacity: 1;}
+
+/* --- CONTENT SECTIONS (Popups) - Refined Glassmorphism & Typography --- */
+.content-section { /* The full-screen overlay for popups */
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; visibility: hidden;
+    transition: opacity 0.4s ease-out, visibility 0.4s ease-out; /* Faster transition */
+    z-index: 1000; /* Ensure above nav */ padding: var(--space-md); box-sizing: border-box;
+    background-color: rgba(5, 20, 34, 0.75); /* Darker, slightly less opaque overlay */
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); /* Blur for the overlay background */
+}
+.content-section.active { opacity: 1; pointer-events: all; visibility: visible; }
+
+.content-container { /* The actual popup box */
+    max-width: 1000px; /* Slightly narrower for better focus */ width: 90%;
+    padding: var(--space-xl); /* Consistent padding */
+    border-radius: 12px;
+    background: var(--glass-bg-popup); /* Glassy background */
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--glass-border-light); /* Enhanced shadow & border */
+    color: var(--primary-light-text); max-height: 90vh; /* Increased max-height */
+    overflow-y: auto; position: relative; margin: auto; box-sizing: border-box;
+    transform: scale(0.95); /* Start slightly small for pop effect */
+    opacity: 0; /* Start transparent for fade-in effect */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out; /* Pop and fade */
+}
+.content-section.active .content-container {
+    transform: scale(1);
+    opacity: 1;
 }
 
+/* Scrollbar for popup content */
+.content-container::-webkit-scrollbar { width: 8px; }
+.content-container::-webkit-scrollbar-track { background: rgba(240, 244, 248, 0.05); border-radius: 4px; }
+.content-container::-webkit-scrollbar-thumb {
+    background: var(--secondary-accent-blue); border-radius: 4px;
+    border: 2px solid transparent; background-clip: content-box;
+}
+.content-container::-webkit-scrollbar-thumb:hover { background: var(--muted-gold-highlight); }
+
+.section-logo { /* Logo on top of popup */
+    width: 70px; height: 70px; position: absolute; top: calc(var(--space-xl) * -0.5 - 5px); /* Position based on padding */
+    left: 50%; transform: translateX(-50%);
+    filter: drop-shadow(0 0 10px var(--muted-gold-highlight));
+    border-radius: 50%; border: 3px solid var(--primary-dark-blue); /* Thicker border */
+    z-index: 2; background-color: var(--primary-dark-blue);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+.close-btn {
+    position: absolute; top: var(--space-md); right: var(--space-md);
+    width: 30px; height: 30px;
+    background: rgba(240, 244, 248, 0.08); border-radius: 50%;
+    border: 1px solid var(--glass-border-gold-accent);
+    display: flex; justify-content: center; align-items: center; cursor: pointer;
+    transition: all 0.25s ease; z-index: 10;
+}
+.close-btn:hover { background: var(--muted-gold-highlight); border-color: var(--muted-gold-highlight); transform: rotate(90deg) scale(1.1); }
+.close-btn:hover::before, .close-btn:hover::after { background: var(--primary-dark-blue); }
+.close-btn::before, .close-btn::after {
+    content: ''; position: absolute; width: 14px; height: 2px; background: var(--muted-gold-highlight);
+}
+.close-btn::before { transform: rotate(45deg); } .close-btn::after { transform: rotate(-45deg); }
+
+.content-container h2 { /* Titles inside popups */
+    font-family: var(--font-heading-section); font-size: 2rem; /* Adjusted */
+    color: var(--muted-gold-highlight); margin-top: var(--space-lg); /* Space for logo */
+    margin-bottom: var(--space-lg); font-weight: 700;
+    letter-spacing: 1px; text-align: center; text-shadow: var(--text-shadow-strong);
+}
+/* Paragraphs inside popups */
+.content-container p:not(.services-intro):not(.benefits-intro):not(.membership-cta p):not([style*="text-align:center"]) {
+    line-height: 1.75; /* Slightly more spacious */ margin-bottom: var(--space-md); font-weight: 300;
+    text-align: left; text-shadow: var(--text-shadow-soft);
+    padding: var(--space-sm) var(--space-md); border-radius: 8px;
+    background: rgba(10, 47, 81, 0.15); /* Very subtle inner glass */
+    backdrop-filter: calc(var(--glass-blur-amount) - 7px); -webkit-backdrop-filter: calc(var(--glass-blur-amount) - 7px);
+    border: 1px solid var(--glass-border-light); font-size: 0.9rem; /* Adjusted */
+}
+/* Specific paragraphs to remain unstyled by the above */
+.content-container p.services-intro, .content-container p.benefits-intro,
+.content-container p[style*="text-align:center"], .membership-cta p {
+    text-align: center; font-size: 1.05rem; /* Standardized size for intros */
+    background: transparent !important; border: none !important; padding: 0 !important;
+    max-width: 750px; margin-left: auto; margin-right: auto; margin-bottom: var(--space-lg);
+}
+
+.reviews-section { /* Google Reviews embed section inside popups */
+    margin-top: var(--space-xl); padding: var(--space-lg);
+    background: rgba(10, 47, 81, 0.1); /* Very subtle */
+    backdrop-filter: calc(var(--glass-blur-amount) - 7px); -webkit-backdrop-filter: calc(var(--glass-blur-amount) - 7px);
+    border-radius: 10px; border: 1px solid var(--glass-border-light);
+    width: 100%; box-sizing: border-box;
+}
+.reviews-section h3 { /* "What Our Members Say" */
+    color: var(--secondary-accent-blue); font-family: var(--font-heading-section);
+    font-size: 1.5rem; margin-bottom: var(--space-md); text-align: center;
+    text-shadow: var(--text-shadow-soft);
+}
+
+/* --- PREMIUM SERVICES (Services Popup) - Refined --- */
+.services-container { max-width: 1100px !important; padding: var(--space-xl) !important; } /* Consistent max-width */
+.services-highlights { /* "24/7 Support", "15+ Years", etc. stats */
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: var(--space-xl); margin: var(--space-lg) 0 var(--space-xl);
+}
+.highlight-stat { display: flex; flex-direction: column; align-items: center; gap: var(--space-xs); }
+.stat-number {
+    font-family: var(--font-heading-main); font-size: 2rem; /* Adjusted */
+    color: var(--muted-gold-highlight); font-weight: 700;
+    text-shadow: 0 0 10px rgba(200,181,136,0.4);
+}
+.stat-label {
+    font-family: var(--font-body); font-size: 0.9rem; /* Adjusted */
+    color: var(--primary-light-text); text-transform: uppercase;
+    letter-spacing: 1.5px; font-weight: 400; opacity: 0.8; /* Subtler */
+}
+.services-intro { /* Text directly under "World-Class Services" in popup */
+    font-size: 1.1rem; /* Adjusted */
+}
+.services-grid.popup-grid { /* Grid for individual service cards in the popup */
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted minmax */
+    gap: var(--space-lg); margin: var(--space-xl) 0; padding: 0;
+}
+.service-card { /* Individual service card in the popup */
+    background: var(--glass-bg-base); /* Use base glass for cards inside popup */
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border: 1px solid var(--glass-border-gold-accent);
+    border-radius: 10px; padding: var(--space-lg); /* Consistent padding */
+    transition: all 0.3s ease-out; /* Smoother transition */
+    display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.service-card:hover {
+    transform: translateY(-5px) scale(1.01); border-color: rgba(200,181,136,0.4);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    background: rgba(10, 47, 81, 0.45); /* Darken slightly */
+}
+.service-icon { /* Text-based icons: ⚓ 🛥️ etc. */
+    font-family: 'Arial', sans-serif; font-size: 2.2rem; /* Adjusted */
+    margin-bottom: var(--space-md); color: var(--secondary-accent-blue);
+    text-shadow: 0 0 12px rgba(80,133,165,0.3);
+}
+.service-card h3 { /* Title of service card: "Port & Immigration" */
+    color: var(--muted-gold-highlight); font-family: var(--font-heading-card);
+    font-size: 1.5rem; /* Adjusted */ margin-bottom: var(--space-sm); font-weight: normal;
+    text-shadow: var(--text-shadow-soft);
+}
+.service-details h4 { /* Sub-titles within service card: "Thai Customs Visa" */
+    color: var(--secondary-accent-blue); font-family: var(--font-body);
+    font-size: 1rem; /* Adjusted */ margin: var(--space-md) 0 var(--space-xs);
+    font-weight: 600; opacity: 0.9;
+}
+.service-details p { /* Description for sub-service */
+    font-size: 0.85rem; /* Adjusted */ line-height: 1.6; margin-bottom: var(--space-sm); font-weight: 300;
+    background: none !important; border: none !important; padding: 0 !important;
+    text-align: left; text-shadow: var(--text-shadow-soft); opacity: 0.9;
+}
+.service-cta { /* Container for "Contact Captain Brent" button */
+    text-align: center; margin-top: var(--space-xl); padding: var(--space-lg);
+    background: rgba(200,181,136,0.05); border-radius: 10px;
+    border-top: 1px solid var(--glass-border-gold-accent);
+}
+.service-cta p { /* Text above button */
+    font-size: 1.05rem; /* Adjusted */
+}
+
+/* --- GALLERY - Refined Item Display --- */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Smaller min for more items */ gap: var(--space-sm); }
+.gallery-item {
+    border-radius: 8px; overflow: hidden; aspect-ratio: 1/1; cursor: pointer;
+    border: 1px solid var(--glass-border-gold-accent);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1); opacity: 0.9;
+}
+.gallery-item:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,0,0,0.15); opacity: 1; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease-out; }
+.gallery-item:hover img { transform: scale(1.08); }
+
+/* Lightbox (for gallery) */
+.lightbox {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(5,20,34,0.92); /* Slightly more see-through */
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1100; /* Above popups */ backdrop-filter: blur(6px);
+}
+.lightbox img {
+    max-width: 90%; max-height: 90%; object-fit: contain;
+    border: 2px solid var(--glass-border-gold-accent);
+    border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.4);
+}
+
+/* --- CONTACT FORM - Refined Inputs & Layout --- */
+.contact-form { background: transparent; padding: 0; /* Removed its own padding, rely on .content-container */ border-radius: 10px; margin-top: var(--space-lg); }
+.form-group { margin-bottom: var(--space-md); text-align: left; }
+.form-group label {
+    display: block; margin-bottom: var(--space-xs); color: var(--secondary-accent-blue);
+    font-weight: 500; font-size: 0.85rem; text-shadow: none; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.form-control {
+    width: 100%; padding: var(--space-sm) var(--space-md); border-radius: 6px;
+    border: 1px solid var(--glass-border-light); /* Lighter border for inputs */
+    background: rgba(10, 47, 81, 0.3); /* Subtle glass for inputs */
+    backdrop-filter: calc(var(--glass-blur-amount) - 7px); -webkit-backdrop-filter: calc(var(--glass-blur-amount) - 7px);
+    color: var(--primary-light-text); font-family: var(--font-body); font-size: 0.9rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    box-sizing: border-box; /* Ensure padding doesn't expand width */
+}
+.form-control:focus {
+    outline: none; border-color: var(--muted-gold-highlight);
+    box-shadow: 0 0 0 2.5px rgba(200,181,136,0.25); /* Focus glow */
+    background-color: rgba(10, 47, 81, 0.4);
+}
+textarea.form-control { min-height: 100px; /* Adjusted */ resize: vertical; }
+.submit-btn { /* General purpose submit button */
+    background: var(--secondary-accent-blue); color: var(--primary-light-text);
+    border: none; padding: var(--space-sm) var(--space-xl);
+    border-radius: 50px; cursor: pointer; transition: all 0.3s ease;
+    font-family: var(--font-nav); font-weight: 600; letter-spacing: 0.5px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.15); font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.submit-btn:hover {
+    background: var(--muted-gold-highlight); color: var(--primary-dark-blue);
+    transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
 .form-success {
-    background: rgba(135, 169, 168, 0.2); /* Seafoam success */
-    border: 1px solid var(--subtle-seafoam-accent);
-    color: var(--subtle-seafoam-accent);
-    padding: 0.9rem; /* Adjusted */
-    border-radius: 6px;
-    margin-top: 1rem;
-    text-align: center;
-    display: none;
-    font-size: 0.9rem;
+    background: rgba(135,169,168,0.15); border: 1px solid var(--subtle-seafoam-accent);
+    color: var(--primary-light-text); padding: var(--space-md); border-radius: 6px;
+    margin-top: var(--space-md); text-align: center; display: none; font-size: 0.9rem;
+    border-left: 4px solid var(--subtle-seafoam-accent);
 }
 .form-success.visible { display: block; }
 
-
-/* Accommodation section */
-.accommodation-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted */
-    gap: 1.5rem; /* Adjusted */
-    margin-top: 1.5rem; /* Adjusted */
-}
-
+/* --- ACCOMMODATION SECTION (Popup) - Refined Cards --- */
+.accommodation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-lg); margin-top: var(--space-lg); }
 .bungalow-card {
-    background: var(--card-bg-color);
-    border-radius: 10px; /* Adjusted */
-    overflow: hidden;
-    border: 1px solid var(--card-border-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: var(--glass-bg-base); /* Base glass for cards in popup */
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border-radius: 10px; overflow: hidden; border: 1px solid var(--glass-border-gold-accent);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-
-.bungalow-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 10px var(--card-border-color);
-}
-
-.bungalow-img {
-    width: 100%;
-    height: 180px; /* Adjusted */
-    object-fit: cover;
-}
-
-.bungalow-info {
-    padding: 1.2rem; /* Adjusted */
-}
-
+.bungalow-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15), 0 0 0 1px var(--glass-border-gold-accent); }
+.bungalow-img { width: 100%; height: 160px; /* Adjusted */ object-fit: cover; }
+.bungalow-info { padding: var(--space-md); }
 .bungalow-title {
-    font-family: var(--font-heading-card);
-    font-size: 1.4rem; /* Adjusted */
-    color: var(--muted-gold-highlight);
-    margin-top: 0;
-    margin-bottom: 0.4rem; /* Adjusted */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    font-weight: 600;
+    font-family: var(--font-heading-card); font-size: 1.3rem; /* Adjusted */
+    color: var(--muted-gold-highlight); margin-bottom: var(--space-xs);
+    text-shadow: var(--text-shadow-soft); font-weight: normal;
 }
-
 .bungalow-price {
-    font-family: var(--font-body);
-    font-size: 1.1rem; /* Adjusted */
-    color: var(--primary-light-text);
-    margin-bottom: 0.8rem; /* Adjusted */
-    font-weight: 400;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-family: var(--font-body); font-size: 1rem; /* Adjusted */
+    color: var(--primary-light-text); margin-bottom: var(--space-sm);
+    font-weight: 400; opacity: 0.9;
 }
-
-.bungalow-desc {
-    color: var(--primary-light-text);
-    margin-bottom: 1.2rem; /* Adjusted */
-    line-height: 1.6;
-    font-size: 0.9rem; /* Adjusted */
-    font-weight: 300;
+.bungalow-desc { font-size: 0.85rem; margin-bottom: var(--space-md); line-height: 1.6; opacity: 0.85; }
+.book-btn { /* Booking button on bungalow card */
+    background: var(--secondary-accent-blue); color: var(--primary-light-text);
+    border: none; padding: var(--space-sm) var(--space-lg);
+    border-radius: 50px; cursor: pointer; transition: all 0.3s ease;
+    font-family: var(--font-nav); text-decoration: none; display: inline-block;
+    font-weight: 500; font-size: 0.85rem; letter-spacing: 0.3px;
 }
+.book-btn:hover { background: var(--muted-gold-highlight); color: var(--primary-dark-blue); transform: translateY(-1px); }
 
-.book-btn { /* Similar to submit-btn */
-    background: var(--secondary-accent-blue);
-    color: var(--primary-light-text);
-    border: 1px solid var(--secondary-accent-blue);
-    padding: 0.7rem 1.6rem; /* Adjusted */
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: var(--font-nav);
-    text-decoration: none;
-    display: inline-block;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.book-btn:hover {
-    background: var(--muted-gold-highlight);
-    color: var(--primary-dark-blue);
-    border-color: var(--muted-gold-highlight);
-}
-
-
-/* Water particle effects - Kept as is, colors are general white/light */
-.particles-container {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; z-index: -1; /* Ensure it's behind text */
-}
+/* --- Water particle effects (Kept as original, visual element) --- */
+.particles-container {position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;} /* Ensure z-index is below text */
+.water-particle,.water-particle:nth-child(2n),.water-particle:nth-child(3n),.water-particle:nth-child(4n),.water-particle:nth-child(5n){position:absolute;background:hsla(0,0%,100%,.5);border-radius:50%;pointer-events:none;animation:float 3s infinite ease-out}
+.water-particle{width:4px;height:4px}
+.water-particle:nth-child(2n){width:6px;height:6px;animation-duration:3.5s;animation-delay:.5s}
+.water-particle:nth-child(3n){width:3px;height:3px;background:hsla(0,0%,100%,.7);animation-duration:2.5s;animation-delay:1s}
+.water-particle:nth-child(4n){width:5px;height:5px;background:hsla(220,50%,90%,.6);animation-duration:4s;animation-delay:1.5s}
+.water-particle:nth-child(5n){width:3px;height:3px;background:hsla(190,60%,80%,.7);animation-duration:2s;animation-delay:0.2s}
 @keyframes float {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    25% { opacity: 0.5; }
-    75% { opacity: 0.5; }
-    100% { transform: translateY(-80px) translateX(15px); opacity: 0; }
-}
-.water-particle { /* Kept existing */ }
-/* ... other water particle styles kept as is ... */
-
-
-/* Dashboard titles and widgets from style.css (NOT the inline ones for captain-header) */
-/* These are for the section with iframes */
-.dashboard-title { /* This might be unused if .captain-header is taking precedence */
-    font-family: var(--font-heading-main);
-    font-size: 2.8rem; /* Adjusted */
-    text-align: center;
-    padding: 30px 0 15px; /* Adjusted */
-    color: var(--muted-gold-highlight);
-    letter-spacing: 1.5px; /* Adjusted */
-    text-shadow: 0 0 12px var(--card-border-color);
+    0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; } /* Start smaller and faded */
+    25% { opacity: 0.7; }
+    75% { opacity: 0.7; }
+    100% { transform: translateY(-70px) translateX(10px) scale(1); opacity: 0; } /* End slightly larger */
 }
 
-.widget-grid { /* This is the container for the captain-widgets */
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1.5rem; /* Adjusted */
-    gap: 25px; /* Original: 30px, then 1rem. Using 25px */
-    display: grid; /* Ensure grid is applied if not already by other rules */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Responsive columns */
+
+/* --- DASHBOARD WIDGETS (Homepage) - Styling for iframe containers, respecting "do not change" for internal/header --- */
+/* .dashboard-title (if used for overall section title) styling is in previous user CSS */
+.widget-grid { /* Container for the captain-widgets (iframes) */
+    max-width: 1300px; /* Adjusted for better fit */ margin: 0 auto;
+    padding: var(--space-lg) var(--space-md); gap: var(--space-lg); /* Consistent spacing */
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minmax */
 }
-
-/* Styles for .widget / .captain-widget that might be from the external CSS file */
-/* These are delicate due to "do not change" for dashboard. */
-/* The .captain-widget in HTML has inline styles. The .widget in style.css has multiple definitions. */
-/* This will style the container IF .captain-widget class also gets these .widget styles. */
-/* It's safer to assume the inline HTML styles for .captain-widget are primary for its specific look. */
-/* These .widget styles might be for a *different* set of widgets if they exist. */
-/* For now, I will lightly theme the generic .widget from the CSS file. */
-
-.widget { /* Generic widget styling from style.css - careful not to break dashboard if it uses this too */
-    background: rgba(10, 47, 81, 0.5); /* Themed background */
-    border: 1px solid var(--card-border-color);
-    border-radius: 15px; /* Original: 20px, then 12px. Using 15px */
-    backdrop-filter: blur(10px); /* Original: 15px, then 8px. Using 10px */
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Original: 0 15px 40px rgba(0,0,0,0.2) */
+/* Styling for `.captain-widget` (the iframe containers) is primarily handled by inline styles in HTML. */
+/* If there are generic `.widget` classes from style.css meant for these, they might be affected by the global .widget style below. */
+/* The user's provided CSS had multiple `.widget` definitions. This consolidates to one generic style. */
+.widget { /* Generic styling for any element with class="widget" */
+    background: var(--glass-bg-base); /* Apply glass effect */
+    backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+    border: 1px solid var(--glass-border-light);
+    border-radius: 12px; /* Softer radius */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-    color: var(--primary-light-text);
-    padding: 15px; /* Original: 20px */
-    display: flex; /* Added from a later definition for consistency */
-    flex-direction: column; /* Added from a later definition */
-    min-height: auto; /* Let content define, or set like 260px */
+    overflow: hidden; color: var(--primary-light-text); padding: var(--space-md);
+    display: flex; flex-direction: column;
 }
-
-.widget:hover { /* Generic hover */
-    transform: translateY(-8px) scale(1.01); /* Subtler hover */
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-}
-
+.widget:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
 .widget h2, .widget .widget-title { /* Title inside generic .widget */
-    text-align: center;
-    font-family: var(--font-heading-card); /* Card heading font */
-    font-size: 1.3rem; /* Original: 1.4rem, 1.4em. Adjusted */
-    margin: 15px 0 10px; /* Adjusted */
-    color: var(--muted-gold-highlight); /* Themed color */
-    text-shadow: 0 0 8px rgba(200, 181, 136, 0.3);
-    font-weight: 500; /* Marcellus is thin */
-    letter-spacing: 0.5px;
+    text-align: center; font-family: var(--font-heading-card); font-size: 1.2rem; /* Adjusted */
+    margin: 0 0 var(--space-md); /* Adjusted margin */ color: var(--muted-gold-highlight);
+    text-shadow: var(--text-shadow-soft); font-weight: normal; letter-spacing: 0.5px;
 }
-
-.widget iframe { /* iframe inside generic .widget */
-    width: 100%;
-    /* height: 250px; */ /* Let content or specific rules define height, or set min-height */
-    flex-grow: 1; /* From later definition */
-    min-height: 220px; /* From later definition */
-    border: none;
-    border-radius: 10px; /* Original: 12px, then 8px. Using 10px */
+.widget iframe {
+    width: 100%; flex-grow: 1; min-height: 200px; /* Adjusted from 220px */
+    border: none; border-radius: 8px; /* Softer radius for iframe */
     overflow: hidden;
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+}
+/* Ensure styling for .captain-widget from HTML inline styles takes precedence for dashboard items */
+.captain-widget { /* From user's inline styles, ensure it overrides generic .widget if both applied */
+    background: rgba(0,0,0,0.6) !important; /* Darker, more opaque from original */
+    padding: 15px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(249,217,118,0.15) !important; /* Original gold border */
+    text-align: center !important;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5) !important; /* Original shadow */
+    color: #f0f4f8 !important;
+}
+.captain-widget h4 { /* For titles *inside* captain-widget IFRAME containers */
+    color: var(--original-gold-highlight) !important; /* Use original gold */
+    margin-top: 0 !important; margin-bottom: 10px !important;
+    font-family: 'Marcellus SC', serif !important; font-size: 1.1em !important; /* Adjusted */
+    font-weight: normal !important; letter-spacing: 0.5px !important;
 }
 
-/* Styles for text content within widgets if not an iframe (from later .widget > div[id] rules) */
-.widget > div[id] {
-    padding: 10px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 0.95em;
-    line-height: 1.5;
-}
-.widget > div[id] p {
-    margin: 5px 0;
-    color: var(--primary-light-text);
-    font-weight: 300;
-}
-.widget > div[id] p strong, .widget > div[id] p[style*="font-size: 1.8em"] {
-    color: var(--muted-gold-highlight);
-    font-weight: bold;
-}
-.widget .warning { /* For error messages if any */
-    color: #ff9a8f; /* Softer red */
-    font-weight: bold;
-    font-size: 0.9em;
+/* Warning/error text inside widgets */
+.widget .warning { /* From original user CSS */
+    color: #ff8a80; /* Original color */
+    font-weight: bold; font-size: 0.9em;
 }
 
-
-/* --- MEDIA QUERIES --- */
-/* Keep existing media queries, but ensure new styles are respected */
-/* Focus on padding, font sizes, and grid adjustments */
-
+/* --- MEDIA QUERIES - Adapting new styles for responsiveness --- */
+/* Using user's existing media query structure and adding/adjusting rules */
 @media (max-width: 1200px) {
-    .widget-grid { /* For captain-widgets */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        padding: 1.5rem 20px; /* Adjusted */
-    }
-    .dashboard { /* For the other .dashboard class if used */
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    }
+    .widget-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); padding: var(--space-lg) var(--space-sm); }
+    .dashboard { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 }
-
 @media (min-width: 769px) and (max-width: 1024px) { /* Tablet */
-    #main-scrollable-content-wrapper { padding-top: 80px; }
-    nav { padding: 0.9rem 2rem; }
-    .nav-logo { height: 40px; margin-left: 1rem; }
-    .nav-links { gap: 1rem; }
-    .nav-link { font-size: 0.9rem; padding: 0.6rem 0.9rem; }
-
-    .home-title { font-size: 2.5rem; }
-    .hero-title { font-size: 2.2rem; }
-    .hero-subtitle { font-size: 1.2rem; }
-    .main-logo { width: 180px; height: 180px; }
-
-    .content-container { padding: 2rem; width: 92%; }
-    .content-container h2 { font-size: 2rem; }
-
-    .amenity-card h3 { font-size: 1.4rem; }
-    .amenity-card p { font-size: 0.9rem; }
-
-    .benefits-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-    .membership-benefits { padding: 2rem; }
-    .services-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    #main-scrollable-content-wrapper { padding-top: 80px; } /* Adjust for nav */
+    nav { padding: var(--space-sm) var(--space-lg); height: 65px; }
+    .nav-logo { height: 35px; margin-left: var(--space-md); }
+    .nav-links { gap: var(--space-xs); }
+    .nav-link { font-size: 0.85rem; padding: var(--space-xs) var(--space-sm); }
+    .home-title { font-size: 2.3rem; } .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; }
+    .main-logo { width: 160px; height: 160px; }
+    .content-container { padding: var(--space-lg); width: 92%; } .content-container h2 { font-size: 1.8rem; }
+    .amenity-card h3 { font-size: 1.3rem; } .amenity-card p { font-size: 0.85rem; }
+    .benefits-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg); }
+    .membership-benefits { padding: var(--space-lg); }
+    .services-grid.popup-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .services-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 }
-
 @media (max-width: 768px) { /* Smaller tablets and large mobiles */
+    body { font-size: 15px; } /* Slightly smaller base for small screens */
     #main-scrollable-content-wrapper { padding-top: 70px; }
-    nav {
-        padding: 0.8rem 1rem; /* Tighter padding */
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .nav-logo { height: 35px; margin-left: 0.5rem; }
-    .social-icon { margin-right: 0.5rem; }
-    .social-icon img.facebook-logo { width: 28px; height: 28px;}
-
-
-    /* Mobile Menu Button appears */
+    nav { padding: var(--space-xs) var(--space-md); height: 60px; flex-wrap: nowrap; } /* Ensure nav items don't wrap */
+    .nav-logo { height: 30px; margin-left: var(--space-sm); }
+    .social-icon { margin-right: var(--space-sm); }
+    .social-icon img.facebook-logo { width: 22px; height: 22px;}
     .mobile-menu-btn {
-        display: flex;
-        top: calc(70px / 2 - 12px); /* Vertically center with nav */
-        right: 1rem;
-        color: var(--muted-gold-highlight); /* Gold for menu icon */
-        z-index: 1001; /* Above nav content */
+        display: flex; top: calc(60px / 2 - 14px); right: var(--space-md);
+        color: var(--muted-gold-highlight); z-index: 1100; /* Above nav links if they overlap */
+        width: 28px; height: 28px; justify-content: center; align-items: center;
+        background: transparent; border: none; cursor: pointer;
     }
+    .mobile-menu-btn svg { width: 22px; height: 22px; stroke: var(--muted-gold-highlight); stroke-width: 2.5px; }
 
     .nav-links { /* Mobile menu panel */
-        position: fixed;
-        top: 0; /* Covers full screen from top */
-        left: -100%; /* Off-screen initially */
-        width: 100%;
-        height: 100vh;
-        background: rgba(10, 47, 81, 0.98); /* Dark blue, very opaque */
-        backdrop-filter: blur(10px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: left 0.35s ease-in-out;
-        z-index: 1000; /* Below menu button, above page content */
-        padding-top: 60px; /* Space for close or branding if added */
-        gap: 0.5rem; /* Spacing between links */
+        position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
+        background: rgba(10, 47, 81, 0.9); /* Slightly more transparent for effect */
+        backdrop-filter: var(--glass-blur-amount); -webkit-backdrop-filter: var(--glass-blur-amount);
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother ease */
+        z-index: 1050; /* Below menu button */
+        padding-top: 60px; gap: var(--space-xs);
     }
-
-    .nav-links.open { left: 0; } /* Slides in */
-
+    .nav-links.open { left: 0; }
     .nav-links .nav-link { /* Links inside mobile menu */
-        font-family: var(--font-nav);
-        font-size: 1.3rem; /* Larger for touch */
-        font-weight: 500;
-        letter-spacing: 1px;
-        margin: 8px 0; /* Vertical spacing */
-        width: 80%;
-        max-width: 280px;
-        padding: 12px 18px; /* Generous padding */
-        text-align: center;
-        color: var(--primary-light-text); /* Light text */
-        background: rgba(200, 181, 136, 0.1); /* Muted gold tint */
-        border: 1px solid var(--card-border-color);
+        font-size: 1.2rem; /* Larger for touch */ font-weight: 500; letter-spacing: 0.8px;
+        margin: var(--space-xs) 0; width: 85%; max-width: 300px;
+        padding: var(--space-sm) var(--space-md); text-align: center; color: var(--primary-light-text);
+        background: rgba(200,181,136,0.08); border: 1px solid var(--glass-border-gold-accent);
         border-radius: 6px;
     }
     .nav-links .nav-link:hover, .nav-links .nav-link.active {
-        color: var(--primary-dark-blue); /* Dark text on gold bg */
-        background: var(--muted-gold-highlight);
-        text-shadow: none;
+        color: var(--primary-dark-blue); background: var(--muted-gold-highlight); text-shadow: none;
     }
     .nav-link::after { display: none; } /* No underline in mobile menu */
 
-
-    .home-title { font-size: 2.2rem; }
-    .hero-title { font-size: 2rem; }
-    .home-subtitle { font-size: 1.2rem; }
-    .main-logo { width: 160px; height: 160px; margin: 2rem auto 1rem; }
-
-    .hero-welcome { max-width: 90%; padding: 1.5rem 0.5rem; }
-    .amenities-grid { grid-template-columns: 1fr; gap: 1rem; }
-    .amenity-card { padding: 1.2rem; }
-    .amenity-card h3 { font-size: 1.3rem; }
-    .amenity-card p { font-size: 0.85rem; }
-
-    .content-container { padding: 1.5rem; width: 95%; max-height: 88vh; }
-    .content-container h2 { font-size: 1.8rem; }
-    .section-logo { width: 60px; height: 60px; top: -30px; }
-
+    .home-title { font-size: 2rem; } .hero-title { font-size: 1.8rem; } .home-subtitle { font-size: 1.1rem; }
+    .main-logo { width: 140px; height: 140px; margin: var(--space-lg) auto var(--space-sm); }
+    .hero-welcome { max-width: 90%; padding: var(--space-lg) var(--space-sm); }
+    .amenities-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+    .amenity-card { padding: var(--space-lg); } .amenity-card h3 { font-size: 1.25rem; } .amenity-card p { font-size: 0.8rem; }
+    .content-container { padding: var(--space-lg) var(--space-md); width: 95%; max-height: 88vh; }
+    .content-container h2 { font-size: 1.7rem; }
+    .section-logo { width: 55px; height: 55px; top: calc(var(--space-lg) * -0.5); }
     .benefits-grid { grid-template-columns: 1fr; }
-    .membership-benefits .elegant-title { font-size: 1.8rem; }
-    .services-grid { grid-template-columns: 1fr; } /* For showcase and popup */
-    .service-card { padding: 1.5rem; }
-    .service-card h3 { font-size: 1.4rem; }
-    .stat-number { font-size: 2rem; }
-    .stat-label { font-size: 0.9rem; }
-
-    .widget-grid { /* For captain-widgets */
-        grid-template-columns: 1fr;
-        padding: 1rem 10px;
-        gap: 15px;
-    }
-    .dashboard { /* For the other .dashboard class if used */
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    .widget iframe { height: 200px; min-height: 200px; } /* Adjust iframe height */
+    .membership-benefits .elegant-title { font-size: 1.7rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: var(--space-lg); } .service-card h3 { font-size: 1.3rem; }
+    .stat-number { font-size: 1.8rem; } .stat-label { font-size: 0.8rem; }
+    .widget-grid { grid-template-columns: 1fr; padding: var(--space-md) var(--space-xs); gap: var(--space-md); }
+    .dashboard { grid-template-columns: 1fr; gap: var(--space-md); }
+    .widget iframe { min-height: 180px; } /* Further reduce iframe height on small screens */
+    /* User's original .widget styles from media queries - these are likely for their new dashboard grid */
+    .widget { padding: 15px; min-height: auto; /* Let content define height */ }
+    .widget .widget-title { font-size: 1.2em; }
 }
-
-@media (max-width: 576px) { /* Mobile */
+@media (max-width: 480px) { /* Smallest Mobile */
     #main-scrollable-content-wrapper { padding-top: 60px; }
-    nav { padding: 0.6rem 0.8rem; }
-     .mobile-menu-btn { top: calc(60px / 2 - 12px); }
-
-
-    .home-title { font-size: 1.9rem; }
-    .hero-title { font-size: 1.7rem; }
-    .home-subtitle { font-size: 1rem; }
-    .main-logo { width: 130px; height: 130px; }
-
-    .content-container { padding: 1.2rem; width: 100%; border-radius: 10px; max-height: 90vh;}
-    .content-container h2 { font-size: 1.6rem; }
-    .content-container p { font-size: 0.9rem; padding: 0.6rem 0.8rem; }
-    .section-logo { width: 50px; height: 50px; top: -25px; }
-    
-    .contact-form { padding: 1rem; }
-    .form-control { padding: 0.8rem; font-size: 0.9rem; }
-    .submit-btn, .book-btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
-
-    .premium-button { padding: 0.8rem 1.8rem; font-size: 0.95rem; }
+    nav { height: 55px; } .mobile-menu-btn { top: calc(55px / 2 - 14px); }
+    .home-title { font-size: 1.7rem; } .hero-title { font-size: 1.5rem; } .home-subtitle { font-size: 1rem; }
+    .main-logo { width: 120px; height: 120px; }
+    .content-container { padding: var(--space-md); width: 100%; border-radius: 8px; max-height: 90vh;}
+    .content-container h2 { font-size: 1.5rem; }
+    .content-container p:not(.services-intro):not(.benefits-intro):not(.membership-cta p):not([style*="text-align:center"]) { font-size: 0.85rem; padding: var(--space-sm); }
+    .section-logo { width: 50px; height: 50px; top: calc(var(--space-md) * -0.5); }
+    .contact-form { padding: 0; } /* Rely on container padding */
+    .form-control { padding: var(--space-sm); font-size: 0.85rem; }
+    .submit-btn, .book-btn { padding: var(--space-sm) var(--space-lg); font-size: 0.85rem; }
+    .premium-button { padding: var(--space-sm) var(--space-lg); font-size: 0.9rem; }
+    .widget .widget-title { font-size: 1.1em; } /* Original adjustment from user CSS */
 }
 
-
-/* Mobile menu button base styles (mostly for when it's not yet displayed as flex by media query) */
-.mobile-menu-btn {
+.mobile-menu-btn { /* Base styles, ensured it's correctly targeted */
     display: none; /* Hidden by default, shown by @media */
-    background: none;
-    border: none;
-    color: white; /* Overridden by mobile media query for gold */
-    font-size: 1.5rem; /* SVG size is 24px, this is for icon font */
-    cursor: pointer;
-    z-index: 1001; /* Ensure it's above the nav bar content */
-    position: fixed; /* Fixed position */
-    /* top and right are set in media query */
-    padding: 5px; /* Clickable area */
-}
-.mobile-menu-btn svg { /* Styling the SVG icon directly */
-    width: 24px;
-    height: 24px;
-    stroke: var(--muted-gold-highlight); /* Use variable for consistency */
 }
 
+/* Ensure captain dashboard specific title styling from HTML inline style is preserved */
+/* The .glass-box styles in HTML are very specific to the dashboard intro. */
 
-/* Ensure captain dashboard specific title styling from HTML inline style is preserved if needed */
-/* The .glass-box styles in HTML seem specific to the dashboard intro. */
-/* My .widget styles are for the containers of iframes from style.css */
+/* These styles from user's original CSS seem to be for a dashboard distinct from .widget-grid/captain-widget */
+/* I'll apply marine theme vars carefully if they don't conflict with "do not change" widgets */
+.dashboard { /* This is distinct from widget-grid which holds captain-widgets */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    padding: 25px;
+    max-width: 1600px;
+    margin: 20px auto;
+}
+.dashboard .widget { /* If a widget is directly inside .dashboard (not .widget-grid) */
+    background: var(--glass-bg-base);
+    backdrop-filter: var(--glass-blur-amount);
+    border: 1px solid var(--glass-border-light);
+    border-radius: 12px; /* Match other cards */
+    color: var(--primary-light-text);
+    /* Other styles from original .widget in global scope were:
+       min-height: 300px; (Can be adjusted or let content define)
+       padding: 20px; (Using var(--space-md) instead)
+       box-shadow: 0 10px 30px rgba(0,0,0,.1); (Covered by general .widget)
+       display: flex; flex-direction: column; (Covered)
+    */
+}
+.dashboard .widget .widget-title { /* Title within these specific dashboard widgets */
+    color: var(--muted-gold-highlight);
+    font-family: var(--font-heading-card);
+    font-size: 1.3em; /* From original */
+    /* Other styles from original: text-align: center; margin-bottom: 15px; (Covered) */
+}
+/* The styles for .widget iframe that were globally defined in user CSS will apply here too if structure matches. */
