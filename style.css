@@ -163,11 +163,11 @@ nav {
 }
 
 .nav-link {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Montserrat', sans-serif; /* Applied cleaner font */
     color: rgba(255, 255, 255, 0.95);
     text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
